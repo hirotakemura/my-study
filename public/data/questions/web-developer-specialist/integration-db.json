@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "extdb-001",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "基礎",
+    "question": "既存の基幹システムのSQL Serverにある「得意先」テーブルを、OutSystemsのアプリからエンティティとして使いたい。一般的な手順として最も適切なものはどれか。",
+    "options": [
+      "Service Studioで同じ構造のエンティティを作り、Timerで毎晩全件コピーする",
+      "Service CenterでDatabase Connectionを作成し、Integration Studioでそのテーブルを取り込んだExtensionを作成・公開して、モジュールから参照する",
+      "Advanced SQLの中に接続文字列を書き、外部データベースへ直接接続する",
+      "外部データベースのテーブルを、OutSystemsのデータベースへ手動でリンクする"
+    ],
+    "answer": 1,
+    "explanation": "外部データベースとの連携は、Service CenterでDatabase Connectionを定義し、Integration Studioでテーブルをエンティティとして取り込んだExtensionを公開して行います。モジュールはExtensionを参照することで、通常のエンティティと同様にAggregateなどで利用できます。",
+    "wrongReasons": [
+      "コピー方式はデータの鮮度が落ち、二重管理にもなるため、直接参照できる場合の第一選択ではない。",
+      "Advanced SQLに接続文字列を書いて別データベースへ接続する仕組みはない。",
+      "OutSystemsのデータベースへ手動でリンクする方法はサポートされた連携手段ではない。"
+    ]
+  },
+  {
+    "id": "extdb-002",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "標準",
+    "question": "外部データベース連携のExtensionを、開発環境では検証用データベース、本番環境では本番データベースにつなぎたい。Extensionを環境ごとに作り直さずに対応する方法として最も適切なものはどれか。",
+    "options": [
+      "環境ごとにIntegration Studioで接続先を書き換えたExtensionを公開する",
+      "Site Propertyに接続文字列を保存し、実行時に切り替える",
+      "Extensionでは論理的なデータベース接続名を使い、各環境のService CenterでExtensionのOperationタブから実際のDatabase Connectionを割り当てる",
+      "本番データベースのみを使い、開発環境からも本番データベースに接続する"
+    ],
+    "answer": 2,
+    "explanation": "Integration Studioで作るExtensionは論理的な接続名を持ち、どの物理的なDatabase Connectionを使うかは環境ごとにService Center（ExtensionのOperationタブ）で設定します。同じExtensionをデプロイしたまま、環境ごとに接続先を変えられます。",
+    "wrongReasons": [
+      "環境ごとにExtensionを作り直すと、デプロイの一貫性が失われ管理も煩雑になる。",
+      "外部データベースの接続先をSite Propertyで切り替える仕組みはない。",
+      "開発環境から本番データベースを使うと、テストで本番データを壊すおそれがある。"
+    ]
+  },
+  {
+    "id": "extdb-003",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "応用",
+    "question": "外部データベースの「得意先」エンティティと、OutSystemsのデータベースにある「商談」エンティティを1つのAggregateで結合しようとしたところ、エラーになった。対応として最も適切なものはどれか。",
+    "options": [
+      "Aggregateの結合をOnly Withに変更する",
+      "Advanced SQLに書き換えれば、2つのデータベースのテーブルを結合できる",
+      "得意先エンティティのIdentifierをLong Integerに変更する",
+      "1つのクエリで異なるデータベースのエンティティは結合できないため、別々に取得してロジックで組み合わせるか、必要なデータを同じデータベースへ同期する"
+    ],
+    "answer": 3,
+    "explanation": "Aggregateは、異なるデータベース接続のエンティティを結合できません。それぞれのデータベースから個別に取得して組み合わせるか、Timerなどで必要なデータを同じデータベースへ同期する設計にします。",
+    "wrongReasons": [
+      "結合の種類を変えても、異なるデータベースをまたぐ結合はできない。",
+      "Advanced SQLでも、異なるデータベース接続のエンティティを1つのクエリで扱うことはできない。",
+      "識別子の型はエラーの原因ではない。"
+    ]
+  },
+  {
+    "id": "extdb-004",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "標準",
+    "question": "外部データベースの「得意先」テーブルに「与信ランク」列が追加された。OutSystemsのアプリでこの列を使えるようにするための手順として最も適切なものはどれか。",
+    "options": [
+      "Integration Studioでエンティティを更新（テーブルから再取り込み）してExtensionを公開し、利用するモジュールで参照を更新して再公開する",
+      "利用するモジュールを再公開するだけで、新しい列が自動で認識される",
+      "Service Studioで得意先エンティティに属性を直接追加する",
+      "Service Centerで得意先エンティティに属性を追加する"
+    ],
+    "answer": 0,
+    "explanation": "外部テーブルの構造はExtensionに定義されているため、Integration Studioで定義を更新して公開する必要があります。その後、利用側モジュールで依存関係を更新して再公開すると、新しい属性が使えるようになります。",
+    "wrongReasons": [
+      "Extensionの定義を更新しない限り、新しい列は認識されない。",
+      "Extensionで定義された外部エンティティは、利用側のService Studioでは編集できない。",
+      "Service Centerはエンティティの構造を編集する場所ではない。"
+    ]
+  },
+  {
+    "id": "extdb-005",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "応用",
+    "question": "外部データベースの大きな「出荷履歴」テーブルを、OutSystemsの画面から出荷日で検索すると遅い。改善策として最も適切なものはどれか。",
+    "options": [
+      "Service Studioで出荷履歴エンティティにインデックスを追加して公開する",
+      "Integration Studioで出荷履歴エンティティのプロパティにインデックスを設定すれば、外部データベースに自動作成される",
+      "外部データベース側で、出荷日の列にインデックスを作成するようデータベース管理者に依頼する",
+      "検索のたびに全件をOutSystemsへ取得し、ListFilterで絞り込む"
+    ],
+    "answer": 2,
+    "explanation": "外部データベースのテーブル構造やインデックスはOutSystemsが管理するものではなく、外部データベース側で管理します。検索条件に使う列のインデックスは、外部データベースの管理者と調整して作成します。",
+    "wrongReasons": [
+      "外部エンティティは利用側のService Studioで編集できず、インデックスも追加できない。",
+      "Integration Studioの設定で外部データベースにインデックスが自動作成されることはない。",
+      "全件取得してメモリで絞り込むと、転送量が増えさらに遅くなる。"
+    ]
+  },
+  {
+    "id": "extdb-006",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "基礎",
+    "question": "外部データベースへの接続に使うユーザー名とパスワードの管理方法として最も適切なものはどれか。",
+    "options": [
+      "Integration StudioでExtensionのソースコードに直接記述する",
+      "Service CenterのDatabase Connectionに設定し、アプリのコードには含めない",
+      "Site Propertyに平文で保存し、ロジックから読み込む",
+      "利用する各モジュールの定数として定義する"
+    ],
+    "answer": 1,
+    "explanation": "接続情報はService CenterのDatabase Connectionとして環境ごとに管理し、アプリのコードには含めません。認証情報の漏えいを防ぎ、環境ごとの切り替えや変更もコードを変えずに行えます。",
+    "wrongReasons": [
+      "コードに書くと、ソースを参照できる人すべてに認証情報が漏れ、変更のたびに再公開も必要になる。",
+      "Site Propertyは接続情報を管理する仕組みではなく、平文での保存は漏えいリスクもある。",
+      "定数として持たせると認証情報がコード内に散らばり、管理と変更が困難になる。"
+    ]
+  },
+  {
+    "id": "extdb-007",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "標準",
+    "question": "外部データベースの得意先テーブルは列名が難解で、将来は別システムへの移行も予定されている。複数のEnd-userモジュールからこのデータを使う際の設計として最も適切なものはどれか。",
+    "options": [
+      "外部データベース連携のExtensionを参照するラッパー用のモジュールを作り、業務に合わせた構造とPublicなActionで公開して、End-userモジュールはそれを使う",
+      "各End-userモジュールが直接Extensionを参照し、それぞれで列の変換を行う",
+      "外部データベースの列名を、OutSystems側の都合に合わせて変更してもらう",
+      "得意先データを各End-userモジュールのエンティティにコピーして使う"
+    ],
+    "answer": 0,
+    "explanation": "外部システムとの連携はラッパー（統合用）モジュールに集約し、業務で扱いやすい形で公開するのが推奨されるアーキテクチャです。外部側の変更や移行の影響をこのモジュールに閉じ込められます。",
+    "wrongReasons": [
+      "各モジュールが直接参照すると、外部側の変更時に多くのモジュールを修正する必要がある。",
+      "既存システムの変更は影響範囲が大きく、OutSystems側の都合で求める対応として現実的でない。",
+      "モジュールごとにコピーするとデータが分散し、整合性を保てなくなる。"
+    ]
+  }
+]

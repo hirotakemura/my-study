@@ -1,1 +1,262 @@
-[]
+[
+  {
+    "id": "trouble-001",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "OutSystems Cloudの本番環境で、1か月前に発生した障害のログを確認したい。OutSystems Cloudにおけるログの保持期間として最も適切なものはどれか。",
+    "options": [
+      "2週間で、それより古いログは削除される",
+      "9週間で、この期間は変更できない",
+      "1年間で、Service Centerから延長できる",
+      "無期限に保持される"
+    ],
+    "answer": 1,
+    "explanation": "OutSystems Cloudでは、ログの保持期間は9週間に固定されており変更できません。なお、Service Centerの画面で参照できるのは直近2週間分で、それより古いログは保持期間内であればログのデータベースから参照できます。",
+    "wrongReasons": [
+      "2週間はService Centerの画面で参照できる範囲であり、保持期間ではない。",
+      "保持期間は1年ではなく、OutSystems CloudではService Centerからも変更できない。",
+      "ログは週単位でローテーションされ、保持期間を過ぎたものは削除される。"
+    ]
+  },
+  {
+    "id": "trouble-002",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "応用",
+    "question": "3週間前に発生したエラーを調べようとService CenterのErrorsログを開いたが、該当期間のログが表示されない。ログの保持期間は9週間である。考えられる理由と対応として最も適切なものはどれか。",
+    "options": [
+      "Service Centerの画面で参照できるのは直近2週間分のため、それより古いログはログ用データベースのテーブル・ビューから直接参照する",
+      "ログはすでに削除されているため、確認する手段はない",
+      "Errorsログは発生から1週間で自動的にGeneralログへ移動されるため、Generalログを探す",
+      "LifeTimeを使えば、過去9週間分のErrorsログを画面で確認できる"
+    ],
+    "answer": 0,
+    "explanation": "Service Centerの画面が表示するのは直近2週間のログだけです。保持期間内であれば、それより古いログもログ用データベースに残っているため、週ごとのログテーブルやビューを直接参照して確認します。",
+    "wrongReasons": [
+      "保持期間の9週間以内なので、ログはデータベース上に残っている。",
+      "ログの種類が時間の経過で別の種類へ移動することはない。",
+      "LifeTimeはデプロイやアプリのライフサイクル管理のためのツールで、Errorsログを参照する場所ではない。"
+    ]
+  },
+  {
+    "id": "trouble-003",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "応用",
+    "question": "自社サーバーで運用している（セルフマネージドの）OutSystems 11環境で、ログの保持期間を短くしてログ用データベースの容量を抑えたい。設定する場所として最も適切なものはどれか。",
+    "options": [
+      "Service StudioのモジュールのプロパティでLog Retentionを設定する",
+      "LifeTimeの環境設定でログの保持期間を設定する",
+      "ログ用テーブルを定期的に手動でTRUNCATEする",
+      "Configuration ToolのLogタブの詳細設定で保持期間を設定する"
+    ],
+    "answer": 3,
+    "explanation": "セルフマネージド環境では、ログの保持期間をConfiguration ToolのLogタブ（詳細設定）で設定します。ログは週ごとのテーブルでローテーションされ、保持期間を過ぎたテーブルは自動的にクリーンアップされます。",
+    "wrongReasons": [
+      "ログの保持期間はモジュール単位で設定するものではない。",
+      "LifeTimeはログの保持期間を設定する場所ではない。",
+      "手動でのTRUNCATEはローテーションの仕組みと整合せず、必要なログを失うおそれがある。"
+    ]
+  },
+  {
+    "id": "trouble-004",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "基礎",
+    "question": "ある画面の表示が遅く、どのクエリに時間がかかっているかを知りたい。実行に時間がかかったクエリの警告が記録されるService Centerのログとして最も適切なものはどれか。",
+    "options": [
+      "Errorsログ",
+      "Integrationsログ",
+      "Generalログ",
+      "Timersログ"
+    ],
+    "answer": 2,
+    "explanation": "Generalログには、アプリやシステムの活動に加えて、実行に時間がかかったクエリ（スロークエリ）の警告が記録されます。モジュール名や処理時間から、遅いクエリを特定できます。",
+    "wrongReasons": [
+      "Errorsログは例外やエラーを記録するもので、遅いクエリの警告は記録されない。",
+      "Integrationsログは外部とのSOAP・RESTの連携を記録するもので、クエリの警告の記録先ではない。",
+      "TimersログはTimerの実行状況を記録するもので、画面から実行したクエリの警告の記録先ではない。"
+    ]
+  },
+  {
+    "id": "trouble-005",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "基礎",
+    "question": "本番環境で、あるServer Actionの処理件数と処理時間を記録して後から確認したい。LogMessageアクションで出力したメッセージを確認できる場所として最も適切なものはどれか。",
+    "options": [
+      "Service CenterのMonitoringにあるGeneralログ",
+      "Service CenterのMonitoringにあるErrorsログ",
+      "Service Studioのデバッガー",
+      "ブラウザの開発者ツールのコンソール"
+    ],
+    "answer": 0,
+    "explanation": "LogMessageで出力した内容は、Service CenterのGeneralログに記録されます。モジュール名やメッセージで絞り込み、本番環境の動作を確認できます。",
+    "wrongReasons": [
+      "Errorsログはエラー（例外）を記録するためのもので、LogMessageの出力先ではない。",
+      "デバッガーは開発時の調査用で、本番のログ出力を確認する場所ではない。",
+      "Server Actionはサーバー側で実行されるため、出力はブラウザのコンソールには表示されない。"
+    ]
+  },
+  {
+    "id": "trouble-006",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "基礎",
+    "question": "利用者から「保存ボタンを押したらエラーメッセージが出た」と報告があった。エラーの詳細（スタックトレースなど）を確認する方法として最も適切なものはどれか。",
+    "options": [
+      "利用者に画面のスクリーンショットを送ってもらい、表示されたメッセージだけで判断する",
+      "Service Studioでモジュールを開き、TrueChangeタブを確認する",
+      "LifeTimeでアプリのバージョン履歴を確認する",
+      "Service CenterのMonitoringでErrorsログを開き、発生時刻やモジュールで絞り込んで詳細を確認する"
+    ],
+    "answer": 3,
+    "explanation": "アプリで発生したエラーは、Service CenterのErrorsログに詳細情報（スタックトレース、モジュール、アクション、リクエストの情報など）とともに記録されます。発生時刻やモジュールで絞り込んで原因を調べます。",
+    "wrongReasons": [
+      "画面のメッセージだけでは原因の特定に必要な情報が足りない。",
+      "TrueChangeは開発時のエラーや警告を示すもので、実行時のエラーは表示されない。",
+      "バージョン履歴からは実行時エラーの詳細はわからない。"
+    ]
+  },
+  {
+    "id": "trouble-007",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "外部REST APIの呼び出しがときどき失敗している。Logging Levelは既定（Default）のままである。この状態で確認できる情報として最も適切なものはどれか。",
+    "options": [
+      "成功・失敗を問わず、すべての呼び出しのリクエストとレスポンスの本文",
+      "エラーになった呼び出しの情報がIntegrationsログに記録されているので、エンドポイントや発生時刻、エラー内容を確認できる",
+      "Integrationsログには何も記録されないため、Generalログを確認する必要がある",
+      "エラーになった呼び出しのHTTPトレース情報も含めたすべての詳細"
+    ],
+    "answer": 1,
+    "explanation": "Logging LevelがDefaultの場合、エラーになったリクエストの情報がIntegrationsログに記録されます。追加のHTTPトレース情報が必要ならTroubleshoot、成功した呼び出しも含めて記録するならFullに一時的に変更します。",
+    "wrongReasons": [
+      "すべての呼び出しの内容が記録されるのはFullの場合である。",
+      "Defaultでもエラーになった呼び出しはIntegrationsログに記録される。",
+      "追加のHTTPトレース情報が記録されるのはTroubleshoot以上の場合である。"
+    ]
+  },
+  {
+    "id": "trouble-008",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "Reactive Webアプリで、特定の画面の表示が遅いという報告があった。サーバー側でどの画面のリクエストに時間がかかっているかを確認する方法として最も適切なものはどれか。",
+    "options": [
+      "Service CenterのMonitoringで、Reactive WebやMobileのリクエストに対するサーバーの処理時間を示すログ（Screen Requests）を確認する",
+      "Service CenterのErrorsログで、処理時間の長いリクエストを探す",
+      "Service StudioのTrueChangeで、性能に関する警告を確認する",
+      "LifeTimeのデプロイ履歴で、画面の処理時間を確認する"
+    ],
+    "answer": 0,
+    "explanation": "Service CenterのMonitoringには、Reactive WebやMobileアプリのリクエストをサーバーが処理するのにかかった時間が記録されます。これにより、どの画面の処理に時間がかかっているかを特定できます。",
+    "wrongReasons": [
+      "Errorsログはエラーの記録であり、正常に終わった遅いリクエストは記録されない。",
+      "TrueChangeの警告は潜在的な問題の指摘で、実際の処理時間は確認できない。",
+      "LifeTimeのデプロイ履歴には、画面の処理時間は記録されない。"
+    ]
+  },
+  {
+    "id": "trouble-009",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "受注モジュールから在庫モジュールのService Actionを呼び出しているが、ときどき応答が遅い。Service Actionの呼び出しごとの実行時間を確認する方法として最も適切なものはどれか。",
+    "options": [
+      "Service Actionは内部でRESTが使われているため、Integrationsログにだけ記録される",
+      "Service Actionは呼び出し元のServer Actionの一部なので、個別の記録は残らない",
+      "Service CenterのMonitoringにあるService Actionsのログを確認する",
+      "Service Actionの呼び出しは記録されないため、呼び出しの前後に必ずLogMessageを追加する"
+    ],
+    "answer": 2,
+    "explanation": "Service Actionへのリクエストはプラットフォームが記録しており、Service CenterのMonitoringのService Actionsで確認できます。呼び出しごとの実行時間やエラーの有無を調べられます。",
+    "wrongReasons": [
+      "Service Actionの呼び出しは専用のService Actionsのログで確認できる。",
+      "Service Actionは別のリクエストとして実行され、その呼び出しはログに記録される。",
+      "プラットフォームが記録しているため、調査のためだけにLogMessageを追加する必要はない。"
+    ]
+  },
+  {
+    "id": "trouble-010",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "基礎",
+    "question": "夜間のTimerが正しく実行されたか、エラーが起きていないかを確認したい。最も適切な方法はどれか。",
+    "options": [
+      "Service Studioでモジュールを開き、Timerのプロパティを確認する",
+      "Service CenterのMonitoringでTimersのログを確認し、必要に応じてモジュールのTimersタブで次回実行予定なども確認する",
+      "Timerで処理したテーブルの件数を、毎朝手動で数える",
+      "LifeTimeでTimerの実行結果を確認する"
+    ],
+    "answer": 1,
+    "explanation": "Timerの実行履歴（実行時刻、所要時間、エラーの有無など）はService CenterのMonitoringにあるTimersのログで確認できます。モジュールのTimersタブでは、スケジュールや次回実行予定の確認、Run Nowによる手動実行もできます。",
+    "wrongReasons": [
+      "Service StudioのTimerのプロパティは設定値であり、実行結果は確認できない。",
+      "手動での件数確認は手間がかかり、エラーの内容もわからない。",
+      "LifeTimeはTimerの実行結果を確認する場所ではない。"
+    ]
+  },
+  {
+    "id": "trouble-011",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "応用",
+    "question": "開発環境でTimerのロジックの不具合を、Service Studioのデバッガーで調べたい。最も適切な手順はどれか。",
+    "options": [
+      "Timerはデバッグできないため、LogMessageを大量に追加して調べる",
+      "Timerのアクションを画面のClient Actionから直接呼び出してデバッグする",
+      "Personal Areaに公開してデバッグを開始し、Personal Area上でTimerが実行されるのを待つ",
+      "Timerのアクションにブレークポイントを置いてPublic Areaでデバッグを開始し、Service CenterのRun NowなどでTimerを実行させて停止させる"
+    ],
+    "answer": 3,
+    "explanation": "TimerやProcessの処理はスケジューラーのスレッドで実行され、Public Areaで開始したデバッグセッションのブレークポイントに到達すると停止します。デバッグを開始した状態でService CenterのRun NowなどでTimerを実行すれば、ステップ実行で調査できます。",
+    "wrongReasons": [
+      "Timerもデバッガーで調査でき、ログの大量追加は非効率である。",
+      "Server Actionを画面から呼ぶと、ユーザーのセッションやトランザクションなどTimerと異なる条件で実行され、再現性が下がる。",
+      "TimerやProcessなどの共有サービスはPublic Areaでのみ実行されるため、Personal Area上でTimerが実行されることはない。"
+    ]
+  },
+  {
+    "id": "trouble-012",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "10万件を処理するTimerのループ内で、1件ごとにLogMessageで処理内容を出力している。本番環境で気をつけるべき点として最も適切なものはどれか。",
+    "options": [
+      "LogMessageは開発環境でしか出力されないため、本番では影響がない",
+      "LogMessageはErrorsログに出力されるため、エラーと区別できなくなる",
+      "1件ごとの出力はログの量を大きく増やし、ログ用データベースの負荷や調査のしにくさにつながるため、件数や所要時間などの要約を出力する",
+      "LogMessageの出力はTimerのトランザクションに含まれるため、ロールバックされると必ず消える"
+    ],
+    "answer": 2,
+    "explanation": "LogMessageの出力はGeneralログに記録され、本番環境でも有効です。大量のループで1件ずつ出力するとログが膨大になるため、処理件数や所要時間などの要約を適切な単位で出力するようにします。",
+    "wrongReasons": [
+      "LogMessageは本番環境でも出力される。",
+      "LogMessageの出力先はGeneralログである。",
+      "ログはアプリのトランザクションとは別に記録されるため、ロールバックで消えるわけではない。"
+    ]
+  },
+  {
+    "id": "trouble-013",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "応用",
+    "question": "Server ActionのException Handlerで例外を捕捉して画面にメッセージを返しているが、この例外がService CenterのErrorsログに記録されていない。原因として最も適切なものはどれか。",
+    "options": [
+      "Exception HandlerのLog ErrorプロパティがNoに設定されている",
+      "Exception HandlerのAbort TransactionプロパティがNoに設定されている",
+      "Errorsログには捕捉されなかった例外しか記録されない仕様である",
+      "モジュールのLogging LevelがDefaultになっている"
+    ],
+    "answer": 0,
+    "explanation": "Exception HandlerにはLog Errorプロパティがあり、Yesにすると捕捉した例外もErrorsログに記録されます。Noに設定すると記録されないため、調査に必要な例外は記録するよう設定します。",
+    "wrongReasons": [
+      "Abort Transactionはトランザクションのロールバックを制御するもので、ログの記録には関係しない。",
+      "捕捉した例外もLog ErrorがYesなら記録される。",
+      "Logging Levelは連携（RESTやSOAP）のログに関する設定で、この例外の記録には関係しない。"
+    ]
+  }
+]

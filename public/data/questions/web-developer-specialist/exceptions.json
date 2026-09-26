@@ -1,1 +1,142 @@
-[]
+[
+  {
+    "id": "exc-001",
+    "exam": "web-developer-specialist",
+    "category": "例外・トランザクション処理",
+    "difficulty": "基礎",
+    "question": "Server Actionの中で受注と受注明細を登録している途中で、Exception Handlerのない箇所から例外が発生した。この時点までの受注の登録はどうなるか。最も適切なものはどれか。",
+    "options": [
+      "例外が発生した時点までの登録は自動的にコミットされる",
+      "受注だけがコミットされ、明細はロールバックされる",
+      "例外がどこでも処理されずにリクエストが終了すると、そのトランザクションの変更はロールバックされる",
+      "Service Centerで管理者が手動でロールバックするまで保留される"
+    ],
+    "answer": 2,
+    "explanation": "サーバー側のリクエストは1つのトランザクションとして実行され、正常終了時にコミットされます。例外が処理されずにリクエストが終わると、コミットされていない変更はすべてロールバックされます。",
+    "wrongReasons": [
+      "例外時に自動コミットされることはない。",
+      "同じトランザクション内の変更は、エンティティごとに分かれてコミットされることはない。",
+      "手動での操作を待つ保留状態になることはない。"
+    ]
+  },
+  {
+    "id": "exc-002",
+    "exam": "web-developer-specialist",
+    "category": "例外・トランザクション処理",
+    "difficulty": "基礎",
+    "question": "在庫数を超える注文が入力されたとき、処理を中断して「在庫が不足しています」と利用者に表示したい。最も適切な実装はどれか。",
+    "options": [
+      "Server Actionの中で独自のUser Exception（例：InsufficientStock）をRaiseし、呼び出し元の画面側で捕捉してFeedback Messageを表示する",
+      "Server Actionの出力にエラーメッセージを入れ、処理はそのまま最後まで続ける",
+      "Server Actionの中で在庫数をマイナスのまま保存し、画面で赤字表示する",
+      "JavaScriptのalertをServer Actionから呼び出す"
+    ],
+    "answer": 0,
+    "explanation": "業務ルール違反はUser Exceptionとして表現すると、処理を確実に中断させ、未コミットの変更もロールバックできます。独自のUser Exceptionを定義すれば、呼び出し元で種類ごとに捕捉して適切なメッセージを表示できます。",
+    "wrongReasons": [
+      "処理を続けてしまうと、中断すべき後続の更新まで実行されるおそれがある。",
+      "不正なデータを保存してしまい、データの整合性が崩れる。",
+      "Server Actionはサーバー側で実行されるため、ブラウザのalertを直接呼び出すことはできない。"
+    ]
+  },
+  {
+    "id": "exc-003",
+    "exam": "web-developer-specialist",
+    "category": "例外・トランザクション処理",
+    "difficulty": "標準",
+    "question": "あるServer Actionに、Database Exceptionを処理するHandlerとAll Exceptionsを処理するHandlerの2つを配置した。Advanced SQLの実行でデータベースエラーが発生した場合の動作として最も適切なものはどれか。",
+    "options": [
+      "All Exceptionsのハンドラが常に優先される",
+      "両方のハンドラが順番に実行される",
+      "どちらのハンドラも実行されず、呼び出し元に例外が伝わる",
+      "発生した例外に最も具体的に一致するDatabase Exceptionのハンドラが実行される"
+    ],
+    "answer": 3,
+    "explanation": "例外が発生すると、そのアクション内で発生した例外に最も具体的に一致するハンドラが選ばれて実行されます。All Exceptionsは、より具体的なハンドラがない場合の受け皿として機能します。",
+    "wrongReasons": [
+      "All Exceptionsは一致する具体的なハンドラがない場合にのみ使われる。",
+      "1つの例外に対して実行されるハンドラは1つだけである。",
+      "一致するハンドラがアクション内にあるため、呼び出し元には伝わらない。"
+    ]
+  },
+  {
+    "id": "exc-004",
+    "exam": "web-developer-specialist",
+    "category": "例外・トランザクション処理",
+    "difficulty": "標準",
+    "question": "Server Action「RegisterOrder」から呼ばれた「ReserveStock」の中で例外が発生した。ReserveStockにはExceptionHandlerがなく、RegisterOrderにはUser Exceptionのハンドラがある。発生したのがUser Exceptionの場合の動作として最も適切なものはどれか。",
+    "options": [
+      "ReserveStockにハンドラがないため、例外は無視されて処理が続行される",
+      "例外は呼び出し元のRegisterOrderへ伝わり、そのUser Exceptionのハンドラで処理される",
+      "例外はすぐにモジュールのGlobal Exception Handlerに送られる",
+      "ReserveStockの処理だけがやり直され、2回目も失敗したら例外になる"
+    ],
+    "answer": 1,
+    "explanation": "アクション内に一致するハンドラがない場合、例外は呼び出し元のアクションへ順に伝わります。呼び出し元に一致するハンドラがあればそこで処理され、最後まで見つからなければGlobal Exception Handlerで処理されます。",
+    "wrongReasons": [
+      "例外が無視されて処理が続行されることはない。",
+      "Global Exception Handlerに届くのは、呼び出し元のどこでも処理されなかった場合である。",
+      "例外発生時にアクションが自動で再実行されることはない。"
+    ]
+  },
+  {
+    "id": "exc-005",
+    "exam": "web-developer-specialist",
+    "category": "例外・トランザクション処理",
+    "difficulty": "応用",
+    "question": "Server ActionのException HandlerでAbort TransactionをYesにしている。ハンドラのフローの中で、エラー内容をErrorLogエンティティにCreateErrorLogで記録している。このエラーログはどうなるか。最も適切なものはどれか。",
+    "options": [
+      "ハンドラに入った時点でそれまでの変更はロールバックされ、ハンドラ内の登録は新しいトランザクションで行われるため、リクエストが正常に終われば記録は残る",
+      "Abort TransactionがYesなので、ハンドラ内で登録したエラーログも含めてすべてロールバックされる",
+      "ハンドラ内ではデータベースを更新できないため、CreateErrorLogはエラーになる",
+      "エラーログだけでなく、例外発生前の受注データもすべてコミットされる"
+    ],
+    "answer": 0,
+    "explanation": "Abort TransactionがYesのハンドラでは、ハンドラの実行開始時に未コミットの変更がロールバックされ、新しいトランザクションが開始されます。そのためハンドラ内で行った記録は、リクエストが正常に終了すればコミットされます。",
+    "wrongReasons": [
+      "ロールバックされるのはハンドラに入る前の変更で、ハンドラ内の変更は新しいトランザクションで扱われる。",
+      "ハンドラの中でもデータベースの更新は可能である。",
+      "Abort TransactionがYesの場合、例外発生前の未コミットの変更はロールバックされる。"
+    ]
+  },
+  {
+    "id": "exc-006",
+    "exam": "web-developer-specialist",
+    "category": "例外・トランザクション処理",
+    "difficulty": "標準",
+    "question": "画面から呼ばれる振替処理のServer Actionで、「出金」の直後にCommitTransactionを呼び、その後「入金」を行っている。入金で例外が発生した場合に起こることとして最も適切なものはどれか。",
+    "options": [
+      "例外が発生したので、出金も入金もロールバックされる",
+      "CommitTransactionは画面から呼ばれるServer Actionでは無視されるため、影響はない",
+      "出金はすでにコミットされているためロールバックされず、出金だけが反映された不整合な状態になる",
+      "CommitTransactionの後の処理は自動的に別のServer Actionとして再実行される"
+    ],
+    "answer": 2,
+    "explanation": "CommitTransactionを呼んだ時点までの変更は確定し、後から例外が発生してもロールバックされません。一連で成功・失敗すべき処理の途中でコミットすると不整合の原因になるため、途中コミットはTimerの進捗保存など目的が明確な場合に限定します。",
+    "wrongReasons": [
+      "コミット済みの出金はロールバックの対象にならない。",
+      "CommitTransactionはどのServer Actionから呼んでも有効である。",
+      "コミット後の処理が自動で再実行される仕組みはない。"
+    ]
+  },
+  {
+    "id": "exc-007",
+    "exam": "web-developer-specialist",
+    "category": "例外・トランザクション処理",
+    "difficulty": "応用",
+    "question": "決済処理で、外部の決済REST APIで支払いを確定した後、自社データベースに支払い記録を登録している。登録で例外が発生すると、トランザクションはロールバックされる。この設計で考慮すべきこととして最も適切なものはどれか。",
+    "options": [
+      "REST APIの呼び出しも同じトランザクションに含まれるため、自動的に取り消される",
+      "外部APIで確定した支払いはデータベースのロールバックでは取り消されないため、取消APIの呼び出しなどの補償処理や、再試行できる設計が必要",
+      "REST APIを呼ぶ前にCommitTransactionを呼べば、整合性は自動的に保たれる",
+      "例外はExceptionHandlerで捕捉して無視し、処理を正常終了させればよい"
+    ],
+    "answer": 1,
+    "explanation": "データベースのトランザクションが管理できるのは自社データベースの変更だけで、外部システムへの操作は対象外です。外部との整合性は、補償処理（取消）や状態管理による再試行などで設計する必要があります。",
+    "wrongReasons": [
+      "外部APIの呼び出しはデータベーストランザクションの対象外で、自動では取り消されない。",
+      "事前にコミットしても、後続の登録失敗で外部と自社の状態が食い違う問題は解決しない。",
+      "例外を無視すると、支払い記録がないまま処理が成功扱いとなり不整合が残る。"
+    ]
+  }
+]

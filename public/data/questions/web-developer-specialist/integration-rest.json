@@ -1,1 +1,122 @@
-[]
+[
+  {
+    "id": "rest-001",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "基礎",
+    "question": "消費（Consume）しているREST APIの接続先が、テスト環境と本番環境で異なる。モジュールを変更・再公開せずに、本番環境だけ本番用のURLを使いたい。最も適切な方法はどれか。",
+    "options": [
+      "Service Centerでモジュールを開き、IntegrationsタブでそのREST APIのEffective URLを本番用に設定する",
+      "Service StudioでREST APIのBase URLを本番用に書き換え、本番環境にだけ公開する",
+      "OnBeforeRequestで環境名を判定し、URLを書き換える",
+      "本番用とテスト用の2つのREST APIを定義し、If文で呼び分ける"
+    ],
+    "answer": 0,
+    "explanation": "消費しているREST APIのURLや認証情報は、Service Centerのモジュール画面（Integrationsタブ）で環境ごとに上書きできます。同じモジュールのまま、再公開なしで環境ごとの接続先を設定できます。",
+    "wrongReasons": [
+      "環境ごとに異なるコードを公開すると、デプロイするバージョンの一貫性が失われる。",
+      "環境ごとの接続先はService Centerで設定できるため、ロジックで判定する必要はない。",
+      "同じAPIを二重に定義すると保守性が下がり、環境判定のロジックも不要に増える。"
+    ]
+  },
+  {
+    "id": "rest-002",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "標準",
+    "question": "消費しているREST APIのすべてのMethodで、事前に取得したアクセストークンをAuthorizationヘッダーに付ける必要がある。最も適切な実装はどれか。",
+    "options": [
+      "各Methodに入力パラメータAuthorizationを追加し、呼び出すたびに値を渡す",
+      "Site Propertyにトークンを保存し、Service Centerで毎回書き換える",
+      "REST APIのOnBeforeRequestコールバックで、リクエストのヘッダーにトークンを追加する",
+      "Base URLのクエリ文字列にトークンを含める"
+    ],
+    "answer": 2,
+    "explanation": "OnBeforeRequestは、そのREST APIのすべてのMethodの呼び出し前に実行され、リクエストのヘッダーなどを変更できます。共通の認証ヘッダーの付与を一か所にまとめられます。",
+    "wrongReasons": [
+      "動作はするが、すべての呼び出し箇所で値を渡す必要があり、修正漏れの原因になる。",
+      "頻繁に変わるトークンをSite Propertyで管理するのは不適切で、キャッシュ無効化も招く。",
+      "トークンをURLに含めるとログなどに残りやすく、セキュリティ上望ましくない。"
+    ]
+  },
+  {
+    "id": "rest-003",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "応用",
+    "question": "本番環境で、外部REST APIの呼び出しが正常に終わっているのに期待した値が返らないという問題が発生した。原因調査のためにリクエストとレスポンスの内容を確認したい。対応として最も適切なものはどれか。",
+    "options": [
+      "Logging LevelはDefaultのままでも、すべてのリクエストとレスポンスの本文が記録されているので、Integrationsログを見る",
+      "Service CenterでそのREST APIのLogging Levelを一時的にFullにして再現・確認し、調査後はDefaultに戻す",
+      "Logging LevelをTroubleshootにすれば、成功したリクエストも含めてすべての内容が記録される",
+      "OnAfterResponseで、レスポンスの内容を毎回General Logに出力する処理を恒久的に追加する"
+    ],
+    "answer": 1,
+    "explanation": "Logging LevelのDefaultとTroubleshootはエラーになったリクエストだけを記録し、Fullは成功したものも含めてすべてのリクエストとレスポンスを記録します。Fullは入出力の値に含まれる機密情報もログに残り負荷も増えるため、調査後はDefaultに戻します。",
+    "wrongReasons": [
+      "Defaultではエラーになったリクエストの情報しか記録されない。",
+      "Troubleshootはエラー時に追加のHTTPトレース情報を記録するレベルで、成功したリクエストは記録されない。",
+      "恒久的な全件出力はログの肥大化と機密情報の漏えいリスクを招く。"
+    ]
+  },
+  {
+    "id": "rest-004",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "標準",
+    "question": "公開（Expose）するREST APIで、呼び出し元が送るAPIキーをヘッダーから取り出して独自に検証したい。最も適切な実装はどれか。",
+    "options": [
+      "各Methodの最初に、同じ検証ロジックをコピーして配置する",
+      "Authentication プロパティをBasicにすれば、APIキーの検証が自動で行われる",
+      "APIキーをMethodのURLパスに含めさせて、Aggregateで照合する",
+      "REST APIのAuthenticationをCustomにし、OnAuthenticationコールバックでヘッダーのAPIキーを検証する"
+    ],
+    "answer": 3,
+    "explanation": "公開するREST APIのAuthenticationをCustomにすると、OnAuthenticationコールバックで独自の認証処理を実装できます。すべてのMethodの前に実行されるため、検証を一か所にまとめられます。",
+    "wrongReasons": [
+      "コピーはロジックの重複を生み、追加したMethodで検証が漏れるおそれがある。",
+      "Basic認証はユーザー名とパスワードによる方式で、独自のAPIキーの検証は自動では行われない。",
+      "URLに秘密情報を含めるとログなどに残りやすく、セキュリティ上望ましくない。"
+    ]
+  },
+  {
+    "id": "rest-005",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "標準",
+    "question": "公開しているREST APIの「GetOrder」Methodで、指定された注文Idが存在しない場合に、HTTPステータス404を返したい。最も適切な実装はどれか。",
+    "options": [
+      "空の注文データを返し、ステータスは200のままにする",
+      "User ExceptionをRaiseして、呼び出し元にエラーとして返す",
+      "HTTPRequestHandlerのSetStatusCodeアクションで404を設定し、エラー内容を示す出力を返す",
+      "出力パラメータに「StatusCode」属性を追加して404を入れる"
+    ],
+    "answer": 2,
+    "explanation": "公開したREST APIのMethodでは、SetStatusCodeアクションを使ってHTTPステータスコードを設定できます。存在しないリソースに404を返すことで、呼び出し元がHTTPの意味どおりに結果を判定できます。",
+    "wrongReasons": [
+      "200で空データを返すと、呼び出し元は「見つからない」ことを正しく判定しにくい。",
+      "例外を発生させると一般にサーバーエラー（500）として返り、404の意味にならない。",
+      "レスポンス本文の値を変えても、HTTPステータス自体は200のままである。"
+    ]
+  },
+  {
+    "id": "rest-006",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "基礎",
+    "question": "社外向けに顧客情報を返すREST APIを公開する。Methodの出力の型として最も適切なものはどれか。",
+    "options": [
+      "API用に必要な項目だけを持つStructureを定義して出力にする",
+      "Customerエンティティのレコード型をそのまま出力にする",
+      "すべての項目をText型の1つの出力パラメータにまとめる",
+      "Customerエンティティに加えて、関連する全エンティティのレコードも出力に含める"
+    ],
+    "answer": 0,
+    "explanation": "公開APIの出力にはAPI専用のStructureを使うのがベストプラクティスです。内部のデータモデルとAPIの契約を分離でき、不要な項目や機密項目の公開を防ぎ、エンティティ変更の影響も呼び出し元に波及しません。",
+    "wrongReasons": [
+      "エンティティをそのまま返すと内部の項目まで公開され、データモデルの変更がAPIの互換性を壊す。",
+      "型情報が失われ、呼び出し元での解析が難しくなる。",
+      "不要なデータを大量に返すことになり、性能と情報漏えいの両面で問題がある。"
+    ]
+  }
+]
