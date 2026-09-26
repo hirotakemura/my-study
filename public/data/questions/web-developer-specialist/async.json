@@ -1,1 +1,262 @@
-[]
+[
+  {
+    "id": "async-001",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "基礎",
+    "question": "夜間バッチ用のTimerを作成した。Timerのプロパティを何も変更していない場合、1回の実行が何分を超えるとタイムアウトとして処理が中断されるか。最も適切なものはどれか。",
+    "options": [
+      "20分",
+      "5分",
+      "60分",
+      "タイムアウトはなく、処理が終わるまで実行される"
+    ],
+    "answer": 0,
+    "explanation": "TimerのTimeout in Minutesプロパティの既定値は20分です。これを超えると実行中のアクションは中断されるため、長時間処理は時間内に終わるよう分割して設計します。",
+    "wrongReasons": [
+      "5分はBPTのAutomatic Activityのタイムアウトであり、Timerの既定値ではない。",
+      "60分は既定値ではない。Timeout in Minutesで変更はできるが、既定は20分。",
+      "Timerには必ずタイムアウトがあり、無制限に実行されることはない。"
+    ]
+  },
+  {
+    "id": "async-002",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "約50万件の受注データを集計テーブルへ反映するTimerが、毎回20分でタイムアウトして同じデータを最初から処理し直している。タイムアウト値を延ばさずに解決する設計として最も適切なものはどれか。",
+    "options": [
+      "Timeout in Minutesを大きくして、全件が1回で処理し終わるようにする",
+      "一定件数ごとにCommitTransactionし、処理済みフラグを更新し、制限時間が近づいたらループを抜けて自分自身をWakeする",
+      "Timerの中で例外をキャッチし、エラーが出たら最初からやり直すようにする",
+      "Timerを1分間隔のスケジュールに変更して、実行回数を増やす"
+    ],
+    "answer": 1,
+    "explanation": "長時間処理はバッチに分割し、定期的にコミットして進捗（処理済みフラグ）を保存するのが基本です。制限時間の手前で正常終了し、Wake<Timer>で自分自身を再起動すれば、タイムアウトによるロールバックや再処理を防げます。",
+    "wrongReasons": [
+      "タイムアウトを延ばすだけでは、ワーカープロセスの再起動などで中断された際に全件ロールバックされる問題が残る。",
+      "例外処理でやり直しても、未コミットの処理は失われ同じデータを再処理する状況は変わらない。",
+      "実行間隔を短くしても、1回の実行が20分を超える限りタイムアウトとロールバックは解消しない。"
+    ]
+  },
+  {
+    "id": "async-003",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "応用",
+    "question": "あるTimerは各レコードを処理するたびにIsProcessed属性をTrueに更新しているが、CommitTransactionは一度も呼んでいない。処理の途中でタイムアウトした場合に起こることとして最も適切なものはどれか。",
+    "options": [
+      "IsProcessedがTrueになったレコードは確定しているので、次回は残りだけが処理される",
+      "タイムアウトした時点までの更新は自動的にコミットされる",
+      "その実行で行った更新はすべてロールバックされ、次回も同じレコードから処理が始まる",
+      "Timerは無効化され、Service Centerで手動で有効化するまで実行されない"
+    ],
+    "answer": 2,
+    "explanation": "Timerの実行は1つのトランザクションとして扱われ、明示的にコミットしない限り、タイムアウトで中断されると更新はすべてロールバックされます。処理済みフラグは、定期的なCommitTransactionと組み合わせて初めて進捗の保存として機能します。",
+    "wrongReasons": [
+      "コミットしていないため、IsProcessedの更新自体もロールバックされて残らない。",
+      "タイムアウト時に自動コミットされることはなく、未コミットの変更は破棄される。",
+      "タイムアウトしてもTimerが無効化されるわけではなく、次のスケジュールや再試行で再び実行される。"
+    ]
+  },
+  {
+    "id": "async-004",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "大量データを処理するTimerで、タイムアウト前に安全に処理を切り上げたい。Timerのロジック内で行う実装として最も適切なものはどれか。",
+    "options": [
+      "ループの各回で開始時刻からの経過時間を確認し、Timeout in Minutesより十分短い論理的な制限時間に達したらループを抜ける",
+      "ループの最後にSleepを入れて、1件ごとの処理時間を一定にする",
+      "Timeout in Minutesの値と同じ時間が経過するまでループを続け、ちょうどで抜ける",
+      "Service CenterのTimer画面を定期的に見て、長引いていたら手動で停止する"
+    ],
+    "answer": 0,
+    "explanation": "Timer内に「論理的なタイムアウト」を設け、プラットフォームのタイムアウトより前にループを抜けて進捗を保存し、Wakeで再開するのが推奨パターンです。余裕を持たせることで、最後のバッチのコミットも確実に完了できます。",
+    "wrongReasons": [
+      "Sleepを入れても処理時間が延びるだけで、タイムアウト対策にはならない。",
+      "タイムアウト値ぴったりまで処理すると、後処理やコミット中にタイムアウトする危険がある。",
+      "手動監視は運用負荷が高く、停止すれば未コミットの処理がロールバックされてしまう。"
+    ]
+  },
+  {
+    "id": "async-005",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "応用",
+    "question": "Timer「SyncProducts」のフローの最後でWake<SyncProducts>を呼び、未処理データが残っていれば続きを処理させている。Wakeを呼んだ時点ではSyncProducts自身がまだ実行中である。このときの動作として最も適切なものはどれか。",
+    "options": [
+      "Wakeは実行中のTimerに対しては無視されるため、次のスケジュールまで再実行されない",
+      "同じTimerがもう1つ並行して起動し、2つが同時に同じデータを処理する",
+      "実行中のTimerが強制終了され、新しい実行が即座に開始される",
+      "現在の実行が終了した後に、次の実行が開始される"
+    ],
+    "answer": 3,
+    "explanation": "Wake<Timer>はTimerの次回実行時刻を現在時刻に設定するもので、実行中のTimerに対して呼んだ場合は、現在の実行が終わってから次の実行が開始されます。同じTimerが同時に二重実行されることはないため、自己Wakeによる継続処理が成り立ちます。",
+    "wrongReasons": [
+      "Wakeは無視されず、現在の実行が終わった後に再実行される。",
+      "同じTimerが並行して二重に実行されることはない。",
+      "Wakeは実行中の処理を強制終了する機能ではない。"
+    ]
+  },
+  {
+    "id": "async-006",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "100万件を処理するTimerで、定期コミットの間隔を検討している。性能とデータの安全性のバランスが最も良い方針はどれか。",
+    "options": [
+      "1件処理するたびにCommitTransactionを呼ぶ",
+      "全件の処理が終わった最後に1回だけCommitTransactionを呼ぶ",
+      "数百〜数千件程度のバッチ単位で処理し、バッチごとにCommitTransactionを呼ぶ",
+      "CommitTransactionは呼ばず、代わりにAbortTransactionで区切る"
+    ],
+    "answer": 2,
+    "explanation": "バッチ単位でコミットすると、コミットのオーバーヘッドを抑えつつ、中断時に失われる処理をそのバッチ分だけに限定できます。処理済みフラグの更新も同じバッチ内でコミットすることで、再開時に続きから処理できます。",
+    "wrongReasons": [
+      "1件ごとのコミットはデータベースへの負荷が大きく、処理全体が遅くなる。",
+      "最後に1回だけでは、途中で中断されると全件がロールバックされてしまう。",
+      "AbortTransactionは変更をロールバックする操作であり、進捗の確定には使えない。"
+    ]
+  },
+  {
+    "id": "async-007",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "基礎",
+    "question": "本番環境で、あるTimerの実行時刻を毎日2:00から4:00に変更したい。モジュールを再公開せずに対応する方法として最も適切なものはどれか。",
+    "options": [
+      "Service Studioでスケジュールを変更し、本番環境に直接1-Click Publishする",
+      "Service Centerでモジュールを開き、TimersタブからそのTimerのスケジュールを変更する",
+      "Timerのアクション内で現在時刻を判定し、4時でなければ何もせず終了する",
+      "Site Propertyに実行時刻を保存し、Timerが毎分起動して判定する"
+    ],
+    "answer": 1,
+    "explanation": "Timerのスケジュールは、Service Centerのモジュール画面（Timersタブ）から環境ごとに変更できます。再公開が不要で、Run Nowによる即時実行もここから行えます。",
+    "wrongReasons": [
+      "本番へ直接公開するのは変更管理上望ましくなく、再公開せずに変更するという要件も満たさない。",
+      "時刻判定のために毎回Timerを起動するのは無駄な実行が増え、スケジュール変更の正攻法ではない。",
+      "毎分起動する設計はスケジューラーに不要な負荷をかけ、Site Propertyを頻繁に参照・更新する用途にも向かない。"
+    ]
+  },
+  {
+    "id": "async-008",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "注文（Order）レコードが作成されるたびに、在庫引当を1件ずつ非同期で行いたい。人の操作や待機は不要で、大量の注文にも高いスループットで対応したい。最も適切な実装はどれか。",
+    "options": [
+      "Light BPTを有効にし、Launch OnにCreateOrderを設定したProcessに1つのAutomatic Activityを置く",
+      "1分ごとに起動するTimerで、未引当の注文を1件だけ処理する",
+      "注文作成画面のClient Actionから、在庫引当のServer Actionを同期的に呼び出す",
+      "Human Activityを含むProcessを作り、担当者が引当を承認する"
+    ],
+    "answer": 0,
+    "explanation": "レコード作成をきっかけに1件ずつ処理するイベント駆動の非同期処理には、Light BPT（Light Process Execution）が適しています。Light Processはエンティティの作成イベントで起動し、単一のAutomatic Activityだけで構成されるため、通常のBPTより軽量で高いスループットが得られます。",
+    "wrongReasons": [
+      "1分ごとに1件ずつでは処理が追いつかず、イベント駆動の要件にも合わない。",
+      "同期呼び出しでは画面の応答が遅くなり、非同期処理という要件を満たさない。",
+      "人の承認は要件にないうえ、Human Activityを含むProcessはLight BPTとして実行できない。"
+    ]
+  },
+  {
+    "id": "async-009",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "応用",
+    "question": "BPTのAutomatic Activityで数千件の外部連携を行っているが、ときどき処理が中断されて再実行が繰り返される。原因の説明と対策として最も適切なものはどれか。",
+    "options": [
+      "Automatic Activityには20分のタイムアウトがあるため、Processを2つに分割する",
+      "Automatic Activityの処理時間はProcessのプロパティで延長できるため、延長する",
+      "Automatic Activityには5分のタイムアウトがあり変更できないため、重いバッチ処理はTimerに移し、Activityは準備とWakeだけを行う",
+      "Automatic Activityは外部連携を呼べないため、Human Activityに置き換える"
+    ],
+    "answer": 2,
+    "explanation": "BPTのAutomatic Activityには変更できない5分のタイムアウトがあり、長時間のバッチ処理には向きません。重い処理はTimerに任せ、Activity側は処理対象の準備とTimerの起動に留めるのが推奨される設計です。",
+    "wrongReasons": [
+      "20分はTimerの既定のタイムアウトであり、Automatic Activityのタイムアウトは5分。",
+      "Automatic Activityのタイムアウトは個別に延長できない。",
+      "Automatic Activityから外部連携を呼ぶこと自体は可能で、人の操作に置き換える理由にはならない。"
+    ]
+  },
+  {
+    "id": "async-010",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "基礎",
+    "question": "経費申請を上長が承認し、承認後に経理担当が確認する業務フローを実装したい。各担当者の作業待ちが数日に及ぶこともある。最も適切な仕組みはどれか。",
+    "options": [
+      "1時間ごとに起動するTimerで申請の状態を確認し、画面の表示を切り替える",
+      "Human Activityを含むBPTのProcessでフローをモデル化する",
+      "Light BPTで申請ごとにAutomatic Activityを実行する",
+      "申請画面のClient Actionで、承認されるまでループして待機する"
+    ],
+    "answer": 1,
+    "explanation": "BPTのProcessは、人の作業や長期間の待ちを含む業務フローをモデル化するための仕組みです。Human Activityで担当者の作業を表現し、Processの状態はプラットフォームが永続化して管理します。",
+    "wrongReasons": [
+      "Timerでの状態ポーリングは可能だが、業務フローの管理を自前で作る必要があり適切ではない。",
+      "Light BPTは単一のAutomatic Activityのみで構成され、人の作業を含むフローには使えない。",
+      "クライアント側で待機し続ける実装は、画面を閉じれば失われ、数日単位の待ちに耐えられない。"
+    ]
+  },
+  {
+    "id": "async-011",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "ProcessのLaunch OnプロパティにCreateCustomerを設定した。このProcessについて正しい説明として最も適切なものはどれか。",
+    "options": [
+      "Customerレコードが更新されるたびにProcessが起動する",
+      "Processを起動するには、必ずLaunch<Process>アクションを明示的に呼ぶ必要がある",
+      "Processの入力パラメータに、手動でCustomerの全属性を追加する必要がある",
+      "Customerレコードが作成されると自動で起動し、作成されたレコードのIdを受け取る入力パラメータが自動で追加される"
+    ],
+    "answer": 3,
+    "explanation": "Launch OnにCreate<Entity>アクションを設定すると、そのエンティティのレコード作成時にProcessが自動起動します。起動元のレコードを識別できるよう、エンティティのIdを受け取る入力パラメータが自動的に追加されます。",
+    "wrongReasons": [
+      "Launch Onに設定するのはCreateアクションであり、更新ではProcessは起動しない。",
+      "Launch Onを設定した場合は自動起動するため、明示的な呼び出しは不要。",
+      "自動で追加されるのはIdの入力パラメータで、全属性を渡す必要はない。"
+    ]
+  },
+  {
+    "id": "async-012",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "Timerの処理内でGetUserId()を使い、処理したレコードの更新者を記録しようとしたところ、更新者が空（NullIdentifier）になった。原因として最も適切なものはどれか。",
+    "options": [
+      "Timerはログインしたエンドユーザーのセッションなしで実行されるため、ユーザーIdを取得できない",
+      "GetUserId()はClient Actionでしか使えないため",
+      "TimerのPriorityがLowのため、ユーザー情報が読み込まれていない",
+      "Timerの実行前にLogin アクションを呼んでいないため、エラーになる代わりに空が返る"
+    ],
+    "answer": 0,
+    "explanation": "Timerはスケジューラーによってバックグラウンドで実行され、特定のエンドユーザーのセッションに紐づきません。更新者を記録したい場合は、処理対象のデータにユーザーIdを保持しておくか、システムユーザーを明示的に記録します。",
+    "wrongReasons": [
+      "GetUserId()はサーバー側のロジックでも使用できる。",
+      "Priorityは実行順序に関わる設定で、ユーザー情報の有無とは関係ない。",
+      "Timerでユーザーとしてログインさせる設計は一般的でなく、空になる原因の説明として誤り。"
+    ]
+  },
+  {
+    "id": "async-013",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "応用",
+    "question": "自己Wakeパターンで大量データを処理するTimerを作ったところ、処理対象が0件になった後もTimerが延々と再起動を繰り返している。修正として最も適切なものはどれか。",
+    "options": [
+      "Timeout in Minutesを小さくして、再起動の間隔を短くする",
+      "フローの最後で無条件にWakeするのをやめ、未処理データが残っている場合にだけWakeする",
+      "Wakeの代わりにTimer内で自分自身のアクションを再帰的に呼び出す",
+      "処理済みフラグを使わず、毎回全件を処理対象にする"
+    ],
+    "answer": 1,
+    "explanation": "自己Wakeは「論理的なタイムアウトで途中終了し、未処理が残っている」場合にだけ行います。無条件にWakeすると、処理対象がなくてもTimerが起動し続け、スケジューラーに不要な負荷をかけます。",
+    "wrongReasons": [
+      "タイムアウト値を変えても、無条件Wakeによる再起動の繰り返しは止まらない。",
+      "再帰呼び出しでは同じ実行・同じトランザクション内で処理が続き、タイムアウト対策にならない。",
+      "処理済みフラグをなくすと、同じデータを何度も処理することになり問題が悪化する。"
+    ]
+  }
+]

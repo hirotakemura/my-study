@@ -1,1 +1,262 @@
-[]
+[
+  {
+    "id": "data-001",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "基礎",
+    "question": "外部システムとの連携先URLや、メール通知のON/OFFなど、環境ごとに異なり、運用担当がまれに変更する設定値を持たせたい。最も適切な保存先はどれか。",
+    "options": [
+      "Site Property",
+      "Client Variable",
+      "モジュール内の定数を持つServer Actionの出力",
+      "Session Variable"
+    ],
+    "answer": 0,
+    "explanation": "Site Propertyは、環境ごとに値を変えられ、Service Centerから再公開なしで変更できる設定値のための仕組みです。変更頻度が低い構成情報の保存に向いています。",
+    "wrongReasons": [
+      "Client Variableはブラウザ側に保存されるユーザーごとの値で、環境全体の設定には使えない。",
+      "ロジックに埋め込んだ値は変更のたびに再公開が必要になる。",
+      "Session Variableはユーザーのセッションごとの値で、環境全体の設定値には向かない。"
+    ]
+  },
+  {
+    "id": "data-002",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "標準",
+    "question": "外部システムとの同期Timerが、最後に同期した日時をSite Property「LastSyncDate」に毎回書き込んでいる。この設計に対するレビューコメントとして最も適切なものはどれか。",
+    "options": [
+      "Site Propertyは読み取り専用なので、実行時に更新しようとするとエラーになる",
+      "Site Propertyは暗号化されないため、日時の保存には向かない",
+      "Site Propertyを更新するとキャッシュが無効化され再読み込みが発生するため、頻繁に変わる値は専用のエンティティに保存する",
+      "Site Propertyはユーザーごとに値が異なるため、Timerからは正しく読めない"
+    ],
+    "answer": 2,
+    "explanation": "Site Propertyの値を更新するとキャッシュが無効化され、データベースからの再読み込みが発生します。最終同期日時やカウンターのように頻繁に変わる値は、設定用のエンティティ（テーブル）に保存するのがベストプラクティスです。",
+    "wrongReasons": [
+      "Site Propertyはロジックから更新できるが、頻繁な更新は性能上避けるべきという点が問題。",
+      "暗号化の有無は論点ではなく、問題は更新によるキャッシュ無効化である。",
+      "Site Propertyは環境（テナント）単位の値で、ユーザーごとに異なるものではない。"
+    ]
+  },
+  {
+    "id": "data-003",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "応用",
+    "question": "受注取込Timerが1件処理するごとにSite Property「ProcessedCount」を+1している。Timerの実行中だけ、アプリ全体の応答が遅くなるという報告があった。最も適切な改善策はどれか。",
+    "options": [
+      "Site Propertyの更新をCommitTransactionの直後に移動する",
+      "件数はローカル変数で数え、必要なら処理結果を記録する専用エンティティに保存し、Site Propertyは更新しない",
+      "Site PropertyのデータタイプをIntegerからTextに変える",
+      "Timerの中でSite Propertyを更新する前に、同じ値かどうかをAggregateで確認する"
+    ],
+    "answer": 1,
+    "explanation": "Site Propertyを更新するたびにキャッシュが無効化され、Site Propertyを使う処理で再読み込みが発生するため、頻繁な更新はアプリ全体の性能を下げます。カウンターはローカル変数や専用エンティティで扱い、Site Propertyは静的な設定値だけに使います。",
+    "wrongReasons": [
+      "更新のタイミングを変えても、更新回数とキャッシュ無効化の回数は減らない。",
+      "データタイプを変えても、更新によるキャッシュ無効化は同じように発生する。",
+      "毎回値が変わるカウンターでは確認しても更新は避けられず、確認のためのクエリも増える。"
+    ]
+  },
+  {
+    "id": "data-004",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "基礎",
+    "question": "本番環境のSite Property「MaxUploadSizeMB」の値だけを変更したい。最も適切な手順はどれか。",
+    "options": [
+      "Service Studioでデフォルト値を変更し、全環境に再デプロイする",
+      "本番データベースのシステムテーブルを直接UPDATEする",
+      "Service CenterでモジュールのSite Propertiesタブを開き、Effective Valueを変更する",
+      "LifeTimeで新しいタグを作成し、Site Propertyの値を含めてデプロイする"
+    ],
+    "answer": 2,
+    "explanation": "Site PropertyはService Centerのモジュール画面から環境ごとの値（Effective Value）を変更でき、モジュールの再公開は不要です。これにより、同じコードのまま環境ごとに設定を変えられます。",
+    "wrongReasons": [
+      "デフォルト値の変更は再公開が必要で、本番だけ値を変えるという要件にも合わない。",
+      "システムテーブルの直接更新はサポートされず、キャッシュとの不整合も招く。",
+      "本番の設定値だけを変えるためにデプロイする必要はなく、Service Centerで変更できる。"
+    ]
+  },
+  {
+    "id": "data-005",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "基礎",
+    "question": "注文ステータス（受付・出荷済・キャンセル）をロジック内で判定したい。保守性の観点で最も適切な実装はどれか。",
+    "options": [
+      "Static Entity「OrderStatus」を作り、Entities.OrderStatus.Shippedのようにレコードを参照して比較する",
+      "ステータスをText属性で持ち、\"出荷済\"という文字列リテラルで比較する",
+      "ステータスIdを整数で持ち、ロジック内で 2 のような数値リテラルと比較する",
+      "Site Propertyにステータス名を保存し、実行時に読み込んで比較する"
+    ],
+    "answer": 0,
+    "explanation": "固定の選択肢はStatic Entityで定義し、Entities.<Static Entity>.<Record>の形で参照するのがベストプラクティスです。値の意味がコード上で明確になり、参照箇所の追跡や変更の影響確認も容易になります。",
+    "wrongReasons": [
+      "文字列リテラルでの比較は表記揺れや名称変更に弱く、保守性が低い。",
+      "マジックナンバーは意味が読み取れず、Id変更時に不具合の原因になる。",
+      "ステータス定義は環境ごとの設定値ではなく、Site Propertyの用途に合わない。"
+    ]
+  },
+  {
+    "id": "data-006",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "標準",
+    "question": "Customerエンティティを参照するOrderエンティティがある。注文が1件でも存在する顧客は削除できないようにしたい。OrderのCustomerId属性のDelete Ruleとして最も適切なものはどれか。",
+    "options": [
+      "Delete",
+      "Ignore",
+      "Protect",
+      "Delete Ruleは設定せず、削除画面でボタンを非表示にする"
+    ],
+    "answer": 2,
+    "explanation": "Protectを設定すると、参照しているレコード（注文）が存在する間は参照先（顧客）の削除がデータベースレベルで防止されます。画面の制御だけに頼らず、データの整合性を保証できます。",
+    "wrongReasons": [
+      "Deleteは顧客を削除すると関連する注文もまとめて削除する設定で、要件と逆の動きになる。",
+      "Ignoreは参照整合性を強制しないため、顧客を削除すると参照先のない注文が残る。",
+      "画面の制御だけでは、他のロジックやAPIからの削除を防げない。"
+    ]
+  },
+  {
+    "id": "data-007",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "標準",
+    "question": "社員エンティティに顔写真（Binary Data）を持たせたところ、社員一覧画面の表示が遅くなった。データモデルの改善として最も適切なものはどれか。",
+    "options": [
+      "顔写真の属性をText型に変更し、Base64文字列で保存する",
+      "顔写真を別エンティティ（社員Idを識別子とする1対1）に分離し、必要な画面でだけ取得する",
+      "社員エンティティにインデックスを追加する",
+      "一覧画面のAggregateのMax. Recordsを増やす"
+    ],
+    "answer": 1,
+    "explanation": "Binary Dataなどの大きな属性は、よく参照するエンティティから別エンティティへ分離するのがベストプラクティスです。一覧などで不要な大容量データを読み込まずに済み、クエリの性能が改善します。",
+    "wrongReasons": [
+      "Base64のText型にするとデータ量がむしろ増え、問題は解決しない。",
+      "インデックスは検索条件の性能に効くもので、大きな列の読み込み量は減らない。",
+      "Max. Recordsを増やすと取得量が増え、かえって遅くなる。"
+    ]
+  },
+  {
+    "id": "data-008",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "標準",
+    "question": "数百万件ある取引履歴エンティティを、画面で「取引日」と「店舗Id」で絞り込んで検索している。検索が遅いため改善したい。最も適切なものはどれか。",
+    "options": [
+      "エンティティのすべての属性にインデックスを作成する",
+      "検索のたびに全件を取得し、ListFilterで絞り込む",
+      "取引履歴エンティティをStatic Entityに変更する",
+      "よく使う検索条件（取引日・店舗Id）を対象にインデックスを作成する"
+    ],
+    "answer": 3,
+    "explanation": "頻繁に使うフィルター条件の属性にインデックスを作成すると、大量データの検索性能が大きく改善します。ただしインデックスは登録・更新時のコストになるため、必要なものに絞って作成します。",
+    "wrongReasons": [
+      "全属性へのインデックスは登録・更新の性能を悪化させ、ストレージも無駄に使う。",
+      "全件取得してメモリで絞り込むのは、データ転送量とメモリ使用量が増え最も遅い方法。",
+      "Static Entityは固定の選択肢を表すためのもので、取引データの保存には使えない。"
+    ]
+  },
+  {
+    "id": "data-009",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "応用",
+    "question": "問い合わせエンティティの「件名」属性をLength 5000のTextで定義し、この属性で頻繁に検索・並べ替えをしている。データモデルの観点で最も適切な指摘はどれか。",
+    "options": [
+      "Lengthが大きいText属性（2000文字超）はデータベース上で大容量テキスト型になり、インデックスや検索・並べ替えの性能に不利なので、実際に必要な長さに抑える",
+      "Text属性のLengthは性能に影響しないので、将来に備えてできるだけ大きくしておくのがよい",
+      "件名はLong Integer型に変更して、インデックスを効かせるべき",
+      "Lengthを大きくするとデータが自動圧縮されるため、検索が速くなる"
+    ],
+    "answer": 0,
+    "explanation": "OutSystemsでは、Lengthが2000文字を超えるText属性はデータベース上で大容量テキスト型として作成されます。こうした列はインデックスや検索・並べ替えで不利になるため、属性の長さは実際に必要な範囲で定義します。",
+    "wrongReasons": [
+      "Lengthはデータベースの列の型に影響するため、むやみに大きくするべきではない。",
+      "件名は文字列データであり、数値型に変えることはできない。",
+      "Lengthを大きくしても自動圧縮で検索が速くなることはない。"
+    ]
+  },
+  {
+    "id": "data-010",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "標準",
+    "question": "Coreモジュールで定義したProductエンティティを、複数のEnd-userモジュールから登録・更新したい。アーキテクチャと保守性の観点で最も適切な方法はどれか。",
+    "options": [
+      "ProductエンティティのExpose Read OnlyをNoにして、各End-userモジュールからCreateProductを直接呼ぶ",
+      "各End-userモジュールに同じ構造のProductエンティティを作成する",
+      "Coreモジュールに入力チェックなどを含むPublicなServer Action（例：Product_CreateOrUpdate）を作り、End-userモジュールからそれを呼ぶ",
+      "End-userモジュールからAdvanced SQLでProductテーブルに直接INSERTする"
+    ],
+    "answer": 2,
+    "explanation": "エンティティは読み取り専用で公開し、書き込みはCoreモジュールのPublicなServer Actionにまとめるのがベストプラクティスです。検証ロジックや監査項目の設定を一か所に集約でき、データの一貫性を保てます。",
+    "wrongReasons": [
+      "書き込みを各モジュールに許すと、検証ロジックが分散しデータの一貫性を保ちにくい。",
+      "エンティティを重複して作ると、データが分断され整合性が取れなくなる。",
+      "Advanced SQLでの直接INSERTはビジネスルールを迂回し、保守性も低い。"
+    ]
+  },
+  {
+    "id": "data-011",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "標準",
+    "question": "Reactive Webアプリで、ログインユーザーの権限レベルや社員番号をClient Variableに保存し、画面の表示制御とServer Actionの入力に使っている。この設計の問題点として最も適切なものはどれか。",
+    "options": [
+      "Client Variableは画面遷移のたびに初期化されるため、値が保持されない",
+      "Client Variableはブラウザ側に保存され利用者が改ざんできるため、機密情報や権限判定に使う値を置くべきではない",
+      "Client VariableはText型しか使えないため、数値の社員番号を保存できない",
+      "Client Variableはサーバー側でしか参照できないため、画面の表示制御に使えない"
+    ],
+    "answer": 1,
+    "explanation": "Client Variableはブラウザのストレージに保存され、利用者が参照・改ざんできます。権限判定や機密情報はサーバー側で管理し、Server Actionの中で改めてチェックする必要があります。",
+    "wrongReasons": [
+      "Client Variableは画面遷移しても値が保持される。",
+      "Client VariableはText以外にIntegerなどの基本データタイプも使える。",
+      "Client Variableはクライアント側で使う変数で、画面から参照できる。"
+    ]
+  },
+  {
+    "id": "data-012",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "応用",
+    "question": "ログ用エンティティが数年分蓄積し数千万件になり、直近1か月分しか画面で参照しないのに検索が遅い。データ管理の方針として最も適切なものはどれか。",
+    "options": [
+      "エンティティの全属性にインデックスを追加して対応する",
+      "画面のAggregateでMax. Recordsを1000に制限すれば、テーブルの件数は問題にならない",
+      "古いレコードは参照されないので、そのまま放置しても問題ない",
+      "保持期間を決め、Timerで古いデータをアーカイブ用エンティティへ移動または削除する"
+    ],
+    "answer": 3,
+    "explanation": "業務で使うテーブルを小さく保つため、保持期間を定めて古いデータをアーカイブ・削除するのがベストプラクティスです。移動処理は大量になるため、バッチ単位でコミットするTimerで行います。",
+    "wrongReasons": [
+      "インデックスを増やしすぎると書き込み性能が落ち、肥大化したテーブル自体の問題も残る。",
+      "Max. Recordsは返す件数を制限するだけで、検索対象の件数が多いことによる負荷は残る。",
+      "放置するとテーブルが肥大化し続け、検索・バックアップ・メンテナンスのコストが増える。"
+    ]
+  },
+  {
+    "id": "data-013",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "基礎",
+    "question": "ユーザーごとの表示設定（1ページの表示件数、既定の並び順）を保存し、どの端末からログインしても同じ設定を使いたい。最も適切な保存先はどれか。",
+    "options": [
+      "ユーザーIdを参照する設定用のエンティティ",
+      "Site Property",
+      "Client Variable",
+      "画面のLocal Variable"
+    ],
+    "answer": 0,
+    "explanation": "ユーザーごとに異なり、端末をまたいで保持したいデータはエンティティに保存します。Userを参照する設定エンティティにすれば、どの端末からでも同じ設定を読み出せます。",
+    "wrongReasons": [
+      "Site Propertyは環境全体で1つの値を持つ設定で、ユーザーごとの値を保存できず頻繁な更新にも向かない。",
+      "Client Variableはブラウザごとに保存されるため、別の端末では同じ設定を使えない。",
+      "Local Variableは画面を離れると失われ、永続的な保存には使えない。"
+    ]
+  }
+]

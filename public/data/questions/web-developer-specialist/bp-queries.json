@@ -1,1 +1,202 @@
-[]
+[
+  {
+    "id": "query-001",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "標準",
+    "question": "月末処理で、ステータスが「仮登録」の申請約20万件をすべて「期限切れ」に更新したい。現在はAggregateで全件取得し、For Eachの中でUpdateApplicationを呼んでいる。最も適切な改善策はどれか。",
+    "options": [
+      "For Eachの中でUpdateApplicationの代わりにCreateOrUpdateApplicationを使う",
+      "AggregateのMax. Recordsを増やして、全件が確実に取得されるようにする",
+      "Advanced SQLで UPDATE {Application} SET [StatusId] = @Expired WHERE [StatusId] = @Provisional のような1文の一括更新を実行する",
+      "処理を複数のClient Actionに分けて、ブラウザから順番に呼び出す"
+    ],
+    "answer": 2,
+    "explanation": "1件ずつのEntity Actionでは、件数分のSQLが発行され大量データでは非常に遅くなります。条件に合うレコードをまとめて更新する処理は、Advanced SQLの1つのUPDATE文で実行するのが効率的です。",
+    "wrongReasons": [
+      "使うEntity Actionを変えても、1件ずつSQLを発行する点は同じで遅いまま。",
+      "Max. Recordsを増やすと取得量が増えるだけで、1件ずつ更新する遅さは解消しない。",
+      "ブラウザから分割して呼ぶと往復が増え、処理全体はさらに遅く不安定になる。"
+    ]
+  },
+  {
+    "id": "query-002",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "応用",
+    "question": "Timerで1年以上前のログ約3000万件をAdvanced SQLのDELETE文1回で削除しようとしたところ、タイムアウトし、実行中は他の処理も待たされた。最も適切な改善策はどれか。",
+    "options": [
+      "DELETE文を一度に実行するのをやめ、件数を区切って（例：1万件ずつ）削除し、そのたびにCommitTransactionして、制限時間が近づいたらWakeで再開する",
+      "Aggregateで3000万件を取得し、For EachでDeleteLogを1件ずつ呼ぶ",
+      "TimerのTimeout in Minutesを大幅に延ばし、DELETE文1回で終わるまで待つ",
+      "DELETE文の前後にAbortTransactionを入れて、ロックを解放する"
+    ],
+    "answer": 0,
+    "explanation": "大量データの一括処理は、件数を区切ったバッチで実行し、バッチごとにコミットするのが基本です。1回のトランザクションが短くなりロックの影響を抑えられ、タイムアウトしても処理済みの分は保持され、Wakeで続きから再開できます。",
+    "wrongReasons": [
+      "1件ずつの削除は最も遅く、タイムアウトの問題を悪化させる。",
+      "タイムアウトを延ばしても、巨大なトランザクションによる長時間のロックは解消しない。",
+      "AbortTransactionは変更をロールバックするため、削除が確定せず目的を果たせない。"
+    ]
+  },
+  {
+    "id": "query-003",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "標準",
+    "question": "画面で選んだ複数の部署IdをAdvanced SQLの WHERE [DepartmentId] IN (@IdList) に渡すため、パラメータのExpand InlineをYesにした。安全に実装する方法として最も適切なものはどれか。",
+    "options": [
+      "Expand InlineをYesにすれば、プラットフォームが自動的にエスケープするので追加の対策は不要",
+      "パラメータに渡す値を、BuildSafe_InClauseIntegerListなどのサニタイズ用アクションで組み立てる",
+      "パラメータのデータタイプをTextにすれば、SQLインジェクションは起きない",
+      "Client Actionで値に数字以外が含まれないかチェックすれば、サーバー側の対策は不要"
+    ],
+    "answer": 1,
+    "explanation": "Expand InlineをYesにしたパラメータは値がSQL文にそのまま埋め込まれるため、SQLインジェクションの原因になります。Sanitizationモジュールが提供するBuildSafe_InClauseIntegerListやEncodeSqlなどで、安全な値に組み立ててから渡します。",
+    "wrongReasons": [
+      "Expand Inlineの値は自動ではエスケープされず、開発者が安全性を確保する必要がある。",
+      "データタイプをTextにしても、Expand Inlineで埋め込まれる危険性は変わらない。",
+      "クライアント側のチェックは迂回できるため、サーバー側の対策が必須である。"
+    ]
+  },
+  {
+    "id": "query-004",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "基礎",
+    "question": "Advanced SQLで SELECT {Order}.[Id], {Order}.[OrderDate], {Customer}.[Name] ... と記述した。Outputの構造として最も適切なものはどれか。",
+    "options": [
+      "Orderエンティティのみを指定すれば、Customerの名前も自動で追加される",
+      "Output Structureは指定しなくても、実行時に自動で推測される",
+      "Id、OrderDate、Nameの3つの属性を、SELECTと同じ順番・互換のあるデータタイプで持つStructureを指定する",
+      "OrderとCustomerの両エンティティを指定し、SELECTでは全属性を返さなくてもよい"
+    ],
+    "answer": 2,
+    "explanation": "Advanced SQLのOutput Structureは、SELECTで返す列と数・順番・データタイプが一致している必要があります。必要な列だけを返す場合は、それに合わせたStructureを定義して指定します。",
+    "wrongReasons": [
+      "エンティティを指定した場合は、そのエンティティの全属性をSELECTで返す必要があり、他エンティティの列は追加されない。",
+      "Advanced SQLのOutput Structureは明示的に指定する必要がある。",
+      "エンティティをOutputに指定するなら、SELECTでそのエンティティの全属性を順番どおりに返す必要がある。"
+    ]
+  },
+  {
+    "id": "query-005",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "基礎",
+    "question": "3つのエンティティを結合し、条件で絞り込んで並べ替えるだけのクエリを作る。一般的なベストプラクティスとして最も適切なものはどれか。",
+    "options": [
+      "性能を最大化するため、すべてのクエリはAdvanced SQLで書く",
+      "Aggregateで実装する。取得する属性の最適化やデータベースの違いへの対応をプラットフォームが行い、保守もしやすい",
+      "各エンティティを別々のAggregateで取得し、ロジック内のFor Eachで結合する",
+      "Aggregateでも書けるが、将来の変更に備えてAdvanced SQLで書く"
+    ],
+    "answer": 1,
+    "explanation": "Aggregateで表現できるクエリはAggregateで作るのが推奨です。使用する属性だけを取得する最適化やデータベースごとの差異の吸収をプラットフォームが行い、参照関係も追跡しやすくなります。",
+    "wrongReasons": [
+      "Advanced SQLは最適化が効かず保守性も下がるため、Aggregateで書けない処理に限定する。",
+      "メモリ上で結合すると、クエリ回数とデータ転送量が増えて遅くなる。",
+      "将来の変更への備えはAdvanced SQLを選ぶ理由にならず、Aggregateの方が変更の影響を追跡しやすい。"
+    ]
+  },
+  {
+    "id": "query-006",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "基礎",
+    "question": "受注一覧（100件）を取得した後、For Eachの中で1件ごとに顧客名を取得するAggregateを実行している。最も適切な改善策はどれか。",
+    "options": [
+      "顧客を取得するAggregateのCache in Minutesを設定する",
+      "顧客名の取得をClient Actionに移動する",
+      "For Eachの代わりにListFilterで顧客を探す",
+      "受注を取得するAggregateに顧客エンティティを結合し、1回のクエリで顧客名も取得する"
+    ],
+    "answer": 3,
+    "explanation": "ループ内でクエリを実行すると件数分のクエリが発行されます（N+1問題）。関連するデータは結合を使って1回のクエリで取得するのが基本です。",
+    "wrongReasons": [
+      "キャッシュで一部は速くなっても、ループ内クエリという構造的な問題は残る。",
+      "クライアントに移すとサーバーとの往復が件数分発生し、さらに遅くなる。",
+      "ListFilterで探すには顧客を全件取得しておく必要があり、効率的ではない。"
+    ]
+  },
+  {
+    "id": "query-007",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "標準",
+    "question": "ページングする一覧で、AggregateのMax. Recordsを20にしている。画面に「全○件」と総件数を表示したい。最も適切な方法はどれか。",
+    "options": [
+      "AggregateのCount出力を使う",
+      "Aggregateの結果のList.Lengthを表示する",
+      "Max. Recordsを外して全件を取得し、List.Lengthを表示する",
+      "件数取得用に同じ条件のAdvanced SQLを別途作成する"
+    ],
+    "answer": 0,
+    "explanation": "AggregateのCountは、Max. Recordsに関係なく条件に合う総件数を返します。ページングとあわせて使うことで、1ページ分だけを取得しつつ総件数を表示できます。",
+    "wrongReasons": [
+      "List.Lengthは取得した件数なので、Max. Recordsの20件以下にしかならない。",
+      "総件数のために全件を取得するのは、ページングの意味がなくなるほど非効率。",
+      "Aggregateが件数を提供しているため、別のSQLを作るのは不要で保守対象が増える。"
+    ]
+  },
+  {
+    "id": "query-008",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "標準",
+    "question": "Advanced SQLで SELECT {Customer}.* FROM {Customer} ... と書いてCustomerエンティティをOutputにしているが、画面では名前とメールアドレスしか使っていない。性能の観点で最も適切な指摘はどれか。",
+    "options": [
+      "Advanced SQLも画面で使う属性だけを自動で取得するよう最適化されるので、問題ない",
+      "Advanced SQLは取得する列が最適化されないため、必要な列だけをSELECTし、それに合わせたStructureをOutputにする",
+      "SELECT * はAdvanced SQLで使えないため、実行時エラーになる",
+      "OutputをCustomerエンティティのリストに変えれば、自動で必要な列に絞られる"
+    ],
+    "answer": 1,
+    "explanation": "Aggregateと異なり、Advanced SQLは書いたSQLがそのまま実行され、取得列の自動最適化は行われません。必要な列だけをSELECTし、Output Structureもそれに合わせることで転送量を減らします。",
+    "wrongReasons": [
+      "取得列の自動最適化はAggregateの特徴で、Advanced SQLには適用されない。",
+      "問題はエラーではなく、不要な列まで取得して性能が落ちることである。",
+      "Outputの型を変えても、SQLで取得する列は減らない。"
+    ]
+  },
+  {
+    "id": "query-009",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "応用",
+    "question": "取込用の一時テーブル（エンティティ）にある約10万件のうち、検証済みのデータを本番用エンティティへ登録したい。現在はFor EachでCreate<Entity>を1件ずつ呼んでいて遅い。最も適切な改善策はどれか。",
+    "options": [
+      "For Eachの中でCreate<Entity>を呼ぶたびにCommitTransactionする",
+      "Advanced SQLで INSERT INTO {本番エンティティ} (...) SELECT ... FROM {一時エンティティ} WHERE 検証済み のように、1文で一括登録する",
+      "一時テーブルのデータをいったんClient Variableにコピーしてから登録する",
+      "取込処理をOn InitializeのServer Actionで実行する"
+    ],
+    "answer": 1,
+    "explanation": "テーブル間でのデータの一括移送は、INSERT ... SELECTの1文にするとデータベース内で完結し、件数分のSQL発行とアプリサーバーとの往復をなくせます。件数が非常に多い場合は、範囲を区切ってバッチ化します。",
+    "wrongReasons": [
+      "1件ごとのコミットはさらにオーバーヘッドを増やし、遅くなる。",
+      "Client Variableは大量データの受け渡しに使うものではなく、クライアントへの転送も発生する。",
+      "画面表示時の処理で大量データを扱うと、画面が表示されず、タイムアウトの原因にもなる。"
+    ]
+  },
+  {
+    "id": "query-010",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "標準",
+    "question": "Server Actionの中で「指定したメールアドレスのユーザーがすでに存在するか」だけを判定したい。Aggregateの使い方として最も適切なものはどれか。",
+    "options": [
+      "Max. Recordsを1にして、結果のListが空かどうか（Empty）で判定する",
+      "全ユーザーを取得し、For Eachでメールアドレスを比較する",
+      "全ユーザーを取得するAggregateにCache in Minutesを設定し、キャッシュした一覧の中から検索する",
+      "全ユーザーを取得し、ListAnyでメールアドレスを検索する"
+    ],
+    "answer": 0,
+    "explanation": "存在確認では1件見つかれば十分なので、条件をFilterに入れMax. Recordsを1にして結果が空かどうかを判定します。不要なデータの取得と転送を最小限にできます。",
+    "wrongReasons": [
+      "全件取得してループで比較するのは、データ量に比例して遅くなる。",
+      "キャッシュしても全件をメモリで検索する非効率さは残り、登録直後のユーザーが反映されないおそれもある。",
+      "全件をメモリに読み込んでから検索するため、データベースでの絞り込みより非効率。"
+    ]
+  }
+]

@@ -1,1 +1,262 @@
-[]
+[
+  {
+    "id": "screen-001",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "基礎",
+    "question": "Reactive Webの顧客詳細画面で、On Initializeイベントで顧客情報を取得するServer Actionを呼んでいたところ、画面が表示されるまで時間がかかる。最も適切な改善策はどれか。",
+    "options": [
+      "On InitializeのServer ActionをOn Renderに移動する",
+      "データ取得をScreen AggregateまたはData Actionに移し、画面の描画と並行して取得させる",
+      "Server Actionの結果をClient Variableに保存し、次回以降は再利用する",
+      "On Initializeの中で、Server Actionを2回に分けて呼び出す"
+    ],
+    "answer": 1,
+    "explanation": "画面の描画はOn Initializeの完了を待ってから始まるため、ここでサーバー呼び出しを行うと表示が遅れます。データ取得はScreen AggregateやData Actionに任せると、描画と並行して取得が行われます。",
+    "wrongReasons": [
+      "On Renderは再描画のたびに実行されるため、サーバー呼び出しを置くとさらに悪化する。",
+      "Client Variableに業務データを保存するのは用途外で、最新データとの不整合も起こる。",
+      "呼び出しを分割しても、描画前に待つ時間は減らない。"
+    ]
+  },
+  {
+    "id": "screen-002",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "応用",
+    "question": "画面で「部署」Aggregateを取得し、そのOn After Fetchで「社員」Aggregateを、さらにそのOn After Fetchで「評価」Aggregateを順にRefreshしている。表示が遅いため改善したい。最も適切なものはどれか。",
+    "options": [
+      "3つのAggregateのFetchをすべてAt startにして、同時に実行させる",
+      "On After FetchをOn Readyに置き換えて、同じ順番でRefreshする",
+      "依存関係のある3つの取得をひとつのData Actionにまとめ、サーバー側で順番に実行して1回のリクエストで結果を返す",
+      "3つのAggregateをすべてClient Variableにキャッシュする"
+    ],
+    "answer": 2,
+    "explanation": "On After Fetchで次々にAggregateをRefreshすると、サーバーへのリクエストが直列に何度も発生します。前の結果に依存する取得はData Actionにまとめれば、サーバー内で順に実行して1回の往復で済みます。",
+    "wrongReasons": [
+      "前のAggregateの結果を条件に使う取得は、同時に実行すると正しい結果にならない。",
+      "イベントを変えても、直列のリクエストが複数回発生する点は変わらない。",
+      "業務データをClient Variableにキャッシュするのは用途外で、鮮度の問題も生じる。"
+    ]
+  },
+  {
+    "id": "screen-003",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "標準",
+    "question": "Reactive Webの一覧画面で、エンティティから一覧を取得する方法を選びたい。単純な結合と絞り込みで取得できるデータである。性能の観点で最も適切なものはどれか。",
+    "options": [
+      "Screen Aggregateを使う。画面で使用している属性だけを取得するよう自動で最適化される",
+      "Data Actionを使い、中でAggregateを実行して全属性をOutputで返す",
+      "On InitializeでServer Actionを呼び、結果をLocal Variableに格納する",
+      "Client Actionから全件を取得し、画面側で絞り込む"
+    ],
+    "answer": 0,
+    "explanation": "Screen Aggregateは、画面で実際に使われている属性だけを取得するようプラットフォームが最適化します。Data Actionは定義したOutputをすべて返すため、単純な取得にはScreen Aggregateが適しています。",
+    "wrongReasons": [
+      "Data ActionはOutputを丸ごと返すため、使わない属性まで転送される。",
+      "On Initializeでのサーバー呼び出しは画面の描画を遅らせる。",
+      "全件取得して画面で絞り込むと転送量が増え、性能とセキュリティの両面で問題がある。"
+    ]
+  },
+  {
+    "id": "screen-004",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "標準",
+    "question": "受注一覧画面で、ユーザーが行を選んだときだけポップアップに明細を表示する。明細を取得するAggregateの設定として最も適切なものはどれか。",
+    "options": [
+      "FetchをAt startにし、画面表示時に全受注の明細を取得しておく",
+      "FetchをOnly on demandにし、行が選択されたときに受注Idを条件としてRefresh Dataで取得する",
+      "明細はAggregateではなく、On RenderでServer Actionを呼んで取得する",
+      "明細を受注一覧のAggregateに結合し、全明細を一覧と一緒に取得する"
+    ],
+    "answer": 1,
+    "explanation": "ユーザー操作の後にだけ必要なデータは、FetchをOnly on demandにして必要なタイミングで取得します。画面表示時の不要なクエリとデータ転送を減らせます。",
+    "wrongReasons": [
+      "表示されるかわからない明細をすべて先に取得するのは無駄が大きい。",
+      "On Renderは頻繁に実行されるため、サーバー呼び出しを置くべきではない。",
+      "一覧と全明細を結合すると取得件数が膨らみ、一覧の表示も遅くなる。"
+    ]
+  },
+  {
+    "id": "screen-005",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "基礎",
+    "question": "管理者だけが使える「全件削除」ボタンを画面に配置する。セキュリティ上、最も適切な実装はどれか。",
+    "options": [
+      "ボタンのVisibleにCheckAdminRole()を設定すれば、Server Action側のチェックは不要",
+      "ボタンをCSSで非表示にし、管理者のときだけ表示する",
+      "ボタンの表示制御に加えて、削除を行うServer Actionの中でもCheck<Role>で権限を確認する",
+      "Client Variableに管理者フラグを保存し、Client Actionで判定してからServer Actionを呼ぶ"
+    ],
+    "answer": 2,
+    "explanation": "画面の表示制御は利便性のためのもので、Server Actionはクライアントを経由せず直接呼ばれる可能性があります。権限チェックは必ずサーバー側のロジック内でも行います。",
+    "wrongReasons": [
+      "クライアント側の制御は迂回できるため、サーバー側のチェックを省略してはいけない。",
+      "CSSでの非表示はさらに簡単に迂回でき、セキュリティ対策にならない。",
+      "Client Variableは利用者が改ざんでき、クライアントでの判定は信頼できない。"
+    ]
+  },
+  {
+    "id": "screen-006",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "基礎",
+    "question": "住所入力用のBlockを作成した。Block内で郵便番号から住所が確定したときに、親画面にその結果を通知したい。最も適切な方法はどれか。",
+    "options": [
+      "BlockにEventを定義し、親画面でそのEventのHandlerを実装する",
+      "Block内から親画面のLocal Variableを直接更新する",
+      "結果をClient Variableに保存し、親画面で定期的に確認する",
+      "BlockのInput Parameterを書き換えて、親画面に値を返す"
+    ],
+    "answer": 0,
+    "explanation": "Blockから親への通知はEventで行うのが基本です。Blockは親の実装に依存せずに済み、再利用しやすい部品になります。",
+    "wrongReasons": [
+      "Blockから親画面の変数に直接アクセスすることはできず、依存関係の面でも望ましくない。",
+      "Client Variableでのやり取りは結合が見えにくく、ポーリングも無駄が多い。",
+      "Input Parameterは親からBlockへ値を渡すためのもので、親へ値を返す手段ではない。"
+    ]
+  },
+  {
+    "id": "screen-007",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "標準",
+    "question": "顧客Idを入力に受け取るBlockがあり、親画面で別の顧客を選ぶとBlockの表示内容を更新したい。Block側での実装として最も適切なものはどれか。",
+    "options": [
+      "On InitializeでAggregateをRefreshする",
+      "On RenderでAggregateをRefreshする",
+      "親画面から、Blockの中のAggregateを直接Refreshする",
+      "On Parameters Changedイベントで、新しい顧客IdをもとにAggregateをRefreshする"
+    ],
+    "answer": 3,
+    "explanation": "BlockのInput Parameterが親から変更されるとOn Parameters Changedイベントが発生します。ここで必要なデータを再取得するのが適切です。",
+    "wrongReasons": [
+      "On InitializeはBlockの初期化時に1回だけ実行され、パラメータの変更では再実行されない。",
+      "On Renderは描画のたびに実行されるため、そこでRefreshすると過剰なリクエストが発生する。",
+      "親画面からBlock内部のAggregateを直接操作することはできない。"
+    ]
+  },
+  {
+    "id": "screen-008",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "標準",
+    "question": "一覧で選択した50件の申請を一括承認する画面で、Client ActionのFor Eachの中から1件ずつ承認用のServer Actionを呼んでいる。処理が遅いため改善したい。最も適切なものはどれか。",
+    "options": [
+      "For Eachの中でServer Actionを呼ぶ前に、毎回Aggregateで申請の状態を確認する",
+      "選択した申請Idのリストを受け取るServer Actionを作り、1回の呼び出しでサーバー側でまとめて処理する",
+      "Server Actionの呼び出しを、Client Actionから直接Advanced SQLに置き換える",
+      "For Eachを2つに分け、25件ずつ処理する"
+    ],
+    "answer": 1,
+    "explanation": "クライアントからのサーバー呼び出しはそれぞれがネットワークの往復になるため、ループ内で呼ぶと件数分の遅延が積み重なります。リストを1回で渡し、サーバー側でまとめて処理すれば往復は1回で済みます。",
+    "wrongReasons": [
+      "確認のクエリを増やすと往復回数がさらに増え、より遅くなる。",
+      "Advanced SQLはサーバー側でしか実行できず、Client Actionから直接は使えない。",
+      "ループを分けても呼び出し回数の合計は変わらない。"
+    ]
+  },
+  {
+    "id": "screen-009",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "基礎",
+    "question": "10万件ある商品を一覧画面に表示したい。最も適切な実装はどれか。",
+    "options": [
+      "Aggregateで全件を取得し、Tableで一度にすべて表示する",
+      "全件を取得してLocal Variableに保存し、画面側で表示件数を切り替える",
+      "表示件数の上限を設けず、ユーザーがスクロールで確認できるようにする",
+      "AggregateのMax. RecordsとStart Indexを使ってページングし、1ページ分だけを取得する"
+    ],
+    "answer": 3,
+    "explanation": "大量データは、Max. RecordsとStart Indexを使ったページングで必要な分だけ取得します。データベース、ネットワーク、ブラウザのすべての負荷を抑えられます。",
+    "wrongReasons": [
+      "全件取得・全件表示は、取得時間もブラウザの描画も非常に重くなる。",
+      "画面側で表示を切り替えても、最初に全件を転送する負荷は変わらない。",
+      "上限なしでは大量のデータ取得と描画が発生し、性能が大きく劣化する。"
+    ]
+  },
+  {
+    "id": "screen-010",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "応用",
+    "question": "画面のOn Renderイベントで、合計金額の再計算と、JavaScriptによるグラフの再描画を行っている。入力のたびに画面が重くなるという報告があった。原因の説明として最も適切なものはどれか。",
+    "options": [
+      "On Renderは画面の初回表示時に1回だけ実行されるため、合計金額が更新されていない",
+      "On Renderは画面のデータが変わって再描画されるたびに実行されるため、重い処理を置くと入力のたびに実行される",
+      "On RenderではJavaScriptノードを使えないため、エラーが繰り返されている",
+      "On Renderはサーバー側で実行されるため、入力のたびにサーバー呼び出しが発生している"
+    ],
+    "answer": 1,
+    "explanation": "On Renderは画面（Block）が再描画されるたびに実行されるイベントです。重い計算や描画処理は必要なタイミング（入力のOnChangeや、データ取得後など）に限定して実行するようにします。",
+    "wrongReasons": [
+      "On Renderは初回だけでなく再描画のたびに実行される。",
+      "On RenderでもJavaScriptノードは使用できる。",
+      "On Renderはクライアント側で実行されるイベントである。"
+    ]
+  },
+  {
+    "id": "screen-011",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "応用",
+    "question": "「自分の担当案件」画面で、Screen Aggregateで全案件を取得し、TableのSource Recordsに「担当者Id = GetUserId()」でListFilterした結果を設定している。この実装の最も重大な問題はどれか。",
+    "options": [
+      "ListFilterはReactive Webでは使用できない",
+      "GetUserId()はクライアント側で呼び出せない",
+      "他の担当者の案件データもブラウザに送られるため、画面に出なくても利用者が参照できてしまう",
+      "Tableの表示件数が多くなりすぎるため、ページングが機能しない"
+    ],
+    "answer": 2,
+    "explanation": "Screen Aggregateの結果はブラウザに転送されるため、クライアント側で絞り込んでも他人のデータは通信内容から参照できてしまいます。利用者ごとの絞り込みはAggregateのFilterに含め、サーバー側で行う必要があります。",
+    "wrongReasons": [
+      "ListFilterはReactive Webでも使えるが、ここでの問題はセキュリティである。",
+      "GetUserId()はクライアント側のロジックでも使用できる。",
+      "ページングの問題もあり得るが、最も重大なのは他人のデータが漏えいする点である。"
+    ]
+  },
+  {
+    "id": "screen-012",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "標準",
+    "question": "一覧画面から詳細画面へ遷移するときに、選択した顧客の情報を渡したい。最も適切な方法はどれか。",
+    "options": [
+      "詳細画面に顧客IdのInput Parameterを定義し、詳細画面側でAggregateにより最新データを取得する",
+      "顧客のレコード全体をClient Variableに保存してから遷移する",
+      "顧客レコード型のInput Parameterを定義し、一覧で取得したレコードを丸ごと渡す",
+      "Site Propertyに選択した顧客Idを保存してから遷移する"
+    ],
+    "answer": 0,
+    "explanation": "画面間ではIdなどの最小限の情報だけを渡し、遷移先で必要なデータを取得するのが基本です。URLに載るデータ量が小さく、常に最新のデータを表示できます。",
+    "wrongReasons": [
+      "Client Variableにレコードを保存するのは用途外で、データが古くなる問題もある。",
+      "レコードを丸ごと渡すとパラメータが大きくなり、遷移先で古いデータを表示するおそれがある。",
+      "Site Propertyは全ユーザー共通の値で、利用者ごとの選択状態を保存すると競合し、キャッシュ無効化も招く。"
+    ]
+  },
+  {
+    "id": "screen-013",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "基礎",
+    "question": "Screen Aggregateのデータ取得中は、一覧の代わりに「読み込み中」の表示を出したい。最も適切な実装はどれか。",
+    "options": [
+      "On InitializeでLocal Variableを「読み込み中」にし、On RenderでFalseに戻す",
+      "JavaScriptで一定時間待ってから一覧を表示する",
+      "Aggregateの件数（List.Length）が0のときに「読み込み中」を表示する",
+      "AggregateのIsDataFetchedプロパティを条件にしたIfで表示を切り替える"
+    ],
+    "answer": 3,
+    "explanation": "Reactive WebのAggregateにはIsDataFetchedプロパティがあり、データ取得が完了したかどうかを判定できます。これを使えば、取得中と取得後の表示を簡単に切り替えられます。",
+    "wrongReasons": [
+      "On Renderは取得完了とは無関係のタイミングでも実行されるため、正しく切り替わらない。",
+      "一定時間待つ方法では、実際の取得完了と表示が一致しない。",
+      "件数0は「該当データなし」の場合も含むため、取得中かどうかを判定できない。"
+    ]
+  }
+]
