@@ -33,6 +33,14 @@ export function ScoreChart({ scores, target }: Props) {
   const y = (v: number) => pad.t + ih - (v / yMax) * ih
   const ticks = Array.from({ length: yMax / 100 + 1 }, (_, i) => i * 100).filter((_, i, a) => a.length <= 6 || i % 2 === 0)
   const last = scores.length - 1
+  // 末尾の直接ラベルが重ならないよう、上から順に最低11pxずつ離す
+  const labelY = new Map<Key, number>()
+  let prevY = -Infinity
+  for (const se of [...SERIES].sort((a, b) => y(valueOf(scores[last], a.key)) - y(valueOf(scores[last], b.key)))) {
+    const ly = Math.max(y(valueOf(scores[last], se.key)) + 4, prevY + 11)
+    labelY.set(se.key, ly)
+    prevY = ly
+  }
 
   return (
     <div className="chart">
@@ -94,7 +102,7 @@ export function ScoreChart({ scores, target }: Props) {
                 strokeWidth={2}
               />
             ))}
-            <text x={x(last) + 8} y={y(valueOf(scores[last], se.key)) + 4} className="direct-label">
+            <text x={x(last) + 8} y={labelY.get(se.key)} className="direct-label">
               {valueOf(scores[last], se.key)}
             </text>
           </g>
