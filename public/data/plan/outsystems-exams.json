@@ -1,0 +1,14 @@
+{
+  "exams": [
+    { "id": "web-developer-specialist", "name": "Web Developer Specialist", "date": "2026-10-03" },
+    { "id": "front-end-developer-specialist", "name": "Front-end Developer Specialist", "date": "2026-10-17" },
+    { "id": "mobile-developer-specialist", "name": "Mobile Developer Specialist", "date": "2026-10-31" },
+    { "id": "architecture-specialist", "name": "Architecture Specialist", "date": "2026-11-14" },
+    { "id": "security-specialist", "name": "Security Specialist", "date": "2026-11-28" }
+  ],
+  "reserveSlots": ["2026-10-10", "2026-10-24", "2026-11-07", "2026-11-21", "2026-12-05"],
+  "goal": {
+    "name": "Expert Developer",
+    "description": "5つのSpecialist資格すべてに合格するとExpert Developerを取得"
+  }
+}

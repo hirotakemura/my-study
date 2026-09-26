@@ -1,0 +1,22 @@
+{
+  "exams": [
+    {
+      "id": "web-developer-specialist",
+      "name": "Web Developer Specialist（OutSystems 11 Reactive）",
+      "passRate": 0.7,
+      "mock": { "count": 30, "minutes": 90 },
+      "categories": [
+        { "name": "非同期処理", "weight": 13, "file": "web-developer-specialist/async.json" },
+        { "name": "ベストプラクティス：データ", "weight": 13, "file": "web-developer-specialist/bp-data.json" },
+        { "name": "ベストプラクティス：画面", "weight": 13, "file": "web-developer-specialist/bp-screens.json" },
+        { "name": "ベストプラクティス：クエリ", "weight": 10, "file": "web-developer-specialist/bp-queries.json" },
+        { "name": "ベストプラクティス：ロジック", "weight": 14, "file": "web-developer-specialist/bp-logic.json" },
+        { "name": "例外・トランザクション処理", "weight": 7, "file": "web-developer-specialist/exceptions.json" },
+        { "name": "統合：外部データベース", "weight": 7, "file": "web-developer-specialist/integration-db.json" },
+        { "name": "統合：REST API", "weight": 6, "file": "web-developer-specialist/integration-rest.json" },
+        { "name": "トラブルシューティング", "weight": 13, "file": "web-developer-specialist/troubleshooting.json" },
+        { "name": "チーム開発", "weight": 4, "file": "web-developer-specialist/team.json" }
+      ]
+    }
+  ]
+}
