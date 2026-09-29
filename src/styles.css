@@ -600,6 +600,20 @@ textarea.memo {
 .weak .bar-fill {
   background: var(--ng);
 }
+.bar-fill.done {
+  background: var(--ok);
+}
+.unanswered-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-bottom: 6px;
+}
+.unanswered-start {
+  margin: 12px 0 4px;
+}
 .bar-line {
   position: absolute;
   top: 0;

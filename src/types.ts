@@ -96,7 +96,7 @@ export interface AnswerRecord {
   mode: QuizMode
 }
 
-export type QuizMode = 'category' | 'random' | 'mock' | 'wrong'
+export type QuizMode = 'category' | 'random' | 'mock' | 'wrong' | 'unanswered'
 
 export type ExamStatus = 'untaken' | 'passed' | 'failed'
 

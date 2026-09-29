@@ -84,6 +84,9 @@ function Setup({
   const wrongIds = wrongQuestionIds(data.answers.filter((a) => a.exam === exam.id))
   const wrongQs = questions.filter((q) => wrongIds.has(q.id))
   const mocks = data.mockExams.filter((m) => m.exam === exam.id).slice(-5).reverse()
+  // 一度も回答していない問題
+  const answeredIds = new Set(data.answers.filter((a) => a.exam === exam.id).map((a) => a.questionId))
+  const unansweredQs = questions.filter((q) => !answeredIds.has(q.id))
 
   return (
     <div className="stack">
@@ -137,6 +140,13 @@ function Setup({
         </button>
       </div>
 
+      <UnansweredProgress
+        exam={exam}
+        questions={questions}
+        unanswered={unansweredQs}
+        onStart={(title, qs) => onStart('unanswered', title, qs)}
+      />
+
       <section className="card">
         <h2>分野別の正答率と出題</h2>
         <p className="muted small">分野名をタップするとその分野だけを出題します。70%未満の分野は強調表示されます。</p>
@@ -184,6 +194,77 @@ function Setup({
         </section>
       )}
     </div>
+  )
+}
+
+function UnansweredProgress({
+  exam,
+  questions,
+  unanswered,
+  onStart,
+}: {
+  exam: ExamQuestionSet
+  questions: Question[]
+  unanswered: Question[]
+  onStart: (title: string, qs: Question[]) => void
+}) {
+  const total = questions.length
+  const done = total - unanswered.length
+  return (
+    <section className="card">
+      <h2>未着手の問題</h2>
+      <div className="unanswered-head">
+        <div>
+          <span className="big">{unanswered.length === 0 ? '🎉 0' : `あと${unanswered.length}`}</span>
+          <span className="muted small"> 問 ／ 全{total}問</span>
+        </div>
+        <span className="small muted">着手済み {done}問（{total ? Math.round((done / total) * 100) : 0}%）</span>
+      </div>
+      <div className="progress" aria-label={`着手済み ${done}/${total}問`}>
+        <div className="progress-fill" style={{ width: `${total ? (done / total) * 100 : 0}%` }} />
+      </div>
+      {unanswered.length > 0 ? (
+        <button
+          className="btn primary block unanswered-start"
+          onClick={() => onStart('未着手の問題', shuffle(unanswered).slice(0, 10))}
+        >
+          未着手から10問解く
+        </button>
+      ) : (
+        <p className="small">すべての問題に1回以上回答しました。間違えた問題の復習や本番模試で仕上げましょう。</p>
+      )}
+      <p className="muted small">分野名をタップすると、その分野の未着手の問題だけを出題します。</p>
+      <ul className="cat-list">
+        {exam.categories.map((c) => {
+          const all = questions.filter((q) => q.category === c.name)
+          const rest = unanswered.filter((q) => q.category === c.name)
+          return (
+            <li key={c.name}>
+              <button
+                className="cat-btn"
+                disabled={!rest.length}
+                onClick={() => onStart(`未着手：${c.name}`, shuffle(rest))}
+              >
+                <span className="cat-name">
+                  {rest.length === 0 && '✅ '}
+                  {c.name}
+                </span>
+                <span className="cat-rate">
+                  {rest.length === 0 ? '完了' : `あと${rest.length}問`}
+                  <span className="muted small"> ／{all.length}</span>
+                </span>
+              </button>
+              <div className="bar" aria-hidden>
+                <div
+                  className="bar-fill done"
+                  style={{ width: `${all.length ? ((all.length - rest.length) / all.length) * 100 : 0}%` }}
+                />
+              </div>
+            </li>
+          )
+        })}
+      </ul>
+    </section>
   )
 }
 
