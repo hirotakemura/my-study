@@ -172,7 +172,7 @@
       "Service Actionの呼び出しは記録されないため、呼び出しの前後に必ずLogMessageを追加する"
     ],
     "answer": 2,
-    "explanation": "Service Actionへのリクエストはプラットフォームが記録しており、Service CenterのMonitoringのService Actionsで確認できます。呼び出しごとの実行時間やエラーの有無を調べられます。",
+    "explanation": "Service Actionの実行時間はService CenterのMonitoringにあるService Actionsで確認できます。記録される情報量はService Actionを持つモジュールのLogging Levelで変わり、Request Keyを使うと呼び出し元のリクエストと関連づけて追跡できます。",
     "wrongReasons": [
       "Service Actionの呼び出しは専用のService Actionsのログで確認できる。",
       "Service Actionは別のリクエストとして実行され、その呼び出しはログに記録される。",
@@ -252,11 +252,11 @@
       "モジュールのLogging LevelがDefaultになっている"
     ],
     "answer": 0,
-    "explanation": "Exception HandlerにはLog Errorプロパティがあり、Yesにすると捕捉した例外もErrorsログに記録されます。Noに設定すると記録されないため、調査に必要な例外は記録するよう設定します。",
+    "explanation": "Exception HandlerにはLog Errorプロパティ（既定値はYes）があり、Yesなら捕捉した例外もService CenterのErrorsログに記録されます。Noに設定すると記録されないため、調査に必要な例外は記録するよう設定します。",
     "wrongReasons": [
       "Abort Transactionはトランザクションのロールバックを制御するもので、ログの記録には関係しない。",
       "捕捉した例外もLog ErrorがYesなら記録される。",
-      "Logging Levelは連携（RESTやSOAP）のログに関する設定で、この例外の記録には関係しない。"
+      "Logging Levelは連携やService Actionのログにどこまで詳細を残すかの設定で、Exception Handlerで捕捉した例外をErrorsログに記録するかどうかはLog Errorで決まる。"
     ]
   }
 ]

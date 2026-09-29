@@ -52,7 +52,7 @@
       "OnAfterResponseで、レスポンスの内容を毎回General Logに出力する処理を恒久的に追加する"
     ],
     "answer": 1,
-    "explanation": "Logging LevelのDefaultとTroubleshootはエラーになったリクエストだけを記録し、Fullは成功したものも含めてすべてのリクエストとレスポンスを記録します。Fullは入出力の値に含まれる機密情報もログに残り負荷も増えるため、調査後はDefaultに戻します。",
+    "explanation": "Logging LevelのDefaultとTroubleshootはエラーになったリクエストだけを記録し、Fullは成功したものも含めてすべてのリクエストとレスポンスを記録します。Fullは入出力の値に含まれる機密情報もログに残り、ログの量も増えるため、調査後はDefaultに戻します（消費するREST APIでは入力値をログから秘匿する設定も可能）。",
     "wrongReasons": [
       "Defaultではエラーになったリクエストの情報しか記録されない。",
       "Troubleshootはエラー時に追加のHTTPトレース情報を記録するレベルで、成功したリクエストは記録されない。",
