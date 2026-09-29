@@ -138,5 +138,145 @@
       "既存システムの変更は影響範囲が大きく、OutSystems側の都合で求める対応として現実的でない。",
       "モジュールごとにコピーするとデータが分散し、整合性を保てなくなる。"
     ]
+  },
+  {
+    "id": "extdb-008",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "基礎",
+    "question": "外部データベースとの新しい連携を作ることになった。数年前にIntegration Studioで作った別の連携Extensionもある。ツールの使い分けとして最も適切なものはどれか。",
+    "options": [
+      "新しい連携はIntegration Builderで作成し、Integration Studioで作った既存のExtensionは引き続きIntegration Studioで保守する",
+      "既存のExtensionをIntegration Builderで開き、新しいテーブルを追加する",
+      "新しい連携もIntegration Studioで作成し、Integration Builderは使わない",
+      "Integration Builderで作った連携を、Integration Studioで開いて細かく調整する"
+    ],
+    "answer": 0,
+    "explanation": "新しい外部データベース連携にはIntegration Builderの利用が推奨されています。ただし、Integration Studioで作ったExtensionはIntegration Builderでは編集できず、その逆もできないため、既存のものは作成したツールで保守します。",
+    "wrongReasons": [
+      "Integration Studioで作ったExtensionは、Integration Builderでは編集できない。",
+      "新しい連携にはIntegration Builderの利用が推奨されている。",
+      "Integration Builderで作った連携は、Integration Studioでは編集できない。"
+    ]
+  },
+  {
+    "id": "extdb-009",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "標準",
+    "question": "Integration Builderで外部のSQL Serverと連携している。同じサーバーの別のデータベース（カタログ）にあるテーブルも使いたくなった。最も適切な対応はどれか。",
+    "options": [
+      "既存の連携に、別のデータベースのテーブルをそのまま追加する",
+      "Aggregateの中で、別のデータベース名を付けてテーブルを参照する",
+      "Advanced SQLで、別のデータベースのテーブルを直接参照する",
+      "Integration Builderの1つの連携が扱えるデータベース（カタログ・スキーマ）は1つなので、別の連携を作成する"
+    ],
+    "answer": 3,
+    "explanation": "Integration Builderで作る外部データベース連携は、一度に1つのデータベース・カタログ・スキーマだけをサポートします。別のデータベースのテーブルが必要な場合は、別の連携を作成します。",
+    "wrongReasons": [
+      "1つの連携で扱えるのは1つのデータベース（カタログ・スキーマ）だけである。",
+      "Aggregateは連携で取り込んだエンティティを使うもので、別のデータベースのテーブルを直接参照できない。",
+      "外部データベースのテーブルは、連携でエンティティとして取り込んで使うのが基本である。"
+    ]
+  },
+  {
+    "id": "extdb-010",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "標準",
+    "question": "Integration Builderにログインするとき、接続先の環境として本番環境のアドレスを入力しようとしている。この操作についての説明として最も適切なものはどれか。",
+    "options": [
+      "本番環境に直接連携を公開するのが、最も早く確実な方法である",
+      "Integration Builderはどの環境にも接続できるが、本番環境では読み取り専用になる",
+      "セキュリティとガバナンスのため、Integration Builderは開発環境にしか接続できない。連携は開発環境で作成し、アプリと一緒に他の環境へデプロイする",
+      "Integration Builderには環境の指定は不要で、接続先は自動で選ばれる"
+    ],
+    "answer": 2,
+    "explanation": "Integration Builderは、セキュリティとガバナンスの理由から開発環境にしか接続できません。開発環境で連携を作成・公開し、その後はアプリと同様に他の環境へデプロイします。",
+    "wrongReasons": [
+      "本番環境に直接接続することはできない。",
+      "本番環境へは接続自体ができない。",
+      "ログイン時に、接続する開発環境のアドレスを指定する必要がある。"
+    ]
+  },
+  {
+    "id": "extdb-011",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "応用",
+    "question": "1つのServer Actionで、OutSystemsのデータベースの受注と、外部データベースの在庫を両方更新している。この処理の整合性について、最も適切な説明はどれか。",
+    "options": [
+      "OutSystemsが分散トランザクションで両方をまとめて管理するため、整合性は自動で保証される",
+      "外部データベースとは別の接続・別のトランザクションで扱われ、分散トランザクションの仕組みはないため、片方だけが確定する可能性を考慮して設計する",
+      "外部データベースへの更新は、OutSystems側のコミットより必ず先に確定する",
+      "外部データベースへの更新は、リクエストが終了してもコミットされない"
+    ],
+    "answer": 1,
+    "explanation": "外部システムと連携する場合、OutSystemsはそれぞれ別の接続とトランザクションを使い、それぞれ独立してコミットします。分散トランザクションの仕組みはないため、状態の管理や補償処理などで整合性を保つ設計が必要です。",
+    "wrongReasons": [
+      "分散トランザクションの仕組みはなく、整合性は自動では保証されない。",
+      "両方のコミットの順序が保証されるような仕組みはない。",
+      "外部データベースへの更新も、それぞれのトランザクションとしてコミットされる。"
+    ]
+  },
+  {
+    "id": "extdb-012",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "標準",
+    "question": "顧客企業ごとに同じ構造の外部データベースが用意されており、ログインしたユーザーの所属企業に応じて接続先のデータベースを切り替えたい。最も適切な方法はどれか。",
+    "options": [
+      "企業ごとに別々のExtensionを作り、If文で呼び分ける",
+      "PlatformRuntime APIのDatabaseConnection_SetConnectionStringForSessionで、実行時にセッション単位で接続文字列を設定する",
+      "Site Propertyに接続文字列を保存し、ユーザーごとに書き換える",
+      "Service CenterのDatabase Connectionを、ログインのたびに手動で変更する"
+    ],
+    "answer": 1,
+    "explanation": "同じスキーマで中身の異なるデータベースを実行時のデータによって選ぶ場合は、PlatformRuntime APIのDatabaseConnection_SetConnectionStringForSessionを使って、セッション単位で接続先を設定できます。",
+    "wrongReasons": [
+      "企業ごとにExtensionを作ると、企業が増えるたびに開発と再公開が必要になる。",
+      "Site Propertyは全利用者で共通の値で、ユーザーごとに書き換えると競合し、キャッシュ無効化も発生する。",
+      "手動での切り替えは現実的でなく、同時に利用する他のユーザーにも影響する。"
+    ]
+  },
+  {
+    "id": "extdb-013",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "基礎",
+    "question": "Integration Studioで外部データベースのテーブルをエンティティとして取り込んだ。このエンティティのデータについて正しい説明として最も適切なものはどれか。",
+    "options": [
+      "取り込んだ時点のデータがOutSystemsのデータベースにコピーされ、以降は定期的に同期される",
+      "取り込んだエンティティは読み取り専用で、外部データベースのデータを更新できない",
+      "データはOutSystemsのデータベースにコピーされず、エンティティは元のテーブルを参照するため、読み書きは外部データベースに対して直接行われる",
+      "外部データベースのデータは、Timerで取り込んだ後でないとAggregateで参照できない"
+    ],
+    "answer": 2,
+    "explanation": "外部データベースから取り込んだエンティティは、元のテーブルやビューへの参照として働き、データはOutSystemsのデータベースにコピーされません。そのため、データの読み書きは外部データベースに対して直接行われます。",
+    "wrongReasons": [
+      "データのコピーや移行は行われず、同期の仕組みでもない。",
+      "取り込んだエンティティを使って、外部データベースのデータを作成・更新・削除できる。",
+      "取り込んだエンティティは、そのままAggregateで参照できる。"
+    ]
+  },
+  {
+    "id": "extdb-014",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "応用",
+    "question": "外部データベースのビューが、リンクサーバー経由で別サーバーの大きなテーブルと結合している。このビューを取り込んだエンティティを使う画面が非常に遅い。原因と対策として最も適切なものはどれか。",
+    "options": [
+      "リンクサーバーをまたぐ結合では相手側のテーブルが丸ごと読み込まれてから結合されるため、結合を避けるか、必要な一部のデータだけを取り出してから結合する",
+      "OutSystemsのエンティティにインデックスを追加すれば、リンクサーバーのテーブルも速くなる",
+      "AggregateのMax. Recordsを小さくすれば、リンクサーバーから読み込むデータ量も減る",
+      "エンティティのCache in Minutesを設定すれば、リンクサーバーの結合は発生しなくなる"
+    ],
+    "answer": 0,
+    "explanation": "リンクサーバーをまたぐ結合は非常に非効率で、相手側のテーブルが丸ごとデータベースサーバーに読み込まれてから結合されます。結合は避け、必要な場合は一時テーブルなどで必要なデータだけを取り出してから結合します。",
+    "wrongReasons": [
+      "外部のビューやリンクサーバーのテーブルに、OutSystems側からインデックスを付けることはできない。",
+      "Max. Recordsは結果の件数を絞るだけで、結合のために読み込まれるデータ量は減らない。",
+      "エンティティにはキャッシュの設定はなく、キャッシュしても初回や再取得時の結合は発生する。"
+    ]
   }
 ]

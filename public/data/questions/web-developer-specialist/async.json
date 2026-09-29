@@ -258,5 +258,265 @@
       "再帰呼び出しでは同じ実行・同じトランザクション内で処理が続き、タイムアウト対策にならない。",
       "処理済みフラグをなくすと、同じデータを何度も処理することになり問題が悪化する。"
     ]
+  },
+  {
+    "id": "async-014",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "基礎",
+    "question": "新しい環境にアプリをデプロイしたときに、初期データ（マスタの初期値）を自動で投入したい。Timerの設定として最も適切なものはどれか。",
+    "options": [
+      "毎日0時に実行するスケジュールにし、データがなければ投入する",
+      "スケジュールを「モジュールの公開時に実行（When Published）」にしたTimerで初期データを投入する",
+      "スケジュールを設定せず、デプロイ担当者がService Centerで毎回Run Nowを押す",
+      "On Initializeで、画面を開くたびに初期データの有無を確認して投入する"
+    ],
+    "answer": 1,
+    "explanation": "TimerのScheduleは日次・週次などの定期実行に加えて、モジュールが公開されるたびに実行するよう設定できます。初期設定やブートストラップデータの投入に適しています。",
+    "wrongReasons": [
+      "毎日実行すると、初期データ投入のために不要な実行が繰り返される。",
+      "手動実行に頼ると、実行漏れが起こりやすい。",
+      "画面を開くたびの確認は無駄な処理で、利用者の操作に依存してしまう。"
+    ]
+  },
+  {
+    "id": "async-015",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "夜間に多数のTimerが同じ時刻に起動するよう設定されており、重要な締め処理のTimerの開始が遅れることがある。フロントエンドサーバーは1台で、同時に実行できるTimer数は既定のままである。最も適切な対応はどれか。",
+    "options": [
+      "締め処理のTimerのTimeout in Minutesを大きくする",
+      "締め処理のTimerを1分ごとに起動するスケジュールに変更する",
+      "締め処理のTimerのPriorityを高くし、他のTimerの開始時刻もずらす",
+      "すべてのTimerを1つのTimerにまとめて、順番に実行する"
+    ],
+    "answer": 2,
+    "explanation": "既定では、フロントエンドサーバー1台あたり同時に実行できるTimerは3つまでで、それを超えるとPriorityの高いTimerから実行されます。重要なTimerのPriorityを上げ、開始時刻を分散させることで遅延を防げます。",
+    "wrongReasons": [
+      "タイムアウトは実行時間の上限であり、開始の遅れは解消しない。",
+      "頻繁に起動しても同時実行数の上限は変わらず、スケジューラーの負荷が増えるだけ。",
+      "1つにまとめると長時間の処理になり、タイムアウトや障害時の影響範囲が大きくなる。"
+    ]
+  },
+  {
+    "id": "async-016",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "応用",
+    "question": "あるTimerが実行中にタイムアウトした。このTimerの次の実行について、正しい説明として最も適切なものはどれか。",
+    "options": [
+      "タイムアウトはエラーとして扱われ、NextRunが更新されないため再び実行対象になり、Service Centerで設定された回数（既定3回）まで再試行される",
+      "タイムアウトは正常終了として扱われ、Scheduleどおり次回の予定時刻まで実行されない",
+      "タイムアウトしたTimerは自動的に無効化され、再公開するまで実行されない",
+      "タイムアウトした時点の続きから、同じトランザクションのまま処理が再開される"
+    ],
+    "answer": 0,
+    "explanation": "Timerがタイムアウトしたり未処理の例外で終わったりすると、NextRunが更新されず、スケジューラーが再び実行対象として拾います。再試行回数はService CenterのEnvironment Configurationで設定され、既定は3回です。そのため、再実行されても同じデータを二重に処理しない設計が重要です。",
+    "wrongReasons": [
+      "タイムアウトはエラー扱いで、NextRunは次の予定時刻に更新されない。",
+      "タイムアウトしただけでTimerが無効化されることはない。",
+      "中断した実行は未コミットの変更がロールバックされ、再実行は最初から新しく始まる。"
+    ]
+  },
+  {
+    "id": "async-017",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "未処理の申請を処理するTimerを、処理済みフラグを使って途中から再開できるようにしたい。処理対象を取得するAggregateの設計として最も適切なものはどれか。",
+    "options": [
+      "全件を取得し、For Eachの中でIsProcessedを確認して未処理のものだけ処理する",
+      "FilterにIsProcessed = Falseを設定し、Max. Recordsをバッチの件数にして取得し、処理後にフラグを更新してコミットする処理を繰り返す",
+      "IsProcessedでは絞り込まず、登録日の新しい順に1000件ずつ取得する",
+      "未処理の件数だけをCountで取得し、その件数分ループする"
+    ],
+    "answer": 1,
+    "explanation": "未処理のものだけをデータベースで絞り込み、バッチの件数で取得すれば、再実行時も自然に続きから処理できます。処理したレコードのフラグ更新をバッチごとにコミットすることで、進捗が確実に保存されます。",
+    "wrongReasons": [
+      "全件取得すると処理済みのデータまで毎回読み込み、件数が増えるほど遅くなる。",
+      "フラグで絞り込まないと、処理済みのデータを再び取得してしまう。",
+      "件数だけでは処理対象のレコードを特定できず、処理の途中で件数が変わると不整合も起こる。"
+    ]
+  },
+  {
+    "id": "async-018",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "応用",
+    "question": "Timerで注文ごとに外部の配送APIを呼び、登録結果をエンティティに保存している。100件ごとにCommitTransactionしているが、タイムアウト後の再実行で、同じ注文が配送APIに二重登録されることがあった。最も適切な対策はどれか。",
+    "options": [
+      "コミットの間隔を1000件ごとに広げる",
+      "Timerの再試行回数を0にする",
+      "配送APIの呼び出しをTimerの最後にまとめて行う",
+      "外部APIを呼んだ直後にその注文の送信済み状態を記録してコミットし、再実行時は送信済みの注文を処理対象から除外する"
+    ],
+    "answer": 3,
+    "explanation": "外部APIへの呼び出しはデータベースのロールバックでは取り消されないため、最後のコミット以降に送信した分が再実行で二重に送られます。送信ごとに状態を記録してコミットするか、外部側で重複を判定できるキーを送るなど、再実行しても安全な設計にします。",
+    "wrongReasons": [
+      "コミット間隔を広げると、ロールバックされる範囲が広がり二重登録はむしろ増える。",
+      "再試行をやめると、未処理のデータが残ったままになり根本的な解決にならない。",
+      "最後にまとめて呼んでも、途中で中断すれば送信済みの記録が残らず同じ問題が起こる。"
+    ]
+  },
+  {
+    "id": "async-019",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "データ同期のTimerで、次回の実行時に続きから処理できるよう「最後に処理したレコードのId」を保存したい。保存先として最も適切なものはどれか。",
+    "options": [
+      "Timerの進捗を管理する専用のエンティティ（制御テーブル）",
+      "Site Property",
+      "Session Variable",
+      "Timerのアクションの出力パラメータ"
+    ],
+    "answer": 0,
+    "explanation": "Timerの進捗のように頻繁に更新される値は、制御用のエンティティに保存し、処理と同じトランザクションでコミットします。途中で中断しても、コミット済みの進捗から確実に再開できます。",
+    "wrongReasons": [
+      "Site Propertyは頻繁に更新するとキャッシュ無効化が発生するため、進捗の保存には向かない。",
+      "Timerは別のセッションで実行され、Session Variableは毎回既定値から始まるため値を引き継げない。",
+      "Timerのアクションの出力パラメータは、実行後に参照する手段がない。"
+    ]
+  },
+  {
+    "id": "async-020",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "基礎",
+    "question": "Timerに設定したServer Actionに出力パラメータ「ProcessedCount」を追加し、処理件数を後から確認できるようにしたい。この方法について正しい説明として最も適切なものはどれか。",
+    "options": [
+      "Timerの実行後に、Service CenterのTimers画面で出力パラメータの値を確認できる",
+      "Wake<Timer>アクションの戻り値として、出力パラメータの値を受け取れる",
+      "Timerのアクションの出力パラメータは実行後に参照する手段がないため、件数はエンティティやLogMessageで記録する",
+      "次回のTimer実行時に、前回の出力パラメータの値が入力パラメータとして渡される"
+    ],
+    "answer": 2,
+    "explanation": "Timerに設定したアクションに出力パラメータがあっても、実行終了後にその値を参照する方法はありません。処理件数などの結果は、エンティティに保存するかLogMessageでGeneralログに出力して確認します。",
+    "wrongReasons": [
+      "Service CenterのTimers画面で確認できるのは実行時刻や所要時間などで、出力パラメータの値は表示されない。",
+      "Wake<Timer>は入力も出力も持たないアクションである。",
+      "前回の出力が次回の入力として自動で渡される仕組みはない。"
+    ]
+  },
+  {
+    "id": "async-021",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "BPTの購買申請プロセスで、申請のステータスが「承認済」に更新されるまで待ち、3日経っても更新されなければ督促メールを送りたい。最も適切な実装はどれか。",
+    "options": [
+      "Automatic Activityの中でループし、ステータスを1分ごとに確認する",
+      "Human Activityを置き、担当者が手動で督促するかどうかを判断する",
+      "Timerで全申請を毎分確認し、プロセスとは別に督促する",
+      "Wait ActivityのClose OnにUpdate<申請>とステータスの条件を設定し、TimeoutにAddDays(CurrDateTime(), 3)を設定して、タイムアウトした場合に督促する"
+    ],
+    "answer": 3,
+    "explanation": "Wait Activityは、指定したエンティティの作成・更新（Close On）か、タイムアウトのどちらかが起こるまでプロセスを待機させます。タイムアウトで終わったかどうかはExpiredで判定でき、その場合に督促の処理へ進めます。",
+    "wrongReasons": [
+      "Automatic Activityでの待機ループはタイムアウトに達し、サーバー資源も無駄に使う。",
+      "条件がはっきりしている待機を人の判断に任せる必要はない。",
+      "プロセスとは別に毎分確認するのは非効率で、プロセスの流れとも連動しない。"
+    ]
+  },
+  {
+    "id": "async-022",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "契約プロセスの実行中に、契約が「キャンセル」に更新されたら、そのたびに通知の処理を実行したい。プロセスの本来の流れとは並行して、イベントのたびに処理を始められる要素として最も適切なものはどれか。",
+    "options": [
+      "Start OnにUpdate<契約>と条件を設定したConditional Start",
+      "Decision",
+      "Execute Process",
+      "Close OnにUpdate<契約>を設定したHuman Activity"
+    ],
+    "answer": 0,
+    "explanation": "Conditional Startは、指定したエンティティの作成・更新イベントが起こるたびに新しい流れを開始し、その後も次のイベントを待ち続けます。ただしプロセスの負荷が増えるため、使用数は必要最小限にするのがベストプラクティスです。",
+    "wrongReasons": [
+      "Decisionは流れを分岐させる要素で、イベントをきっかけに処理を始める機能はない。",
+      "Execute Processは別のプロセスを起動する要素で、イベントを待ち受けるものではない。",
+      "Human Activityは人の作業を表す要素で、Close Onはその作業を終わらせる条件である。"
+    ]
+  },
+  {
+    "id": "async-023",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "応用",
+    "question": "Service CenterでLight process executionを有効にしてモジュールを再公開したが、処理のスループットが変わらない。プロセスは開始・Automatic Activity・終了の単純な構成で、Server Actionの中からLaunch<Process>アクションで起動している。原因として最も適切なものはどれか。",
+    "options": [
+      "Light Processは、同時に1件ずつしか実行できないため",
+      "Automatic Activityの中でAggregateを使っているため",
+      "Launch<Process>で起動したプロセスは、条件を満たしていても通常のプロセスとして実行されるため",
+      "Light processの設定は、次のTimerの実行後に反映されるため"
+    ],
+    "answer": 2,
+    "explanation": "Light Processとして実行されるのは、Launch Onに設定したエンティティのレコード作成イベントで起動された場合だけです。Launch<Process>アクションで明示的に起動すると、条件を満たしていても通常のプロセスとして実行されます。",
+    "wrongReasons": [
+      "Light Processは大量のイベントを高いスループットで処理するための仕組みである。",
+      "Automatic Activityの中でAggregateを使うことは、Light Processの条件に影響しない。",
+      "設定はモジュールの再公開で反映され、Timerの実行とは関係ない。"
+    ]
+  },
+  {
+    "id": "async-024",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "基礎",
+    "question": "Light Process Executionで実行されるプロセスについて、正しい説明として最も適切なものはどれか。",
+    "options": [
+      "Human Activityを含めることができる",
+      "プロセスインスタンスやアクティビティインスタンスが作られないため、実行履歴を追跡できない",
+      "Automatic ActivityにStart Dateを設定して、実行開始日時を指定できる",
+      "複数のAutomatic Activityを順番につなげることができる"
+    ],
+    "answer": 1,
+    "explanation": "Light Processはインスタンスを作成しないことで高速に実行されるため、通常のプロセスのような実行履歴は残りません。構成は開始・1つのAutomatic Activity・終了に限られ、Start Dateの指定もサポートされません。",
+    "wrongReasons": [
+      "Light Processは1つのAutomatic Activityだけで構成され、Human Activityは含められない。",
+      "Light ProcessではAutomatic ActivityのStart Dateはサポートされない。",
+      "Automatic Activityは1つだけという条件がある。"
+    ]
+  },
+  {
+    "id": "async-025",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "応用",
+    "question": "BPTのAutomatic Activityで、外部の会計システムに仕訳を登録してから自社のエンティティを更新している。エンティティの更新でエラーが発生した後、会計システムに同じ仕訳が二重に登録されていた。原因の説明として最も適切なものはどれか。",
+    "options": [
+      "Automatic Activityでエラーが発生すると、そのプロセス全体が最初からやり直されるため",
+      "Automatic Activityはエラー時に再実行されないため、担当者が手動で再実行したため",
+      "エラーが発生すると、外部システムへの登録もロールバックされた後に再登録されるため",
+      "Automatic Activityはエラーが発生するとしばらくして最初から再実行されるが、外部システムへの登録はデータベースのロールバックでは取り消されないため"
+    ],
+    "answer": 3,
+    "explanation": "Automatic Activityはエラーで止まると、一定時間後にフローの最初から再実行され、成功するかプロセスが終了するまで繰り返されます。外部システムへの登録は取り消されないため、登録済みかを確認するなど、再実行されても安全な作りにする必要があります。",
+    "wrongReasons": [
+      "やり直されるのはそのAutomatic Activityのフローであり、プロセス全体ではない。",
+      "Automatic Activityはエラー時に自動で再実行される。",
+      "外部システムへの登録は、OutSystemsのトランザクションでは取り消されない。"
+    ]
+  },
+  {
+    "id": "async-026",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "クレーム受付のプロセスが、顧客からの連絡を最大6か月待ち続ける設計になっている。アクティブなまま長期間待機するプロセスインスタンスが大量にたまっている。ベストプラクティスとして最も適切な改善はどれか。",
+    "options": [
+      "WaitのTimeoutを1年に延ばして、確実に待てるようにする",
+      "プロセスインスタンスが増えないよう、プロセスのLaunch Onを外す",
+      "待機が長くなる時点で再開に必要な情報を保存していったんプロセスを終了し、Timerなどで必要なときにプロセスを再開する",
+      "長期間待機しているプロセスを、Service Centerから定期的に手動で終了させる"
+    ],
+    "answer": 2,
+    "explanation": "長期間アイドル状態のプロセスはデータベースに情報が蓄積し、デプロイ時の影響分析にも時間がかかります。待機が長くなる箇所では再開用の情報を保存していったん終了し、TimerやDecisionで途中から再開できるようにするのが推奨です。",
+    "wrongReasons": [
+      "待機期間を延ばすと、アイドル状態のインスタンスがさらに長く残る。",
+      "起動方法を変えても、長期間待機する設計の問題は解消しない。",
+      "手動での終了は運用負荷が高く、必要な後続処理まで失われる。"
+    ]
   }
 ]

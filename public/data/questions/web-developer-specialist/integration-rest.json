@@ -118,5 +118,125 @@
       "型情報が失われ、呼び出し元での解析が難しくなる。",
       "不要なデータを大量に返すことになり、性能と情報漏えいの両面で問題がある。"
     ]
+  },
+  {
+    "id": "rest-007",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "標準",
+    "question": "消費しているREST APIが、入力エラーのときにHTTPステータス400と、エラー内容を表すJSONを返す。OutSystemsでの動作と処理方法として最も適切なものはどれか。",
+    "options": [
+      "400以上のステータスコードが返るとOutSystemsが例外を発生させるため、呼び出し側にAll ExceptionsのException Handlerを置いて処理する",
+      "ステータスコードに関係なく出力パラメータに値が入るため、出力の中身を確認して処理を分ける",
+      "400が返ると、OutSystemsが自動で3回まで再試行する",
+      "400が返ると、呼び出し元の画面が自動でエラー画面に切り替わるため、特に処理は不要"
+    ],
+    "answer": 0,
+    "explanation": "消費しているREST APIのメソッドがHTTPのエラーステータス（400以上）を返すと、OutSystemsは例外を発生させます。呼び出すロジックにAll ExceptionsのException Handlerを置き、利用者へのメッセージ表示などの処理を実装します。",
+    "wrongReasons": [
+      "エラーステータスが返ると例外が発生するため、通常の出力として受け取ることはできない。",
+      "REST APIの呼び出しが自動で再試行されることはない。",
+      "例外を処理しないと予期しないエラーとして扱われるため、呼び出し側で処理を実装する。"
+    ]
+  },
+  {
+    "id": "rest-008",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "応用",
+    "question": "消費しているREST APIが、該当データがないときにHTTP 404を返す。業務上は「データなし」は正常なケースとして扱い、例外にしたくない。最も適切な実装はどれか。",
+    "options": [
+      "呼び出すたびにException Handlerで例外を捕捉し、何もせずに処理を続ける",
+      "REST APIのLogging LevelをFullにする",
+      "OnBeforeRequestで、404が返らないようにリクエストを書き換える",
+      "OnAfterResponseでこのケースのステータスコードを200に変更し、「データなし」を表すレスポンスとして扱う"
+    ],
+    "answer": 3,
+    "explanation": "OnAfterResponse（高度な場合はOnAfterResponseAdvanced）は、OutSystemsがレスポンスを処理する前に実行され、ヘッダーや本文、ステータスコードを変更できます。特定のケースで200に変えて例外を発生させない、エラー内容に応じた独自のUser Exceptionを発生させる、といった制御ができます。",
+    "wrongReasons": [
+      "動作はするが、呼び出し箇所ごとに同じ処理が必要になり、他のエラーとの区別も難しい。",
+      "Logging Levelはログの記録内容の設定で、例外の発生は変わらない。",
+      "OnBeforeRequestは送信前のリクエストを変更するもので、相手が返すステータスは制御できない。"
+    ]
+  },
+  {
+    "id": "rest-009",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "基礎",
+    "question": "外部サービスが、OpenAPI 3.0形式の仕様書（URL）を公開している。そのREST APIの複数のメソッドを効率よく利用したい。最も適切な方法はどれか。",
+    "options": [
+      "Consume REST APIでAdd Multiple Methodsを選び、仕様書のURLを指定して必要なメソッドを取り込む",
+      "各メソッドのURLとレスポンス例を調べ、Add Single Methodで1つずつ作る",
+      "Integration Studioで、REST APIを呼ぶExtensionをC#で作成する",
+      "JavaScriptのfetchで、画面から直接REST APIを呼び出す"
+    ],
+    "answer": 0,
+    "explanation": "OpenAPI仕様（OAS 3.0まで）に準拠したREST APIは、仕様書のURLかファイルを指定して、複数のメソッドをまとめて取り込めます。メソッドと入出力パラメータ、それに対応するStructureが自動で作成されます。",
+    "wrongReasons": [
+      "1つずつ作ることもできるが、仕様書があるなら手間がかかり、定義の誤りも起こりやすい。",
+      "標準のREST連携で対応できるため、独自のコードを書く必要はない。",
+      "画面から直接呼ぶと認証情報の扱いやログの記録などの面で問題があり、標準の連携機能を使うべきである。"
+    ]
+  },
+  {
+    "id": "rest-010",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "基礎",
+    "question": "モジュール「PhoneAPI」で、REST API「v1」を公開し、GETメソッド「GetContacts」を作成した。このメソッドのエンドポイントとして最も適切なものはどれか。",
+    "options": [
+      "GET /rest/PhoneAPI/GetContacts",
+      "GET /PhoneAPI/api/GetContacts/v1",
+      "GET /v1/PhoneAPI/rest/GetContacts",
+      "GET /PhoneAPI/rest/v1/GetContacts"
+    ],
+    "answer": 3,
+    "explanation": "公開したREST APIのURLは、https://<サーバー名>/<モジュール名>/rest/<API名>/<メソッド名> の形式になります。APIの名前にv1のようなバージョンを付けるのが一般的な推奨です。",
+    "wrongReasons": [
+      "モジュール名とAPI名の位置が異なり、既定のURLの形式ではない。",
+      "既定のURLには「rest」が入り、API名とメソッド名の順序も異なる。",
+      "既定のURLはモジュール名から始まる。"
+    ]
+  },
+  {
+    "id": "rest-011",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "標準",
+    "question": "公開しているREST APIのAuthenticationをCustomにし、OnAuthenticationでリクエストヘッダー「X-API-Key」の値を検証したい。ヘッダーの値を取得する方法として最も適切なものはどれか。",
+    "options": [
+      "OnAuthenticationの入力パラメータに、自動でヘッダーの値が渡される",
+      "HTTPRequestHandlerのGetRequestHeaderアクションで取得する",
+      "Client VariableにヘッダーのAPIキーが保存されるので、それを参照する",
+      "Site Propertyに保存されたAPIキーを、そのまま受け取った値として使う"
+    ],
+    "answer": 1,
+    "explanation": "OnAuthenticationの中でリクエストのURL・ヘッダー・本文のデータを使うには、HTTPRequestHandlerのGetFormValue、GetRequestHeader、GetRequestContentなどのアクションを使います。取得したAPIキーを、保存している正しい値と照合します。",
+    "wrongReasons": [
+      "ヘッダーの値が自動で入力パラメータに渡されることはない。",
+      "Client Variableはブラウザ側の仕組みで、外部からのREST要求とは関係ない。",
+      "Site Propertyの値は比較対象の正しいキーであり、受け取った値ではない。"
+    ]
+  },
+  {
+    "id": "rest-012",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "標準",
+    "question": "消費する外部REST APIが、クライアント証明書による認証を求めている。OutSystemsでの実装方法として最も適切なものはどれか。",
+    "options": [
+      "OnBeforeRequestで、証明書のファイル名をヘッダーに設定する",
+      "Consume REST APIのHeaders / Authタブで、Basic認証のユーザー名とパスワードに証明書を入力する",
+      "Service CenterでREST APIのLogging LevelをFullにする",
+      "Integration Studioで.NETのコードを含むExtensionを作り、OnBeforeRequestAdvancedからREST Extensibility APIを使ってリクエストを拡張する"
+    ],
+    "answer": 3,
+    "explanation": "クライアント証明書による認証のように、標準のコールバックでは扱えない高度なカスタマイズは、Integration Studioで作ったExtensionの.NETコードとREST Extensibility APIを使い、OnBeforeRequestAdvancedから適用します。",
+    "wrongReasons": [
+      "ヘッダーにファイル名を入れても、TLSのクライアント証明書認証にはならない。",
+      "Basic認証はユーザー名とパスワードの方式で、クライアント証明書は扱えない。",
+      "Logging Levelはログの記録内容の設定で、認証方式とは関係ない。"
+    ]
   }
 ]

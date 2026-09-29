@@ -258,5 +258,265 @@
       "捕捉した例外もLog ErrorがYesなら記録される。",
       "Logging Levelは連携やService Actionのログにどこまで詳細を残すかの設定で、Exception Handlerで捕捉した例外をErrorsログに記録するかどうかはLog Errorで決まる。"
     ]
+  },
+  {
+    "id": "trouble-014",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "基礎",
+    "question": "Integration Studioで作ったExtensionのアクションの応答が遅いのではないかと疑っている。呼び出し元のモジュールや所要時間を確認できるService Centerのログとして最も適切なものはどれか。",
+    "options": [
+      "Errorsログ",
+      "Extensionsログ",
+      "Timersログ",
+      "Emailsログ"
+    ],
+    "answer": 1,
+    "explanation": "Service CenterのMonitoringにあるExtensionsは、リクエスト中に実行されたExtensionのアクション、呼び出し元のモジュール、応答までにかかった時間を表示します。",
+    "wrongReasons": [
+      "Errorsログはエラーの記録で、正常に終わった呼び出しの所要時間はわからない。",
+      "TimersログはTimerの実行状況の記録である。",
+      "Emailsログはメールの送信状況の記録である。"
+    ]
+  },
+  {
+    "id": "trouble-015",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "基礎",
+    "question": "アプリから送った通知メールが届かないという問い合わせがあった。メールが送信済みか、送信待ちのままかを確認する方法として最も適切なものはどれか。",
+    "options": [
+      "Service CenterのMonitoringでEmailsのログを確認する",
+      "Service StudioのTrueChangeを確認する",
+      "LifeTimeでアプリのデプロイ履歴を確認する",
+      "Service CenterのIntegrationsログを確認する"
+    ],
+    "answer": 0,
+    "explanation": "Service CenterのMonitoringにあるEmailsでは、送信されたメールと、正常に配信されたか送信待ちのままかを確認できます。開発時には、メールの内容をログに残すかどうかも選べます。",
+    "wrongReasons": [
+      "TrueChangeは開発時のエラーや警告を表示するもので、実行時のメール送信状況はわからない。",
+      "デプロイ履歴からは、メールの送信状況はわからない。",
+      "IntegrationsログはRESTやSOAPなどの連携の記録で、メール送信の状況はEmailsで確認する。"
+    ]
+  },
+  {
+    "id": "trouble-016",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "BPTのプロセスで、エラーのまま止まっているインスタンスがあるらしい。インスタンスの状態を確認し、必要なら中断（Suspend）や終了（Terminate）を行いたい。最も適切な場所はどれか。",
+    "options": [
+      "Service StudioのProcessesタブ",
+      "Service CenterのMonitoringにあるProcesses",
+      "LifeTimeのApplicationsの画面",
+      "Service CenterのGeneralログ"
+    ],
+    "answer": 1,
+    "explanation": "Service CenterのMonitoringにあるProcessesでは、プロセスごとのアクティブ・中断・終了したインスタンスの数や、エラーのあるインスタンスの数を確認できます。個々のインスタンスが成功したかエラーかを確認し、中断や終了も行えます。",
+    "wrongReasons": [
+      "Service Studioはプロセスを設計する場所で、実行中のインスタンスの管理はできない。",
+      "LifeTimeはアプリのライフサイクル管理の場所で、プロセスのインスタンスは操作できない。",
+      "Generalログはシステムやアプリの活動の記録で、インスタンスの中断や終了はできない。"
+    ]
+  },
+  {
+    "id": "trouble-017",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "環境全体で、Timerが1つも実行されず、メールも送信されず、プロセスも進まなくなった。最初に確認すべき場所として最も適切なものはどれか。",
+    "options": [
+      "各TimerのTimeout in Minutesの設定",
+      "各モジュールのSite Propertyの値",
+      "Service CenterのEnvironment Healthで、Scheduler Serviceなどのサービスの状態",
+      "Service StudioのTrueChangeの警告"
+    ],
+    "answer": 2,
+    "explanation": "Timer、メール、プロセスの実行は、Scheduler Serviceが起動しています。すべてが止まっている場合は、Service CenterのMonitoringにあるEnvironment HealthでScheduler Serviceや各サーバーのサービスの状態を確認します。",
+    "wrongReasons": [
+      "個々のTimerの設定では、メールやプロセスまで止まっている状況を説明できない。",
+      "Site Propertyは非同期処理の実行基盤とは関係ない。",
+      "TrueChangeは開発時の警告で、実行環境のサービスの状態はわからない。"
+    ]
+  },
+  {
+    "id": "trouble-018",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "応用",
+    "question": "Errorsログのあるエラーが、どの画面のリクエストから発生したものかを突き止めたい。ログのデータベースの構造を踏まえた方法として最も適切なものはどれか。",
+    "options": [
+      "エラーの発生時刻と同じ時刻のScreenログを目視で探す",
+      "エラーのモジュール名と同じ名前の画面を、Service Studioで探す",
+      "エラーのスタックトレースから、画面名を推測する",
+      "Errorsのようなドリルダウンのログと、Screenなどのトップレベルのログを、Request Keyで関連付けて追跡する"
+    ],
+    "answer": 3,
+    "explanation": "ログは、アクセスごとの「トップレベル」のログ（Screen、公開した連携、Mobile Request、Timerの実行など）と、その中で起きた活動の「ドリルダウン」のログ（Error、General、消費した連携、Extension）に分かれます。両者はRequest Keyで関連付けられています。",
+    "wrongReasons": [
+      "同時刻に多数のリクエストがあると、時刻だけでは特定できない。",
+      "モジュールには多くの画面があり、名前だけでは発生元のリクエストを特定できない。",
+      "推測では確実な特定にならず、ログの関連付けを使うべきである。"
+    ]
+  },
+  {
+    "id": "trouble-019",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "応用",
+    "question": "Service Actionでエラーが発生したが、Service CenterのService Actionsのログに詳細な情報が表示されない。詳細を確認できるようにする方法として最も適切なものはどれか。",
+    "options": [
+      "Service Actionを持つモジュールのLogging LevelをTroubleshootまたはFullにして、エラーを再現させる",
+      "呼び出し側のException HandlerのAbort TransactionをNoにする",
+      "Service ActionをServer Actionに変更する",
+      "Configuration Toolでログの保持期間を延ばす"
+    ],
+    "answer": 0,
+    "explanation": "Service Actionsのログに記録される情報量は、そのService Actionがあるモジュールに設定されたLogging Levelで決まります。エラーの詳細はTroubleshootとFullのレベルで表示されます。確認後は、ログの量や機密情報の記録に配慮して元のレベルに戻します。",
+    "wrongReasons": [
+      "Abort Transactionはトランザクションの扱いを決める設定で、ログの詳しさとは関係ない。",
+      "Service Actionをやめるのは設計の変更で、ログを詳しくする手段ではない。",
+      "保持期間を延ばしても、記録される情報の詳しさは変わらない。"
+    ]
+  },
+  {
+    "id": "trouble-020",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "応用",
+    "question": "運用チームが、過去数週間分のログを使って定期的に複雑な集計分析をしたいと考え、ログのデータベースに直接重いクエリを実行しようとしている。この方針に対する指摘として最も適切なものはどれか。",
+    "options": [
+      "ログのテーブルは分析用に多くのインデックスを持つため、直接クエリしても問題ない",
+      "ログのテーブルは実行時への影響を抑えるためインデックスが少なく検索に向かないので、分析用には別の場所にデータをコピーし、検索に適した形にする",
+      "ログは毎日削除されるため、分析には使えない",
+      "ログはService Centerの画面からしか参照できない"
+    ],
+    "answer": 1,
+    "explanation": "ログのデータモデルは、アプリの実行への影響を最小限にするよう設計されており、インデックスが少なく検索には非効率です。ログの量や用途に応じて、分析用の別の場所にデータをコピーし、検索に適したモデルを作ることが推奨されています。",
+    "wrongReasons": [
+      "ログのテーブルのインデックスは限られており、重いクエリには向かない。",
+      "ログは週ごとのテーブルでローテーションされ、保持期間内は残っている。",
+      "保持期間内のログは、ログのデータベースのテーブルやビューから参照できる。"
+    ]
+  },
+  {
+    "id": "trouble-021",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "基礎",
+    "question": "Service CenterのErrorsログの内容を、開発チーム外の運用メンバーと共有して分析したい。最も適切な方法はどれか。",
+    "options": [
+      "Service Centerの画面を1件ずつスクリーンショットして送る",
+      "運用メンバー全員に、Service Studioの開発者アカウントを発行する",
+      "Monitoringのログの多くはExcelにエクスポートできるため、エクスポートして共有する",
+      "ログのデータベースの管理者権限を、運用メンバーに付与する"
+    ],
+    "answer": 2,
+    "explanation": "Service CenterのMonitoringでは、ほとんどのログをExcelにエクスポートできます。運用チームが分析したり共有したりするのに利用できます。",
+    "wrongReasons": [
+      "スクリーンショットでは件数が多いと扱えず、分析もしにくい。",
+      "ログを見るために開発者のアカウントを配るのは、権限管理の面で望ましくない。",
+      "データベースの管理者権限の付与は過剰で、セキュリティ上のリスクが大きい。"
+    ]
+  },
+  {
+    "id": "trouble-022",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "社内の利用者から「突然ログイン画面に入れなくなった」と連絡があった。その利用者の端末からログインの失敗が何度も続いていたことがわかっている。確認すべき場所として最も適切なものはどれか。",
+    "options": [
+      "Service CenterのMonitoringにあるSecurityで、ログイン失敗の繰り返しによりブロックされたIPアドレスを確認し、必要なら解除する",
+      "Service CenterのTimersログで、ログイン処理の実行時間を確認する",
+      "LifeTimeで、そのアプリの最新バージョンを再デプロイする",
+      "Service StudioのDebuggerで、Login画面にブレークポイントを置く"
+    ],
+    "answer": 0,
+    "explanation": "Service CenterのMonitoringにあるSecurityには、ログインの失敗が繰り返されたためにプラットフォームがブロックしたIPアドレスが表示され、ここからブロックを解除できます。",
+    "wrongReasons": [
+      "Timersログはバックグラウンドの処理の記録で、ログインのブロックとは関係ない。",
+      "再デプロイしても、ブロックされたIPアドレスは解除されない。",
+      "デバッグしても、ブロックの状態は確認・解除できない。"
+    ]
+  },
+  {
+    "id": "trouble-023",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "ログのデータベースに直接接続して、今週と先週のErrorsログを調べたい。参照するオブジェクトとして最も適切なものはどれか。",
+    "options": [
+      "oslog_Error_0 だけ（常に今週のログが入っているため）",
+      "OSSYS_ERROR テーブル",
+      "今週分に対応するビュー oslog_Error と、先週分に対応するビュー oslog_Error_Previous",
+      "Service Centerのデータベース接続に登録された外部データベース"
+    ],
+    "answer": 2,
+    "explanation": "ログはログの種類ごとに10個のテーブル（oslog_<TYPE>_0〜9）を週単位でローテーションして保存しています。今週分はビュー oslog_<TYPE>、先週分はビュー oslog_<TYPE>_Previous で参照できます。",
+    "wrongReasons": [
+      "どのテーブルが今週分かはローテーションによって変わるため、番号を固定して参照できない。",
+      "エラーログは oslog_ で始まるログのテーブル・ビューに保存される。",
+      "ログは外部データベースではなく、プラットフォームのログのデータベースに保存される。"
+    ]
+  },
+  {
+    "id": "trouble-024",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "Service Studioのデバッガーで、どこで例外が発生しているかわからない不具合を調べたい。ブレークポイントをどこに置けばよいかわからない場合に役立つ機能として最も適切なものはどれか。",
+    "options": [
+      "Continue To Here",
+      "Break On All Exceptions",
+      "Step Out",
+      "Remove All Breakpoints"
+    ],
+    "answer": 1,
+    "explanation": "Break On All Exceptionsを有効にすると、ブレークポイントがなくても例外が発生した時点で実行が停止します。Exception Handlerがある場合は、ハンドラが実行される前に停止するため、発生箇所を特定できます。",
+    "wrongReasons": [
+      "Continue To Hereは、すでに停止している状態から指定した要素まで実行を進める機能である。",
+      "Step Outは、停止中の実行を呼び出し元に戻るところまで進める機能である。",
+      "Remove All Breakpointsは、ブレークポイントを削除する機能である。"
+    ]
+  },
+  {
+    "id": "trouble-025",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "応用",
+    "question": "夜間のTimerが途中で止まっていることがあり、Service CenterのErrorsログに「Error executing request ... for Timer ... Request duration = 1439 secs. [Marked as 'not running'. Computed next run.]」というエラーが記録されていた。最も適切な判断と対策はどれか。",
+    "options": [
+      "スケジューラーの一時的な不具合なので、対策は不要",
+      "Timerの処理が約24分かかってタイムアウトし、中断された。バッチ化・定期コミット・論理的なタイムアウトとWakeで時間内に終わる設計にする",
+      "Timerの入力パラメータが不足しているため、Timerの定義を修正する",
+      "Timerの実行がデータベースのデッドロックで失敗したため、インデックスを削除する"
+    ],
+    "answer": 1,
+    "explanation": "このエラーは、Timerが設定されたタイムアウトを超えて中断されたことを示し、Request durationが実際の実行時間です。タイムアウト値を延ばすよりも、処理をバッチ化して定期的にコミットし、制限時間の手前で終了してWakeで再開する設計にします。",
+    "wrongReasons": [
+      "タイムアウトは処理時間の問題で、放置すると同じデータの再処理が繰り返される。",
+      "メッセージは実行時間の超過を示しており、入力パラメータの問題ではない。",
+      "デッドロックを示すメッセージではなく、インデックスの削除は無関係で性能も悪化させる。"
+    ]
+  },
+  {
+    "id": "trouble-026",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "基礎",
+    "question": "Service Studioのデバッガーで日付時刻（Date Time）の変数を確認したところ、画面に表示される時刻と9時間ずれていた。日本の利用者の端末でも、サーバーでも時刻の設定は正しい。考えられる理由として最も適切なものはどれか。",
+    "options": [
+      "アプリのタイムゾーンの設定が誤っている",
+      "デバッガーは日付時刻をUTCで表示するため",
+      "デバッガーは開発者のPCのタイムゾーンで表示するため",
+      "Date Time型の変数はデバッグ中に正しい値を保持できないため"
+    ],
+    "answer": 1,
+    "explanation": "デバッグ中、Service Studioのデバッガーは日付時刻をUTCで表示します。クライアントの画面では端末のタイムゾーン、サーバーではサーバーのタイムゾーンで扱われるため、この違いを踏まえて値を確認します。",
+    "wrongReasons": [
+      "端末とサーバーの設定は正しく、ずれはデバッガーの表示方法によるものである。",
+      "デバッガーの表示は開発者のPCのタイムゾーンではなくUTCである。",
+      "デバッグ中も値自体は正しく保持されている。"
+    ]
   }
 ]

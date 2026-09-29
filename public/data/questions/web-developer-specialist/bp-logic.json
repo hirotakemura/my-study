@@ -14,7 +14,7 @@
     "answer": 2,
     "explanation": "Service Actionは弱い依存関係（疎結合）を作り、実装を変更するとすぐに利用側へ反映されます。一方で、呼び出し元とは別のトランザクションで実行されるため、失敗時の整合性の扱いを設計する必要があります。",
     "wrongReasons": [
-      "PublicなServer Actionは強い依存関係になり、実装変更後は利用側のリフレッシュと再公開が必要になる。",
+      "PublicなServer Actionは強い依存関係になり、実装を変更しても利用側を再公開するまで反映されない。",
       "ロジックが利用側に分散し、在庫のルール変更のたびに複数モジュールの修正が必要になる。",
       "コピーはロジックの重複を生み、変更の反映漏れを招く。"
     ]
@@ -277,6 +277,286 @@
       "On Initializeでのサーバー呼び出しは、画面の描画開始を遅らせる。",
       "REST APIの呼び出しはサーバー側のロジックで行うもので、画面から直接呼ぶ構成は適切でない。",
       "Site Propertyにデータを保存するのは用途外で、更新のたびにキャッシュ無効化も発生する。"
+    ]
+  },
+  {
+    "id": "logic-015",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "基礎",
+    "question": "消費税計算のServer ActionをFunction=Yesにして、Reactive Webの画面のExpression（ウィジェットの表示値）で使おうとしたが、選択肢に出てこない。最も適切な対応はどれか。",
+    "options": [
+      "Server ActionのPublicをYesにする",
+      "同じ計算をFunction=YesのClient Actionとして作成し、画面の式ではそれを使う",
+      "Server ActionのCache in Minutesを設定する",
+      "画面のOn InitializeでServer Actionを呼び、結果を変数に入れて表示する"
+    ],
+    "answer": 1,
+    "explanation": "Function=YesのServer Actionはサーバー側のロジックの式でのみ、Function=YesのClient Actionはクライアント側の式でのみ使えます。画面の式で使う計算は、クライアント側のFunctionとして用意します。",
+    "wrongReasons": [
+      "Publicは他のモジュールから参照するための設定で、画面の式で使えるかどうかは変わらない。",
+      "キャッシュの設定は、Functionを使える場所には影響しない。",
+      "On Initializeでのサーバー呼び出しは描画を遅らせ、値が変わるたびの再計算にも対応できない。"
+    ]
+  },
+  {
+    "id": "logic-016",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "応用",
+    "question": "Coreモジュールの為替レート取得アクションにCache in Minutesを設定し、10個のEnd-userモジュールから使っている。キャッシュを1か所にまとめて、すべての利用側で同じキャッシュを共有したい。最も適切な方法はどれか。",
+    "options": [
+      "PublicなServer Actionとして公開したまま、Cache in Minutesを長くする",
+      "各End-userモジュールで、同じアクションをコピーしてキャッシュを設定する",
+      "Service Actionとして公開し、Service Action側でキャッシュさせる",
+      "取得したレートをSite Propertyに書き込み、各モジュールから参照する"
+    ],
+    "answer": 2,
+    "explanation": "強い依存関係（PublicなServer Action）では、アクションは各利用側モジュールの文脈で実行されるため、キャッシュも利用側ごとに持たれ共有されません。弱い依存関係（Service Action）で公開すると、提供側だけでキャッシュされ、すべての利用側が同じ値を使えます。",
+    "wrongReasons": [
+      "Server Actionのキャッシュは利用側モジュールごとに持たれるため、時間を延ばしても共有はされない。",
+      "コピーするとロジックが重複し、キャッシュも各モジュールでばらばらになる。",
+      "頻繁に変わる値をSite Propertyに書き込むと、キャッシュ無効化が繰り返し発生する。"
+    ]
+  },
+  {
+    "id": "logic-017",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "標準",
+    "question": "顧客レコード（Record型）を入力パラメータに取るServer Actionに、Cache in Minutesを設定しようとしている。この設計について正しい説明として最も適切なものはどれか。",
+    "options": [
+      "Record型の入力は自動でIdに変換されてキャッシュのキーになる",
+      "キャッシュする要素の入力パラメータにはRecord・List・Binary Data型は使えないため、Idなどの基本型を入力にする",
+      "Record型の入力はキャッシュのキーに使われず、すべての呼び出しで同じ結果が返る",
+      "Record型の入力を持つアクションは、キャッシュ時間が自動で1分に制限される"
+    ],
+    "answer": 1,
+    "explanation": "キャッシュする要素は、Record・List・Binary Data型の入力パラメータを持てません。入力の値ごとにキャッシュを持つ仕組みのため、Idなどの基本型を入力にして設計します。",
+    "wrongReasons": [
+      "Record型が自動でIdに変換される仕組みはない。",
+      "Record型の入力パラメータを持つ要素はキャッシュの対象にできない。",
+      "キャッシュ時間が自動で制限されるような仕組みはない。"
+    ]
+  },
+  {
+    "id": "logic-018",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "標準",
+    "question": "CoreモジュールのPublicなServer Actionに、任意（Is Mandatory=No）の入力パラメータを追加して公開した。このアクションを使っているEnd-userモジュールへの影響として最も適切なものはどれか。",
+    "options": [
+      "互換性のある変更のため、新しいパラメータに値を渡したい場合を除き、参照の更新（リフレッシュ）は必要ない",
+      "すべての利用側モジュールで参照を更新しないと、実行時エラーになる",
+      "利用側モジュールは自動で新しいパラメータに既定値を渡すよう書き換えられ、再公開される",
+      "任意の入力パラメータは、Service Actionにしか追加できない"
+    ],
+    "answer": 0,
+    "explanation": "任意の入力パラメータの追加は、利用側と互換性のあるシグネチャの変更です。利用側は参照を更新しなくてもよく、新しいパラメータに値を渡したいときに参照を更新します。ただしServer Actionは強い依存関係なので、最新の実装を使うには利用側の再公開が必要です。",
+    "wrongReasons": [
+      "任意の入力パラメータの追加は互換性があり、参照の更新は必須ではない。",
+      "利用側のモジュールが自動で書き換えられて再公開されることはない。",
+      "任意の入力パラメータはServer Actionにも追加できる。"
+    ]
+  },
+  {
+    "id": "logic-019",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "応用",
+    "question": "CoreモジュールのPublicなServer Actionの中身（ロジック）だけを修正して公開した。入力・出力パラメータは変えていない。利用側のEnd-userモジュールで必要な対応として最も適切なものはどれか。",
+    "options": [
+      "何もしなくても、利用側はすぐに新しいロジックで動く",
+      "利用側で参照を更新（リフレッシュ）し、呼び出し箇所を修正してから公開する",
+      "利用側は古い実装のまま動いている（Outdated）ため、再公開して新しい実装を取り込む。シグネチャが変わっていないので参照の更新は不要",
+      "Coreモジュールをもう一度公開すれば、利用側にも自動で反映される"
+    ],
+    "answer": 2,
+    "explanation": "Server Actionは強い依存関係のため、提供側の実装を変えても、利用側は再公開するまで以前の実装で動き続けます。シグネチャが変わっていなければ参照の更新は不要で、利用側を再公開すれば新しい実装が使われます。",
+    "wrongReasons": [
+      "すぐに反映されるのはService Actionなどの弱い依存関係の場合である。",
+      "シグネチャが変わっていないため、参照の更新や呼び出し箇所の修正は必要ない。",
+      "提供側を何度公開しても、利用側を再公開しない限り反映されない。"
+    ]
+  },
+  {
+    "id": "logic-020",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "標準",
+    "question": "End-userモジュールが、Coreモジュールから「Service Action」と「Server Action」を1つずつ参照している。このモジュール間の依存関係として最も適切なものはどれか。",
+    "options": [
+      "Service Actionを参照しているので、弱い依存関係になる",
+      "要素ごとに依存関係が分かれ、Service Actionの部分だけ弱い依存関係になる",
+      "Server Actionを1つでも参照していると、そのモジュールへの依存関係は強い依存関係になる",
+      "2種類を混在させて参照することはできない"
+    ],
+    "answer": 2,
+    "explanation": "同じ提供側モジュールから複数の要素を参照している場合、弱い依存関係になるのはすべてが弱い依存の要素（Service Action、エンティティ、Structureなど）のときだけです。Server Actionが1つでも含まれると、依存関係全体が強い依存関係になります。",
+    "wrongReasons": [
+      "Server Actionを含むため、弱い依存関係にはならない。",
+      "依存関係はモジュール単位で決まり、要素ごとには分かれない。",
+      "同じモジュールからService ActionとServer Actionを両方参照することはできる。"
+    ]
+  },
+  {
+    "id": "logic-021",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "標準",
+    "question": "チームで「どこからでも使えるように」と、Aggregateを1つ実行して顧客エンティティのレコードを返すだけのServer Action「GetCustomer」を作り、各所で使っている。顧客エンティティは属性が多い。性能の観点で最も適切な指摘はどれか。",
+    "options": [
+      "Aggregateだけを実行するアクションに切り出すと取得する属性を最適化できず、使わない属性まで毎回取得するため、必要な場所でAggregateを直接使う",
+      "アクションに切り出すとAggregateが2回実行されるため、遅くなる",
+      "Server Actionの中のAggregateはキャッシュされないため、必ずCache in Minutesを設定する",
+      "特に問題はなく、再利用性の点で推奨される設計である"
+    ],
+    "answer": 0,
+    "explanation": "Aggregateを単独でアクションに切り出して結果を返すと、プラットフォームはどの属性が使われるか判断できず、エンティティ全体を取得します。属性が多い場合は、必要な場所でAggregateを直接使って取得する属性を最適化させます。",
+    "wrongReasons": [
+      "アクションに切り出してもAggregateが2回実行されるわけではなく、問題は取得する属性の量である。",
+      "キャッシュは選択肢の一つだが、全属性を取得してしまう問題は解決しない。",
+      "出力が小さい場合は再利用を優先することもあるが、属性の多いエンティティでは性能上の問題になる。"
+    ]
+  },
+  {
+    "id": "logic-022",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "基礎",
+    "question": "Reactive Webの複数の画面から呼ばれる、CoreモジュールのPublicなServer Action「ApproveInvoice」を実装する。セキュリティの観点で、アクションの最初に行うべきこととして最も適切なものはどれか。",
+    "options": [
+      "呼び出し元の画面名を入力パラメータで受け取り、許可された画面かを確認する",
+      "GetUserId()とCheck<Role名>Role()で、ログインユーザーが実行を許可されているかを確認する",
+      "Client Variableに保存した権限フラグを入力パラメータで受け取り、確認する",
+      "画面側でロールを確認しているため、アクション側では確認しない"
+    ],
+    "answer": 1,
+    "explanation": "クライアントから呼ばれるServer Actionは、正しくない利用者から直接呼ばれる可能性を想定する必要があります。アクションの最初にGetUserId()とCheck<Role名>Role()でユーザーとロールを確認します。",
+    "wrongReasons": [
+      "画面名はクライアントから任意に送れるため、確認の根拠にならない。",
+      "Client Variableの値は利用者が改ざんできる。",
+      "画面側の確認は迂回できるため、サーバー側の確認を省略してはいけない。"
+    ]
+  },
+  {
+    "id": "logic-023",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "標準",
+    "question": "顧客管理チームと受注管理チームが、それぞれ独立したタイミングでリリースしたい。受注管理アプリは顧客管理の機能を使っている。顧客管理の機能の公開方法と、その際の注意点の組み合わせとして最も適切なものはどれか。",
+    "options": [
+      "PublicなServer Actionで公開する。同じトランザクションで動くので、リリースも独立できる",
+      "エンティティを書き込み可能で公開し、受注管理側で顧客データを直接更新する",
+      "Service Actionで公開する。リリースは独立できるが、別のトランザクションになるため失敗時の整合性を利用側で考慮する",
+      "Service Actionで公開する。呼び出し元と同じトランザクションで動くため、特別な考慮は不要"
+    ],
+    "answer": 2,
+    "explanation": "Service Actionは弱い依存関係で、実装の変更がすぐに利用側に反映されるため、チームごとに独立したリリースがしやすくなります。一方で、プロセスとトランザクションを共有しないため、利用側で失敗時の整合性やネットワークエラーへの対処が必要です。",
+    "wrongReasons": [
+      "Server Actionは強い依存関係で、提供側の変更を反映するには利用側の再公開が必要になり、リリースを独立させにくい。",
+      "データを直接更新させると、顧客管理のルールを迂回されデータの一貫性を保てない。",
+      "Service Actionは呼び出し元とは別のトランザクションで実行される。"
+    ]
+  },
+  {
+    "id": "logic-024",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "標準",
+    "question": "Coreモジュールで、非公開のStructure「InvoiceData」を入力パラメータに使うServer Actionを、PublicをYesにして公開しようとしたところエラーになった。原因として最も適切なものはどれか。",
+    "options": [
+      "Structureを入力パラメータに使うアクションは公開できないため",
+      "公開するアクションのパラメータに、公開されていないエンティティやStructureを使うことはできないため",
+      "公開するアクションには、入力パラメータを1つしか定義できないため",
+      "Structureを使うアクションは、Service Actionとしてしか公開できないため"
+    ],
+    "answer": 1,
+    "explanation": "アクションを公開するには、そのパラメータで使うエンティティやStructureも公開されている必要があります。InvoiceDataのPublicをYesにするか、公開された型を使うようにします。",
+    "wrongReasons": [
+      "公開されたStructureであれば、入力パラメータに使ってもアクションを公開できる。",
+      "公開するアクションの入力パラメータの数に、そのような制限はない。",
+      "Server Actionでも、公開された型を使えば公開できる。"
+    ]
+  },
+  {
+    "id": "logic-025",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "基礎",
+    "question": "Reactive Webアプリの複数の画面で、同じ入力チェック（電話番号の形式確認）を行いたい。クライアント側のロジックの置き場所として最も適切なものはどれか。",
+    "options": [
+      "各画面のClient Actionに同じロジックをコピーする",
+      "モジュールのClient Actions（クライアントロジック）に共通のClient Actionを作り、各画面から呼ぶ",
+      "Server Actionにして、入力のたびにサーバーで確認する",
+      "Client Variableに正規表現を保存して、各画面で参照する"
+    ],
+    "answer": 1,
+    "explanation": "複数の画面で使うクライアント側のロジックは、画面のスコープではなくモジュールのクライアントロジックにClient Actionとして作ると再利用できます。必要ならFunctionにして式から使うこともできます。",
+    "wrongReasons": [
+      "コピーするとロジックが重複し、修正漏れの原因になる。",
+      "形式の確認のためだけに毎回サーバーを呼ぶと、往復が増えて操作性が落ちる。",
+      "Client Variableは利用者が書き換えられ、ロジックを共有する仕組みでもない。"
+    ]
+  },
+  {
+    "id": "logic-026",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "標準",
+    "question": "検索ボックスのOnChangeで、1文字入力するたびにServer Actionを呼んで候補を取得している。入力が速いと候補の表示が乱れ、サーバーの負荷も高い。最も適切な改善はどれか。",
+    "options": [
+      "Server ActionのCache in Minutesを設定し、すべての入力をキャッシュする",
+      "OnChangeで呼ぶServer Actionを2つに分けて、交互に呼ぶ",
+      "候補の取得をOn Renderで行う",
+      "一定の文字数以上になってから、または入力が止まってから（検索ボタン押下などで）取得するようにし、サーバー呼び出しの回数を減らす"
+    ],
+    "answer": 3,
+    "explanation": "クライアントからのサーバー呼び出しはそれぞれがリクエストになるため、入力のたびに呼ぶと回数が膨大になります。一定の文字数や入力が止まったタイミング、明示的な操作に限定して呼び出すことで、負荷と表示の乱れを抑えられます。",
+    "wrongReasons": [
+      "入力のパターンは多様なためキャッシュの効果は薄く、呼び出し回数自体も減らない。",
+      "呼び出しを分けても、回数は変わらない。",
+      "On Renderでサーバーを呼ぶと、描画のたびに呼び出しが起こりさらに悪化する。"
+    ]
+  },
+  {
+    "id": "logic-027",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "応用",
+    "question": "画面に、顧客一覧を取得するScreen Aggregateと、「その一覧の顧客の売上集計」を計算するData Actionがある。Data Actionは、画面の変数にAggregateの結果を入れてから使う前提で作られているが、集計が空になることがある。原因と対策として最も適切なものはどれか。",
+    "options": [
+      "Data ActionはAggregateの取得完了後に実行されるため、原因は別にある",
+      "AggregateとData Actionは画面の読み込み後に同時に取得を始めるため、Data Action内で必要なデータを自ら取得するか、Only on demandにしてAggregateのOn After Fetchから更新する",
+      "Data ActionをOn Initializeで呼び出すように変更する",
+      "AggregateのMax. Recordsを増やす"
+    ],
+    "answer": 1,
+    "explanation": "Screen AggregateとData Actionは、On Initializeの後に同時に取得を開始するため、実行順序に依存する作りは不安定です。依存するデータはData Actionの中で自ら取得するか、Data ActionをOnly on demandにしてAggregateのOn After Fetchから更新します。",
+    "wrongReasons": [
+      "Data ActionとAggregateは並行して実行され、完了を待つ順序は保証されない。",
+      "Data ActionはOn Initializeから呼び出すものではなく、On Initializeでのサーバー呼び出しは描画を遅らせる。",
+      "件数を増やしても、実行順序の問題は解消しない。"
+    ]
+  },
+  {
+    "id": "logic-028",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "基礎",
+    "question": "アプリ全体の動作が遅いという報告を受け、性能改善に取り組むことになった。最初に行うこととして最も適切なものはどれか。",
+    "options": [
+      "すべてのServer ActionにCache in Minutesを設定する",
+      "すべてのAggregateをAdvanced SQLに書き換える",
+      "すべてのエンティティの属性にインデックスを追加する",
+      "Service Centerのレポートやログで遅い画面・クエリ・サービスを特定し、そこから対策する"
+    ],
+    "answer": 3,
+    "explanation": "性能改善は、Service Centerのレポートやログでボトルネックを特定することから始めます。原因を特定してから対策することで、効果の大きい箇所に労力を集中できます。",
+    "wrongReasons": [
+      "無差別なキャッシュは、古いデータの表示やメモリの浪費を招く。",
+      "Aggregateの最適化が失われ、保守性も下がるため、原因がわからないまま書き換えるべきではない。",
+      "インデックスの追加しすぎは登録・更新を遅くし、原因の特定にもならない。"
     ]
   }
 ]

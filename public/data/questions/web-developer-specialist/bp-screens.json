@@ -258,5 +258,265 @@
       "一定時間待つ方法では、実際の取得完了と表示が一致しない。",
       "件数0は「該当データなし」の場合も含むため、取得中かどうかを判定できない。"
     ]
+  },
+  {
+    "id": "screen-014",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "基礎",
+    "question": "「自分の申請一覧」画面で、Screen Aggregateのフィルタ条件に画面のInput Parameter「UserId」を使っている。セキュリティの観点で最も適切な改善はどれか。",
+    "options": [
+      "Input ParameterのデータタイプをUser Identifierに変更する",
+      "AggregateのフィルタでInput Parameterではなく GetUserId() を直接使い、サーバー側でログインユーザーを判定させる",
+      "Input Parameterの値をJavaScriptで暗号化してから渡す",
+      "画面のURLにUserIdが表示されないよう、Input Parameterの名前を変更する"
+    ],
+    "answer": 1,
+    "explanation": "クライアントから渡す値は改ざんできるため、利用者を特定する条件にInput Parameterを使うと他人のデータを取得されるおそれがあります。AggregateのフィルタにGetUserId()を置けばサーバー側で評価され、改ざんできません。",
+    "wrongReasons": [
+      "データタイプを変えても、クライアントから任意の値を渡せる点は変わらない。",
+      "クライアント側での暗号化は利用者が解析・改ざんでき、対策にならない。",
+      "名前を変えても値を改ざんできることに変わりはない。"
+    ]
+  },
+  {
+    "id": "screen-015",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "標準",
+    "question": "Anonymousロールを許可した公開画面に、問い合わせ番号を入力して回答を表示する機能がある。Screen AggregateとServer Actionについて注意すべき点として最も適切なものはどれか。",
+    "options": [
+      "Anonymousの画面ではAggregateはサーバーで実行されないため、特に注意は不要",
+      "画面で使うAggregateやServer Actionはそれぞれ呼び出し用のエンドポイントとして公開されるため、入力値を変えても他人のデータを取得できないようサーバー側で制限する",
+      "Anonymousの画面では、Server Actionを呼び出すことはできない",
+      "画面のボタンを非表示にしておけば、エンドポイントは外部から呼び出せない"
+    ],
+    "answer": 1,
+    "explanation": "クライアントから使うAggregateやServer Actionごとに、その要求を処理するREST APIのメソッドが作られます。Anonymousを許可した画面ではそれも公開されるため、入力値を改ざんされても他の記録を取得できないように、サーバー側で条件を検証します。",
+    "wrongReasons": [
+      "Screen Aggregateはサーバーで実行され、公開画面ではその呼び出しも誰でも行える。",
+      "Anonymousの画面でもServer Actionは呼び出せる。",
+      "画面の表示を隠しても、エンドポイントを直接呼び出すことはできる。"
+    ]
+  },
+  {
+    "id": "screen-016",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "応用",
+    "question": "1つの「受注管理」画面で、一般社員には閲覧だけ、管理者には削除や単価変更もできるようにしている。現在は管理者用のボタンをロールで非表示にしているだけである。セキュリティ上、最も適切な設計はどれか。",
+    "options": [
+      "管理者用のボタンをCSSのdisplay:noneでも隠して二重に保護する",
+      "画面を開いたときにOn Initializeでロールを確認し、変数で表示を切り替える",
+      "管理者用の機能は管理者ロールだけを許可した別の画面に分け、管理者用のServer Actionの中でもロールを確認する",
+      "Client Variableに管理者かどうかを保存し、ボタンのVisibleに使う"
+    ],
+    "answer": 2,
+    "explanation": "ロールによって機能が異なる場合は、ロールごとに画面を分けるのが最も確実です。1つの画面で表示だけを切り替えても、改ざんによって隠した機能に到達される可能性があるため、サーバー側でも必ずロールを確認します。",
+    "wrongReasons": [
+      "表示を隠す方法を重ねても、クライアント側の制御である点は変わらない。",
+      "On Initializeでの判定もクライアント側の処理であり、改ざんで回避できる。",
+      "Client Variableは利用者が改ざんでき、画面の制御に使うべきではない。"
+    ]
+  },
+  {
+    "id": "screen-017",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "標準",
+    "question": "画面にサードパーティのJavaScriptライブラリのカレンダーを表示したい。ライブラリの初期化には、画面のDOM要素が必要である。初期化処理を置くイベントとして最も適切なものはどれか。",
+    "options": [
+      "On Initialize",
+      "On After Fetch",
+      "On Destroy",
+      "On Ready"
+    ],
+    "answer": 3,
+    "explanation": "On Readyは画面（Block）のDOMの準備ができたときに1回実行されるため、DOMを必要とするサードパーティ部品の初期化やイベントリスナーの追加に適しています。",
+    "wrongReasons": [
+      "On InitializeはDOMの準備より前に実行されるため、DOM要素はまだ使えない。",
+      "On After Fetchはデータ取得後のイベントで、DOMの初期化処理のためのものではない。",
+      "On Destroyは画面が破棄される前のイベントで、後片付けに使う。"
+    ]
+  },
+  {
+    "id": "screen-018",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "標準",
+    "question": "On Renderの中で、画面のLocal Variable「DisplayCount」に値を代入する処理を追加したところ、画面が固まるようになった。原因として最も適切なものはどれか。",
+    "options": [
+      "On Renderの中ではLocal Variableを参照できないため",
+      "画面のデータが変わるとOn Renderが再び実行されるため、On Renderでデータを変更すると繰り返し実行されて無限ループになるため",
+      "On Renderはサーバー側で実行されるため、変数の代入に時間がかかるため",
+      "On Renderは1回しか実行されないため、代入した値が画面に反映されないため"
+    ],
+    "answer": 1,
+    "explanation": "On Renderは画面のデータが変わるたびに実行されます。On Renderの中で画面のデータを変更すると、それがまた描画を引き起こして無限ループになるおそれがあるため、On Renderでは画面のデータを変更しないようにします。",
+    "wrongReasons": [
+      "On RenderでもLocal Variableは参照できる。",
+      "On Renderはクライアント側で実行されるイベントである。",
+      "On Renderは画面のデータが変わるたびに実行される。"
+    ]
+  },
+  {
+    "id": "screen-019",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "基礎",
+    "question": "On Readyでwindowのresizeイベントにリスナーを追加している。画面を行き来するたびにリスナーが増え、動作が重くなってきた。リスナーを削除する処理を置くイベントとして最も適切なものはどれか。",
+    "options": [
+      "On Destroy",
+      "On Initialize",
+      "On Render",
+      "On Parameters Changed"
+    ],
+    "answer": 0,
+    "explanation": "On Destroyは画面やBlockが破棄されてDOMから取り除かれる前に実行されます。追加したイベントリスナーの削除やサードパーティ部品の破棄など、後片付けの処理に使います。",
+    "wrongReasons": [
+      "On Initializeは表示前の初期化用で、前の画面の後片付けには使えない。",
+      "On Renderは描画のたびに実行されるため、そこで削除すると必要なリスナーまで消えてしまう。",
+      "On Parameters ChangedはBlockの入力が変わったときのイベントで、画面の破棄とは関係ない。"
+    ]
+  },
+  {
+    "id": "screen-020",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "標準",
+    "question": "Screen Aggregateで取得した一覧の先頭の行を、画面を開いたときに選択状態にしたい。On Readyで一覧の先頭を参照したところ、ときどき空になる。最も適切な修正はどれか。",
+    "options": [
+      "On Initializeで一覧の先頭を参照する",
+      "On Readyの最初にJavaScriptで1秒待ってから参照する",
+      "On Renderで毎回一覧の先頭を選択状態にする",
+      "そのAggregateのOn After Fetchで、取得した一覧の先頭を選択状態にする"
+    ],
+    "answer": 3,
+    "explanation": "On ReadyやOn Initializeの時点では、AggregateやData Actionのデータがまだ取得できていない可能性があります。取得したデータに対する処理は、そのAggregateのOn After Fetchで行います。",
+    "wrongReasons": [
+      "On Initializeはデータ取得の開始前に実行されるため、一覧はまだ空である。",
+      "一定時間待つ方法では、通信状況によって取得が間に合わないことがある。",
+      "On Renderで毎回選択し直すと、利用者が選んだ行も上書きされてしまう。"
+    ]
+  },
+  {
+    "id": "screen-021",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "基礎",
+    "question": "開発中に、データを直接登録・削除できるテスト用の画面をモジュールに作成した。この画面の扱いとして最も適切なものはどれか。",
+    "options": [
+      "ロールをAnonymousにしておけば、どの環境にデプロイしても問題ない",
+      "メニューに表示しなければ、本番環境にデプロイしても問題ない",
+      "本番環境では、画面のURLを知っている人だけが使えるので問題ない",
+      "テスト用の画面は開発環境以外にはデプロイしない"
+    ],
+    "answer": 3,
+    "explanation": "テスト用の画面は公開状態で強い機能を持つことが多く、データベースを不正に操作される入口になります。開発環境以外にはデプロイしないようにします。",
+    "wrongReasons": [
+      "Anonymousを許可すると、誰でもテスト画面を使えてしまい最も危険である。",
+      "メニューに表示しなくても、URLを直接指定すれば開ける。",
+      "URLは推測や漏えいの可能性があり、秘密にすることは対策にならない。"
+    ]
+  },
+  {
+    "id": "screen-022",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "応用",
+    "question": "商品詳細画面に、主要な商品情報と、表示に時間がかかる「おすすめ商品」の欄がある。主要な情報を先に表示させたい。最も適切な実装はどれか。",
+    "options": [
+      "おすすめ商品のデータ取得をOn Initializeに移し、先に取得を始める",
+      "おすすめ商品の取得処理を含むBlockをIfウィジェットのTrue側に置き、初期値Falseの変数を画面のOn RenderでTrueにして、後から描画・取得させる",
+      "おすすめ商品を取得するAggregateのMax. Recordsを1にする",
+      "すべてのデータ取得を1つのData Actionにまとめる"
+    ],
+    "answer": 1,
+    "explanation": "副次的なコンテンツは、取得処理ごとBlockに入れてIfで描画を遅らせると、主要なコンテンツを先に表示できます。Falseのときの分岐には空の状態を置くと、後から表示されたときに画面が大きく動くのも防げます。",
+    "wrongReasons": [
+      "On Initializeでの取得は、画面全体の描画開始を遅らせてしまう。",
+      "件数を減らしても、主要な情報と同時に取得される点は変わらない。",
+      "1つのData Actionにまとめると、遅い取得に主要な情報の表示も引きずられる。"
+    ]
+  },
+  {
+    "id": "screen-023",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "基礎",
+    "question": "入力値のエラー状態に応じて、テキストボックスの枠を赤くするCSSクラスを付け外ししたい。最も適切な実装はどれか。",
+    "options": [
+      "ウィジェットのStyle Classesプロパティに、状態に応じてクラス名を返す式を設定する",
+      "On Renderで、JavaScriptを使ってDOM要素にクラスを追加・削除する",
+      "On Readyで、JavaScriptを使ってDOM要素のstyle属性を直接書き換える",
+      "赤枠用と通常用の2つのテキストボックスを用意し、Visibleで切り替える"
+    ],
+    "answer": 0,
+    "explanation": "Style Classesプロパティには、実行時に評価される式を設定できます。JavaScriptでクラスを操作するとコードの見通しが悪くなり、描画時のちらつきの原因にもなるため、ローコードの機能で実装します。",
+    "wrongReasons": [
+      "JavaScriptでのクラス操作は、見通しの悪さや描画時のちらつきの原因になる。",
+      "On Readyは開いたときに1回しか実行されないため、入力のたびに変わる状態に追従できない。",
+      "同じ入力欄を二重に持つと、値の同期などで保守が難しくなる。"
+    ]
+  },
+  {
+    "id": "screen-024",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "標準",
+    "question": "一覧の各行に商品画像を表示すると、画像の読み込みにつれて一覧の高さが変わり、画面がちらつく。最も適切な対策はどれか。",
+    "options": [
+      "画像をBase64に変換してAggregateで一緒に取得する",
+      "画像の読み込みが終わるまで、一覧全体を非表示にする",
+      "Imageウィジェットの幅と高さを、最終的な画像のサイズに合わせて設定する",
+      "On Renderで画像の高さをJavaScriptで毎回計算して設定する"
+    ],
+    "answer": 2,
+    "explanation": "Imageウィジェットの幅と高さを指定しないと、画像の読み込み完了まで高さが0から変化し、ちらつきが起こります。想定する画像のサイズを設定しておくと、レイアウトが安定します。",
+    "wrongReasons": [
+      "Base64で一緒に取得するとデータ量が増え、一覧の取得自体が遅くなる。",
+      "全体を隠すと、表示できる情報まで待たせることになる。",
+      "描画のたびにJavaScriptで計算すると処理が重くなり、ちらつきも完全には防げない。"
+    ]
+  },
+  {
+    "id": "screen-025",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "標準",
+    "question": "Reactive Webアプリで、JavaScriptノードの中で window.cache = {...} のようにグローバルオブジェクトにデータを保持している。長時間使うとメモリ使用量が増え続ける。原因と対策として最も適切なものはどれか。",
+    "options": [
+      "画面を移動するたびにwindowオブジェクトは初期化されるため、原因は別の場所にある",
+      "JavaScriptノードはサーバーで実行されるため、サーバーのメモリが増えている",
+      "グローバルオブジェクトはブラウザを閉じると保存されるため、localStorageを定期的に削除する",
+      "Reactive Webは単一ページアプリケーションのため画面を移動してもwindowオブジェクトは消えない。グローバルオブジェクトは避け、スコープを限定した変数などを使う"
+    ],
+    "answer": 3,
+    "explanation": "OutSystemsのReactive WebやMobileは単一ページアプリケーションとして動作し、画面を移動してもwindowオブジェクトはクリアされません。windowに付けたグローバル変数やキャッシュ、リスナーは破棄されずに残るため、使用を避けます。",
+    "wrongReasons": [
+      "単一ページアプリケーションのため、画面の移動でwindowオブジェクトは初期化されない。",
+      "JavaScriptノードはブラウザ側で実行される。",
+      "windowのグローバルオブジェクトはメモリ上の値で、localStorageとは別物である。"
+    ]
+  },
+  {
+    "id": "screen-026",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "応用",
+    "question": "Blockの中で、自身のInput Parameter「Quantity」の値をボタン操作で変更している。値が変わったらOn Parameters Changedで合計を再計算させるつもりだったが、再計算されない。原因として最も適切なものはどれか。",
+    "options": [
+      "On Parameters Changedは、親の画面やBlockが入力値を変えたときだけ発生し、Block内部での入力値の変更では発生しないため",
+      "On Parameters Changedは、Blockが最初に表示されたときに1回だけ発生するため",
+      "Input ParameterがInteger型の場合は、On Parameters Changedが発生しないため",
+      "On Parameters Changedは、On Renderの前には発生しないため"
+    ],
+    "answer": 0,
+    "explanation": "On Parameters Changedは、親の画面やBlockがBlockの入力値を変更したときにだけ発生します。Block内部での変更には反応しないため、Block内の操作で再計算するなら、その操作のアクションの中で直接再計算します。",
+    "wrongReasons": [
+      "On Parameters Changedは初回表示時のイベントではなく、親からの入力変更のたびに発生する。",
+      "データタイプによってイベントの発生有無が変わることはない。",
+      "他のイベントとの順序ではなく、変更した場所が親ではないことが原因である。"
+    ]
   }
 ]

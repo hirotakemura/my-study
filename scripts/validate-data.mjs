@@ -11,6 +11,7 @@ const index = read('questions/index.json')
 const ids = new Set()
 for (const exam of index.exams) {
   let total = 0
+  const multipliers = new Set()
   console.log(`\n# ${exam.name}`)
   for (const cat of exam.categories) {
     const list = read(`questions/${cat.file}`)
@@ -37,13 +38,17 @@ for (const exam of index.exams) {
       if (/(選択肢\s*[A-DＡ-Ｄ1-4１-４]|[（(][A-D][)）]|\b[A-D]は|\b[A-D]の選択肢)/.test(texts))
         errors.push(`${where}: 選択肢の記号を参照している`)
     }
-    const flag = list.length === cat.weight ? '' : `  ← 期待値 ${cat.weight}問`
-    if (list.length !== cat.weight) warn.push(`${cat.name}: ${list.length}問（期待 ${cat.weight}）`)
+    // 問題数は出題比率（weight）の整数倍にそろえる
+    const mult = list.length / cat.weight
+    multipliers.add(mult)
+    const flag = Number.isInteger(mult) ? '' : `  ← 比率 ${cat.weight} の整数倍ではない`
+    if (!Number.isInteger(mult)) warn.push(`${cat.name}: ${list.length}問（比率 ${cat.weight} の整数倍ではない）`)
     console.log(
       `${cat.name.padEnd(16, '　')} ${String(list.length).padStart(3)}問  基礎${diff.基礎} 標準${diff.標準} 応用${diff.応用}  正解位置${answerPos.join('/')}${flag}`,
     )
   }
   console.log(`合計: ${total}問`)
+  if (multipliers.size > 1) warn.push(`${exam.id}: 分野ごとの問題数が出題比率とそろっていない（倍率 ${[...multipliers].join(', ')}）`)
 }
 
 const os = read('plan/outsystems-exams.json')

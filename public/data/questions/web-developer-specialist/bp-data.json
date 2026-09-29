@@ -258,5 +258,265 @@
       "Client Variableはブラウザごとに保存されるため、別の端末では同じ設定を使えない。",
       "Local Variableは画面を離れると失われ、永続的な保存には使えない。"
     ]
+  },
+  {
+    "id": "data-014",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "基礎",
+    "question": "外部サービスとの連携に使うパスワードを、環境ごとにService Centerで設定できるようにしたい。値は機密情報として保護したい。最も適切な方法はどれか。",
+    "options": [
+      "Site Propertyを作成し、Is SecretプロパティをYes（True）にする",
+      "Site Propertyの既定値にパスワードを入力し、そのまま全環境へデプロイする",
+      "Client Variableにパスワードを保存し、画面から連携処理を呼び出す",
+      "Server Actionの中にパスワードを文字列で記述する"
+    ],
+    "answer": 0,
+    "explanation": "パスワードやアクセストークンなどの機密情報をSite Propertyに持たせる場合は、Is SecretをYesにした秘密のSite Propertyにします。値は暗号化され、環境ごとにService Centerで設定できます。",
+    "wrongReasons": [
+      "既定値にパスワードを入れるとモジュールと一緒に配布され、全環境で同じ値が見えてしまう。",
+      "Client Variableはブラウザに保存され利用者が参照できるため、機密情報を置いてはいけない。",
+      "コードに書くと参照できる人全員に漏れ、変更のたびに再公開も必要になる。"
+    ]
+  },
+  {
+    "id": "data-015",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "標準",
+    "question": "各画面の表示設定をまとめた数千文字のJSONを、Site Propertyに保存して運用担当が編集できるようにしたいという案が出た。この案に対する指摘として最も適切なものはどれか。",
+    "options": [
+      "Site PropertyはInteger型しか作れないため、JSONは保存できない",
+      "Site Propertyの値には2000文字の上限があるため、大きな設定データは設定用のエンティティと管理画面で扱う",
+      "Site Propertyは文字数の制限がないため、問題なく保存できる",
+      "Site Propertyに保存したJSONは、Service Centerで編集すると自動で整形される"
+    ],
+    "answer": 1,
+    "explanation": "Site Propertyの値は設計上2000文字が上限で、秘密のSite Propertyにしたり文字コードによっては使える文字数がさらに少なくなります。大きな設定データは、設定用のエンティティと管理用の画面で扱うのが適切です。",
+    "wrongReasons": [
+      "Site PropertyはText型なども作成できる。",
+      "Site Propertyの値には2000文字の上限がある。",
+      "Service CenterがJSONを自動で整形する機能はなく、上限の問題も解決しない。"
+    ]
+  },
+  {
+    "id": "data-016",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "応用",
+    "question": "既存のSite Property「ApiKey」を、Is SecretをYesに変更して各環境にデプロイした。デプロイ後の作業として最も適切なものはどれか。",
+    "options": [
+      "特に作業は不要。以前の値が暗号化されてそのまま使われる",
+      "Service Studioの既定値を削除すれば、各環境の値が自動で暗号化される",
+      "Is Secretを変更すると設定済みのEffective Valueがクリアされるため、各環境のService Centerで値を設定し直す",
+      "Is Secretの変更は開発環境にだけ反映されるため、本番環境では手動で有効にする"
+    ],
+    "answer": 2,
+    "explanation": "Site Propertyを秘密から通常へ、または通常から秘密へ変更すると、設定されていたEffective Valueがクリアされます。そのため、変更後は各環境のService Center（またはService Studio）で値を設定し直す必要があります。",
+    "wrongReasons": [
+      "Is Secretを変更すると値はクリアされ、以前の値は引き継がれない。",
+      "既定値の削除で各環境の値が暗号化されることはない。",
+      "Is Secretの変更はデプロイした各環境に反映される。"
+    ]
+  },
+  {
+    "id": "data-017",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "標準",
+    "question": "利用者が画面を操作するたびに、Server Actionの中でSite Property「LastAccessDateTime」を現在日時で更新している。アクセスが集中すると、処理が遅くなったりデッドロックのエラーが出たりする。最も適切な改善策はどれか。",
+    "options": [
+      "Site Propertyの更新を、Client Actionから行うように変更する",
+      "Site Propertyの型をDate TimeからTextに変更する",
+      "Site Propertyの更新前にCommitTransactionを呼ぶ",
+      "頻繁に変わる値はSite Propertyではなくデータベースのエンティティに保存し、Site Propertyは定数として扱う"
+    ],
+    "answer": 3,
+    "explanation": "Site Propertyは定数のように扱うのがベストプラクティスで、頻繁な更新はキャッシュ無効化とデータベースの負荷を招き、高負荷時にはデッドロックなどのエラーの原因にもなります。頻繁に変わる値はエンティティで管理します。",
+    "wrongReasons": [
+      "クライアントからSite Propertyを直接更新することはできず、更新頻度の問題も変わらない。",
+      "型を変えても更新のたびにキャッシュ無効化と負荷が発生する点は同じ。",
+      "コミットのタイミングを変えても、頻繁な更新という根本原因は解消しない。"
+    ]
+  },
+  {
+    "id": "data-018",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "基礎",
+    "question": "一覧画面のAggregateで取得する最大件数を、環境ごとに再公開なしで調整できるようにしたい。最も適切な実装はどれか。",
+    "options": [
+      "Site Property（例：MaxRecords）を作成し、AggregateのMax. RecordsにSite.MaxRecordsを設定する",
+      "AggregateのMax. Recordsに固定値を入れ、変更のたびに再公開する",
+      "Client Variableに件数を保存し、利用者が自由に変更できるようにする",
+      "Max. Recordsを空にして、全件を取得する"
+    ],
+    "answer": 0,
+    "explanation": "Site PropertyをAggregateのMax. Recordsに使えば、Service CenterでEffective Valueを変更するだけで環境ごとに取得件数を調整できます。まれにしか変わらない構成値は、Site Propertyの代表的な用途です。",
+    "wrongReasons": [
+      "固定値では、調整のたびに再公開が必要になる。",
+      "利用者が件数を自由に変えられると、大量取得で性能が落ちるおそれがある。",
+      "全件取得は件数が多いと性能が大きく劣化する。"
+    ]
+  },
+  {
+    "id": "data-019",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "標準",
+    "question": "商品カテゴリの一覧を、業務担当者が管理画面から追加・変更できるようにしたい。データモデルとして最も適切なものはどれか。",
+    "options": [
+      "Static Entityで定義し、管理画面からCreate<StaticEntity>で追加する",
+      "Site Propertyにカテゴリをカンマ区切りで保存する",
+      "通常のEntityとして定義し、管理画面から登録・更新できるようにする",
+      "Static Entityで定義し、追加のたびに開発者がレコードを追加して再公開する運用にする"
+    ],
+    "answer": 2,
+    "explanation": "Static Entityは開発時に決まる固定の値の集まりで、使えるアクションはGet<StaticEntity>だけです。業務担当者が実行時に追加・変更するデータは、通常のEntityで管理します。",
+    "wrongReasons": [
+      "Static Entityには作成用のアクションがなく、実行時にレコードを追加できない。",
+      "一覧データをSite Propertyに詰め込むと、文字数の上限や更新時のキャッシュ無効化の問題がある。",
+      "業務担当者が変えたい値を再公開で管理すると、運用の負担が大きい。"
+    ]
+  },
+  {
+    "id": "data-020",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "標準",
+    "question": "Static Entity「OrderStatus」に、担当部署を表す属性を追加し、通常のEntity「Department」を参照させようとしたところ、エラーになった。理由として最も適切なものはどれか。",
+    "options": [
+      "Static Entityには属性を追加できないため",
+      "Static Entityが参照（外部キー）を持てるのは、他のStatic Entityだけであるため",
+      "Department側にOrderStatusへの参照を先に作る必要があるため",
+      "Static Entityの属性はText型しか使えないため"
+    ],
+    "answer": 1,
+    "explanation": "Static Entityが外部キーとして持てるのは、他のStatic Entityへの参照だけです。通常のEntityとの関連が必要な場合は、通常のEntity側からStatic Entityを参照する形でモデル化します。",
+    "wrongReasons": [
+      "Static Entityにも属性を追加できる。",
+      "参照の作成順序の問題ではなく、Static Entityが通常のEntityを参照できないことが理由。",
+      "Static Entityの属性にはText以外の型も使える。"
+    ]
+  },
+  {
+    "id": "data-021",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "応用",
+    "question": "受注ヘッダーを削除する夜間処理が非常に遅い。受注明細・配送・請求など多くのエンティティが受注を参照し、Delete RuleはすべてDeleteになっている。アプリ側で関連データを確実に削除する処理はすでにある。性能の観点で検討すべき対策として最も適切なものはどれか。",
+    "options": [
+      "Delete RuleをすべてProtectに変更する",
+      "受注エンティティのすべての属性にインデックスを追加する",
+      "削除処理を画面のClient Actionから実行する",
+      "参照側のDelete RuleをIgnoreにしてデータベースの参照整合性チェックをなくし、関連データの削除はアプリ側の処理と定期的なハウスキーピングで確実に行う"
+    ],
+    "answer": 3,
+    "explanation": "DeleteやProtectのDelete Ruleは、削除のたびに参照している全テーブルへの確認や削除が発生し、データベースの負荷になります。Ignoreは最も高速ですが整合性をデータベースが保証しないため、アプリ側の削除処理とハウスキーピングを確実に行うことが前提です。",
+    "wrongReasons": [
+      "Protectは参照の確認が必要なうえ、先に子を削除しないとエラーになり、性能面では最も不利。",
+      "インデックスを増やすと削除や更新の負荷がむしろ増える。",
+      "実行場所を変えても、データベースで発生する処理量は変わらない。"
+    ]
+  },
+  {
+    "id": "data-022",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "標準",
+    "question": "受注エンティティを「店舗Id」と「受注日」の両方の条件で絞り込むクエリが遅い。インデックスの設計として最も適切なものはどれか。",
+    "options": [
+      "よく一緒に使う「店舗Id」と「受注日」の複合インデックスを作成し、クエリでも同じ順序の条件を使う",
+      "受注エンティティのすべての属性に、それぞれ単独のインデックスを作成する",
+      "インデックスは作らず、AggregateのMax. Recordsを小さくする",
+      "Boolean型の「キャンセル済み」属性にだけインデックスを作成する"
+    ],
+    "answer": 0,
+    "explanation": "複数の列でよく絞り込むクエリには、複合インデックスが有効です。インデックスは列の順序が重要なため、クエリでも同じ順序を意識して使います。",
+    "wrongReasons": [
+      "インデックスを増やしすぎると、登録・更新のたびにインデックスの更新が発生して遅くなる。",
+      "Max. Recordsを小さくしても、条件に合うレコードを探す処理自体は速くならない。",
+      "値の種類が少ないBoolean型のインデックスは、日付などに比べて効果が小さい。"
+    ]
+  },
+  {
+    "id": "data-023",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "標準",
+    "question": "インデックスの効果について、OutSystemsのベストプラクティスに沿った説明として最も適切なものはどれか。",
+    "options": [
+      "インデックスは多いほど、検索・登録・更新のすべてが速くなる",
+      "Boolean型のように値の種類が少ない属性ほど、インデックスの効果が大きい",
+      "日付や短いテキストのように値のばらつきが大きい属性は、Boolean型の属性よりインデックスの効果が大きい",
+      "インデックスは結合（Join）の条件には効果がない"
+    ],
+    "answer": 2,
+    "explanation": "値のばらつきが大きい属性（日付や短いテキストなど）ほど、インデックスによって検索対象を大きく絞り込めます。インデックスは登録・更新のコストになるため、クエリの条件や結合に使う属性を中心に選びます。",
+    "wrongReasons": [
+      "インデックスが多いほど、登録・更新のたびにインデックスの更新が発生して遅くなる。",
+      "値の種類が少ない属性は絞り込み効果が小さく、インデックスの効果も小さい。",
+      "結合の条件に使う属性も、インデックスの有力な候補である。"
+    ]
+  },
+  {
+    "id": "data-024",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "標準",
+    "question": "数万行のExcelファイルをアップロードして商品データを取り込む画面がある。取り込みに時間がかかり、ときどきリクエストがタイムアウトする。最も適切な改善策はどれか。",
+    "options": [
+      "アップロードしたExcelを、画面のClient Actionで1行ずつServer Actionに送る",
+      "Excelのバイナリをいったん一時エンティティに保存し、Timerを起動（Wake）してバックグラウンドで取り込む",
+      "Excelの取り込みをOn Initializeで実行する",
+      "アップロードできるExcelの行数を100行に制限する"
+    ],
+    "answer": 1,
+    "explanation": "アップロードとデータ処理を分け、処理はTimerでバックグラウンド実行すると、リクエストのタイムアウトを避けられます。バッチ処理として、再試行やエラー処理、行ごとのコミットなども組み込めます。",
+    "wrongReasons": [
+      "1行ずつサーバーへ送ると往復が数万回発生し、画面を閉じると処理も止まる。",
+      "画面表示時の処理にすると、その画面自体が表示されなくなる。",
+      "業務上必要なデータ量を制限するのは、根本的な解決にならない。"
+    ]
+  },
+  {
+    "id": "data-025",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "応用",
+    "question": "注文エンティティから古いデータをアーカイブ用エンティティへ移すTimerを作ることになった。移動の基準を「作成から7日経過」にしたところ、アーカイブ側を参照する画面へのアクセスが急増し、かえって遅くなった。最も適切な見直し方はどれか。",
+    "options": [
+      "アーカイブをやめて、すべてのデータを注文エンティティに戻す",
+      "アーカイブ用エンティティにも、注文エンティティと同じ数のインデックスを作る",
+      "移動の基準をさらに短くして、注文エンティティを小さく保つ",
+      "実際に業務で参照される期間を分析し、ほとんど参照されなくなった時点を移動の基準にする"
+    ],
+    "answer": 3,
+    "explanation": "アーカイブは、ほとんど参照されなくなった古いデータを移すことで効果が出ます。移動が早すぎるとアーカイブ側へのアクセスが増えて逆効果になるため、参照される期間を踏まえて基準を決めます。",
+    "wrongReasons": [
+      "アーカイブをやめると、テーブルの肥大化による性能低下が再び起こる。",
+      "インデックスを増やしても、アーカイブ側へのアクセスが多すぎるという根本原因は解消しない。",
+      "基準を短くすると、アーカイブ側へのアクセスがさらに増えて悪化する。"
+    ]
+  },
+  {
+    "id": "data-026",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：データ",
+    "difficulty": "基礎",
+    "question": "Reactive Webアプリで、利用者が入力した検索キーワードを、別の画面へ移動したりブラウザを閉じたりした後も保持したい。機密性のない値である。最も適切な保存先はどれか。",
+    "options": [
+      "画面のLocal Variable",
+      "Site Property",
+      "Client Variable",
+      "Session Variable"
+    ],
+    "answer": 2,
+    "explanation": "Client Variableはブラウザ側にキーと値の形で保存され、画面を移動したりブラウザを閉じたりしても値が残ります。機密性のない、利用者ごとの設定や状態を保持するのに向いています。",
+    "wrongReasons": [
+      "Local Variableは画面を離れると値が失われる。",
+      "Site Propertyは全利用者で共通の値で、利用者ごとの入力を保存する用途には使えない。",
+      "Session VariableはTraditional Webの仕組みで、Reactive Webで利用者ごとの値をブラウザ側に保持するにはClient Variableを使う。"
+    ]
   }
 ]

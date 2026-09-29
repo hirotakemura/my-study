@@ -198,5 +198,205 @@
       "キャッシュしても全件をメモリで検索する非効率さは残り、登録直後のユーザーが反映されないおそれもある。",
       "全件をメモリに読み込んでから検索するため、データベースでの絞り込みより非効率。"
     ]
+  },
+  {
+    "id": "query-011",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "応用",
+    "question": "Timerで未処理データを1000件ずつ処理するため、SQL要素（Advanced SQL）のMax. Recordsプロパティを1000に設定した。対象は数百万件ある。この実装の問題点と対策として最も適切なものはどれか。",
+    "options": [
+      "SQL要素のMax. RecordsはSQL文を変えず、取得結果にアプリ側で上限をかけるだけなので、SQL文にTOPなどの句を書いてデータベース側で件数を絞る",
+      "SQL要素ではMax. Recordsが使えないため、Aggregateに置き換える必要がある",
+      "Max. Recordsを設定すればSQL文にTOPが自動で追加されるため、問題はない",
+      "Max. Recordsを1000にするとSQL要素のCount出力も1000になるため、残件数がわからなくなる"
+    ],
+    "answer": 0,
+    "explanation": "SQL要素のMax. Recordsはアプリケーション側で結果の件数を制限するだけで、実行されるSQL文は変わりません。データベース側で件数を絞るには、TOP（SQL Server）などの句をSQL文に書く必要があります。Aggregateと異なる点に注意します。",
+    "wrongReasons": [
+      "SQL要素にもMax. Recordsプロパティはあるが、SQL文には反映されない。",
+      "Aggregateと違い、SQL要素のSQL文が自動で書き換えられることはない。",
+      "Count出力はMax. Recordsを考慮しない件数を返すため、1000に制限されるわけではない。"
+    ]
+  },
+  {
+    "id": "query-012",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "標準",
+    "question": "外部から受け取った商品情報で既存レコードを更新する同期処理が、「該当レコードを削除してから新しく作成する」実装になっていて遅い。ベストプラクティスに沿った改善として最も適切なものはどれか。",
+    "options": [
+      "削除と作成の間にCommitTransactionを入れる",
+      "削除したレコードをアーカイブ用エンティティにコピーしてから作成する",
+      "削除と作成をそれぞれ別のTimerに分ける",
+      "既存レコードはUpdateで更新し、存在するかわからない場合はCreateOrUpdateを使う"
+    ],
+    "answer": 3,
+    "explanation": "データベースへの操作はそれぞれ往復のコストがかかるため、操作の回数を減らすことが重要です。削除してから作成する代わりにUpdateを使い、取得・削除・作成の組み合わせはCreateOrUpdateに置き換えます。",
+    "wrongReasons": [
+      "途中でコミットしても操作の回数は減らず、中断時に削除だけが確定する危険も生じる。",
+      "コピーを追加すると、データベースへの操作がさらに増える。",
+      "処理を分けても操作の回数は同じで、途中の状態でデータが欠ける時間も生まれる。"
+    ]
+  },
+  {
+    "id": "query-013",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "標準",
+    "question": "全顧客（約5万件）の「累計購入額」を再計算する処理が、顧客ごとにAggregateで注文合計を求めてUpdateCustomerする実装になっている。最も効率的な改善はどれか。",
+    "options": [
+      "顧客ごとのAggregateにCache in Minutesを設定する",
+      "処理をClient Actionに移して、ブラウザで計算する",
+      "サブクエリで注文合計を集計するUPDATE文を、SQL要素で1回実行する",
+      "For Eachの中で、UpdateCustomerの代わりにCreateOrUpdateCustomerを使う"
+    ],
+    "answer": 2,
+    "explanation": "ループの中で1件ずつクエリと更新を行うと、件数分のデータベースへの往復が発生します。大量の更新は、サブクエリを使ったUPDATE文を1回実行する方が、データベースの一括処理の効率を生かせます。",
+    "wrongReasons": [
+      "注文は日々変わるため、キャッシュでは正しい合計にならず、往復の多さも残る。",
+      "ブラウザへ大量のデータを送ることになり、遅くなるうえセキュリティ上も問題がある。",
+      "使うEntity Actionを変えても、1件ずつの操作である点は変わらない。"
+    ]
+  },
+  {
+    "id": "query-014",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "基礎",
+    "question": "月次集計のために、SQL要素で CREATE TABLE を実行して一時テーブルを作ろうとしている。この方針に対する指摘として最も適切なものはどれか。",
+    "options": [
+      "CREATE TABLEはTimerの中でのみ実行できる",
+      "SQL要素ではSELECT・INSERT・UPDATE・DELETEだけを使い、テーブルが必要ならエンティティとして定義する",
+      "CREATE TABLEの後にCommitTransactionを呼べば問題ない",
+      "Expand InlineをYesにすれば、CREATE TABLEを安全に実行できる"
+    ],
+    "answer": 1,
+    "explanation": "SQL要素はSELECT・INSERT・UPDATE・DELETEの実行に使うものです。CREATE TABLEなどのDDLを実行すると、OutSystemsが管理するデータモデルと実際のデータベースが食い違い、不具合の原因になります。",
+    "wrongReasons": [
+      "実行する場所に関係なく、DDLの実行は避けるべきである。",
+      "コミットしてもデータモデルとの不整合という問題は解消しない。",
+      "Expand InlineはSQLインジェクションの危険を高める設定で、DDLの問題とは関係ない。"
+    ]
+  },
+  {
+    "id": "query-015",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "基礎",
+    "question": "SQL要素で、データベース上の物理テーブル名（OSUSR_ で始まる名前）を直接指定してSELECTを書いた。この書き方について正しい説明として最も適切なものはどれか。",
+    "options": [
+      "物理テーブル名を直接指定すると、どの環境でも同じ名前なので最も確実である",
+      "物理テーブル名で書くと処理が速くなるため、推奨される",
+      "物理テーブル名はTimerの中でだけ使える",
+      "OSUSR・OSSYS・OSLOGで始まる物理テーブルは直接参照できずエラーになるため、{Entity} と [Attribute] の形で参照する"
+    ],
+    "answer": 3,
+    "explanation": "SQL要素では、エンティティを {Entity}、属性を [Attribute] の形で参照します。データモデルの整合性を保つため、OSUSR・OSSYS・OSLOGで始まる物理テーブルを直接使うとエラーになります。",
+    "wrongReasons": [
+      "物理テーブル名は環境によって異なる可能性があり、直接の参照はエラーになる。",
+      "直接指定しても速くはならず、そもそも使用できない。",
+      "実行場所に関係なく、物理テーブルの直接参照はできない。"
+    ]
+  },
+  {
+    "id": "query-016",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "標準",
+    "question": "SQL要素のMax. Recordsを50に設定し、該当件数が300件あるクエリを実行した。出力のListとCountについて正しい説明として最も適切なものはどれか。",
+    "options": [
+      "Listには最大50件が入り、CountにはMax. Recordsを考慮しない件数が入る",
+      "ListにもCountにも50が入る",
+      "Listには300件すべてが入り、Countは50になる",
+      "SQL要素にはCount出力がないため、件数は別のクエリで取得する"
+    ],
+    "answer": 0,
+    "explanation": "SQL要素は常にListとCountの2つの出力を持ちます。CountはMax. Recordsを考慮せずに、クエリが返したレコードの件数を示します。",
+    "wrongReasons": [
+      "CountはMax. Recordsの値ではなく、Max. Recordsを考慮しない件数を返す。",
+      "Max. Recordsによって、Listに入る件数は制限される。",
+      "SQL要素には、結果がなくてもListとCountの2つの出力がある。"
+    ]
+  },
+  {
+    "id": "query-017",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "応用",
+    "question": "Server Actionの中で、SQL要素のUPDATE文で数千件の在庫を一括更新した後、続く処理で例外が発生し、どこでも処理されずにリクエストが終わった。一括更新の結果はどうなるか。最も適切なものはどれか。",
+    "options": [
+      "SQL要素の更新はEntity Actionと違って即座に確定するため、残る",
+      "SQL要素の更新も同じトランザクションで実行されているため、ロールバックされる",
+      "一括更新のうち、例外発生前に処理された半分だけが残る",
+      "SQL要素の更新は、Service Centerで確認してから手動で確定する必要がある"
+    ],
+    "answer": 1,
+    "explanation": "SQL要素のクエリも、リクエストのトランザクションの中で実行されます。処理されない例外で終わるとトランザクションはロールバックされ、一括更新も元に戻ります。途中の結果を確定させたい場合は、目的を明確にしたうえでCommitTransactionを使います。",
+    "wrongReasons": [
+      "SQL要素だからといって、自動でコミットされることはない。",
+      "1つのUPDATE文の結果が一部だけ残ることはなく、トランザクション単位で元に戻る。",
+      "手動で確定するような仕組みはない。"
+    ]
+  },
+  {
+    "id": "query-018",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "標準",
+    "question": "属性が100個ある顧客エンティティのレコードリストを、Aggregateで取得してそのまま別のServer Actionの入力パラメータに渡している。受け取る側は数個の属性しか使っていない。性能の観点で最も適切な改善はどれか。",
+    "options": [
+      "Server ActionのFunctionプロパティをYesにする",
+      "受け取る側のServer Actionで、使わない属性を空にする",
+      "Aggregateを2回実行して、属性を分けて取得する",
+      "必要な属性だけを持つStructureを定義し、そのリストを受け渡すようにする"
+    ],
+    "answer": 3,
+    "explanation": "クエリの結果をアクションの引数に渡すと、プラットフォームはどの属性が使われるか判断できず、すべての属性をデータベースから取得します。属性の多いエンティティでは、必要な属性だけを持つStructureで受け渡すと取得量を減らせます。",
+    "wrongReasons": [
+      "Functionにしても、引数として渡す時点ですべての属性が取得される点は変わらない。",
+      "受け取った後で値を空にしても、データベースからの取得量は減らない。",
+      "クエリを2回実行すると、データベースへの往復が増える。"
+    ]
+  },
+  {
+    "id": "query-019",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "標準",
+    "question": "Server Actionの中で、同じAggregateの結果に対してFor Eachを2回回し、さらに GetOrders.List[0] のようなインデックス指定でも値を参照している。取得件数が多い。サーバーのメモリの観点で最も適切な指摘はどれか。",
+    "options": [
+      "For Eachは何回回しても、メモリの使用量は変わらない",
+      "インデックス指定は最初の1件だけを読み込むため、メモリへの影響はない",
+      "同じクエリ結果を複数回反復したりインデックスで参照したりすると、結果がメモリに読み込まれるため、件数が多い場合は避ける",
+      "Aggregateの結果は常にすべてメモリに読み込まれるため、反復の回数は関係ない"
+    ],
+    "answer": 2,
+    "explanation": "クエリ結果を2回以上反復したり、インデックスで直接参照したりすると、結果がメモリに読み込まれます。件数が多い場合はメモリ消費が大きくなるため、反復を1回にまとめるなどの工夫をします。",
+    "wrongReasons": [
+      "複数回の反復では結果がメモリに読み込まれるため、使用量が増える。",
+      "インデックスで参照すると、反復の回数に関係なく結果がメモリに読み込まれる。",
+      "1回だけ反復する場合は、結果をすべてメモリに持たずに処理できる。"
+    ]
+  },
+  {
+    "id": "query-020",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：クエリ",
+    "difficulty": "基礎",
+    "question": "入力パラメータを持つSQL要素を作成し、エディタのTESTボタンで動作を確認したい。確認前に行うこととして最も適切なものはどれか。",
+    "options": [
+      "モジュールを公開して、本番環境で実行してみる",
+      "Test Inputsタブで入力パラメータにテスト値を設定し、SELECTに合う出力のエンティティ・Structureを指定する",
+      "入力パラメータのExpand InlineをYesにする",
+      "SQL文から入力パラメータを削除し、値を直接書き込む"
+    ],
+    "answer": 1,
+    "explanation": "TESTボタンで確認するときは、Test Inputsタブで入力パラメータにテスト値を設定します。値を設定しないと空の値でテストされます。また、SELECTの列に合う出力のエンティティやStructureが必要です。",
+    "wrongReasons": [
+      "テストのために本番環境で実行するのは危険で、エディタで確認できる。",
+      "Expand InlineはSQLインジェクションの危険を高める設定で、テストには不要。",
+      "値を直接書き込むと、テスト後に元へ戻す手間が増え、戻し忘れの原因になる。"
+    ]
   }
 ]

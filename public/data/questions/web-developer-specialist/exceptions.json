@@ -138,5 +138,145 @@
       "事前にコミットしても、後続の登録失敗で外部と自社の状態が食い違う問題は解決しない。",
       "例外を無視すると、支払い記録がないまま処理が成功扱いとなり不整合が残る。"
     ]
+  },
+  {
+    "id": "exc-008",
+    "exam": "web-developer-specialist",
+    "category": "例外・トランザクション処理",
+    "difficulty": "基礎",
+    "question": "Timerのアクションの中で例外が発生した。Timerのロジック内にException Handlerは置いていない。このときの動作として最も適切なものはどれか。",
+    "options": [
+      "モジュールのGlobal Exception Handlerで処理される",
+      "処理が中断され、エラーがログに記録される",
+      "例外は無視され、Timerの処理は最後まで続行される",
+      "UI FlowのOn Exceptionアクションで処理される"
+    ],
+    "answer": 1,
+    "explanation": "Timerから始まるアクションのフローでは、例外を処理できるのはロジックの中に置いたException Handlerだけです。ハンドラがなければ処理は中断され、エラーが記録されます。Timerでは必要な箇所にException Handlerを置き、後処理や記録を行います。",
+    "wrongReasons": [
+      "Global Exception Handlerは画面などのUI要求のためのもので、Timerのフローには適用されない。",
+      "例外が発生すると、その時点で処理の流れは中断される。",
+      "UI FlowのOn ExceptionはUI要求の例外を処理するもので、Timerには適用されない。"
+    ]
+  },
+  {
+    "id": "exc-009",
+    "exam": "web-developer-specialist",
+    "category": "例外・トランザクション処理",
+    "difficulty": "標準",
+    "question": "Reactive Webアプリで、電波の弱い場所から保存ボタンを押すと、サーバーが所定の時間内に応答せず処理が失敗することがある。このとき発生する例外と、関連する設定の組み合わせとして最も適切なものはどれか。",
+    "options": [
+      "Database Exception／Timeout in Minutes",
+      "User Exception／Cache in Minutes",
+      "Security Exception／Session Timeout",
+      "Communication Exception／モジュールのServer Request Timeout"
+    ],
+    "answer": 3,
+    "explanation": "Reactive WebやMobileでは、クライアントがサーバーに接続できない場合や、サーバーが指定時間内に応答しない場合にCommunication Exceptionが発生します。既定のタイムアウトはモジュールのServer Request Timeoutプロパティで設定します。この例外はプラットフォームだけが発生させ、ロジックからRaiseすることはできません。",
+    "wrongReasons": [
+      "Database Exceptionはデータベースのエラーで、Timeout in MinutesはTimerの設定である。",
+      "User Exceptionは開発者が定義して発生させるもので、Cache in Minutesはキャッシュの設定である。",
+      "Security Exceptionは認証や権限の問題で発生するもので、通信の問題とは別である。"
+    ]
+  },
+  {
+    "id": "exc-010",
+    "exam": "web-developer-specialist",
+    "category": "例外・トランザクション処理",
+    "difficulty": "標準",
+    "question": "メールアドレスに一意インデックスを設定したエンティティに、同じメールアドレスのレコードを登録しようとした。発生する例外の種類として最も適切なものはどれか。",
+    "options": [
+      "Database Exception",
+      "User Exception",
+      "Security Exception",
+      "Communication Exception"
+    ],
+    "answer": 0,
+    "explanation": "一意インデックスなどのデータベース制約への違反、誤ったデータ型での登録・更新、ProtectのDelete Ruleへの違反など、データベース管理システムに関するエラーではDatabase Exceptionが発生します。",
+    "wrongReasons": [
+      "User Exceptionは開発者がロジックの中で明示的に発生させる例外である。",
+      "Security Exceptionはログインの失敗や権限不足で発生する。",
+      "Communication Exceptionはクライアントとサーバー間の通信の問題で発生する。"
+    ]
+  },
+  {
+    "id": "exc-011",
+    "exam": "web-developer-specialist",
+    "category": "例外・トランザクション処理",
+    "difficulty": "基礎",
+    "question": "画面に必要なロール「Manager」を持たない利用者が、その画面にアクセスした。発生する例外と、処理する場所として最も適切なものはどれか。",
+    "options": [
+      "Database Exception。画面のOn Initializeで処理する",
+      "User Exception。Server ActionのException Handlerで処理する",
+      "Not Registered配下のロール例外（Not Manager）などのSecurity Exception。UI FlowのOn Exceptionで処理する",
+      "Communication Exception。Global Exception Handlerは使わず、無視する"
+    ],
+    "answer": 2,
+    "explanation": "独自のロールを作ると、Not Registered例外の配下に「Not <Role>」のロール例外が作られ、権限のない画面へのアクセスで発生します。Security Exceptionは、UI FlowのOn Exceptionアクションで処理するのが推奨です。",
+    "wrongReasons": [
+      "権限不足はデータベースのエラーではなく、On Initializeは例外を処理する場所でもない。",
+      "User Exceptionは開発者が発生させるもので、権限不足ではプラットフォームがSecurity Exceptionを発生させる。",
+      "Communication Exceptionは通信の問題で発生するものである。"
+    ]
+  },
+  {
+    "id": "exc-012",
+    "exam": "web-developer-specialist",
+    "category": "例外・トランザクション処理",
+    "difficulty": "応用",
+    "question": "外部REST APIの呼び出しを含むServer Actionで、連携先のエラーを種類ごとに処理したい。Exception HandlerのLog ErrorはNoにしている。この設計について正しい説明として最も適切なものはどれか。",
+    "options": [
+      "連携で発生した例外は型を判別できるので、User ExceptionのHandlerで種類ごとに捕捉できる",
+      "連携の例外は種類を判別できないため、All ExceptionsのHandlerで捕捉してExceptionMessageで内容を判定する。なお連携の例外は、Log Errorの設定に関係なく記録される",
+      "Log ErrorをNoにしているので、連携で発生した例外はどこにも記録されない",
+      "連携の例外はDatabase ExceptionのHandlerでしか捕捉できない"
+    ],
+    "answer": 1,
+    "explanation": "ExtensionのアクションやREST APIのメソッドなど、利用している連携で発生した例外は種類を判別できません。All ExceptionsのHandlerで捕捉し、ExceptionMessageで内容を判断します。また連携の例外は、Log Errorの値に関係なくすべて記録されます。",
+    "wrongReasons": [
+      "連携で発生した例外は、種類を判別して個別のHandlerで捕捉することができない。",
+      "連携の例外は、Log ErrorをNoにしても記録される。",
+      "連携の例外はデータベースのエラーではなく、All ExceptionsのHandlerで捕捉する。"
+    ]
+  },
+  {
+    "id": "exc-013",
+    "exam": "web-developer-specialist",
+    "category": "例外・トランザクション処理",
+    "difficulty": "標準",
+    "question": "商品検索のServer Actionで、検索結果が0件のときにUser Exception「NoResults」をRaiseし、画面側で捕捉して「該当なし」と表示している。この実装に対する指摘として最も適切なものはどれか。",
+    "options": [
+      "0件は想定された通常の結果なので、例外ではなく件数を判定するIfなどで処理の流れを分ける",
+      "User ExceptionではなくDatabase ExceptionをRaiseするべきである",
+      "例外を画面側ではなく、Global Exception Handlerで処理するべきである",
+      "Raise Exceptionの前にCommitTransactionを呼ぶべきである"
+    ],
+    "answer": 0,
+    "explanation": "例外は、処理を通常どおり続けられない例外的な状況のためのもので、アプリの通常の流れを制御するために使うべきではありません。検索結果が0件なのは想定内の結果なので、件数で判定して表示を切り替えます。",
+    "wrongReasons": [
+      "Database Exceptionはデータベースのエラーでプラットフォームが発生させるもので、0件の判定に使うものではない。",
+      "処理する場所を変えても、通常の流れを例外で制御している問題は変わらない。",
+      "検索だけの処理でコミットする必要はなく、例外の使い方の問題も解決しない。"
+    ]
+  },
+  {
+    "id": "exc-014",
+    "exam": "web-developer-specialist",
+    "category": "例外・トランザクション処理",
+    "difficulty": "応用",
+    "question": "在庫を減らした後に出荷記録を作るServer Actionで、出荷記録の作成時にDatabase Exceptionが発生した。HandlerではエラーメッセージをFeedbackに返すだけで、Abort TransactionをNoにしている。リクエストが終了した後のデータの状態として最も適切なものはどれか。",
+    "options": [
+      "例外が発生したので、在庫の減少も自動的にロールバックされる",
+      "Abort TransactionがNoなので、例外発生後に同じ処理が自動で再実行される",
+      "Handlerで処理した時点でリクエストは失敗扱いとなり、何も保存されない",
+      "トランザクションは例外がなかったかのように継続してリクエストの終了時にコミットされるため、在庫だけが減った不整合な状態になる"
+    ],
+    "answer": 3,
+    "explanation": "Abort TransactionをNoにすると、トランザクションは例外がなかったかのように継続し、次のCommitTransactionかリクエストの終了時にコミットされます。一連で成功・失敗すべき更新では、Abort TransactionをYes（既定値）にしてロールバックさせます。",
+    "wrongReasons": [
+      "Abort TransactionがNoの場合、それまでの変更はロールバックされない。",
+      "例外の後に処理が自動で再実行される仕組みはない。",
+      "Handlerで例外を処理した場合、リクエストは続行し、トランザクションはコミットされる。"
+    ]
   }
 ]
