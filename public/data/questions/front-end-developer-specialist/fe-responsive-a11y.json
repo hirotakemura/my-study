@@ -1,0 +1,202 @@
+[
+  {
+    "id": "fe-ra-001",
+    "exam": "front-end-developer-specialist",
+    "category": "レスポンシブとアクセシビリティ",
+    "difficulty": "基礎",
+    "question": "スマートフォンで表示したときだけ、ボタンの文字を小さくしたい。OutSystems UIの端末判定を使ったCSSとして最も適切なものはどれか。",
+    "options": [
+      ".phone .btn { font-size: 14px; }",
+      "#phone .btn { font-size: 14px; }",
+      ".btn:phone { font-size: 14px; }",
+      ".btn.mobile-only { font-size: 14px; }"
+    ],
+    "answer": 0,
+    "explanation": "OutSystems UIは端末の種類を判定し、body要素に .desktop、.tablet、.phone などのクラスを自動で付けます。.phone .btn のように書けば、スマートフォンのときだけスタイルを適用できます。",
+    "wrongReasons": [
+      "端末の種類はIdではなく、bodyに付くクラスで判定する。",
+      ":phone という疑似クラスは存在しない。",
+      ".mobile-only は自動で付くクラスではなく、端末の判定には使えない。"
+    ]
+  },
+  {
+    "id": "fe-ra-002",
+    "exam": "front-end-developer-specialist",
+    "category": "レスポンシブとアクセシビリティ",
+    "difficulty": "標準",
+    "question": "OutSystems UIの既定のブレークポイントで、横幅900pxの画面はどの端末として判定されるか。",
+    "options": [
+      "デスクトップ",
+      "タブレット",
+      "スマートフォン",
+      "判定されない"
+    ],
+    "answer": 1,
+    "explanation": "OutSystems UIの既定では、横幅が768px〜1024pxの画面をタブレット、768px未満をスマートフォンとして判定します。変更したい場合はSetDeviceBreakpointsアクションを使います。",
+    "wrongReasons": [
+      "1024pxを超える幅がデスクトップとして判定される。",
+      "スマートフォンとして判定されるのは768px未満である。",
+      "幅に応じて、必ずいずれかの端末の種類として判定される。"
+    ]
+  },
+  {
+    "id": "fe-ra-003",
+    "exam": "front-end-developer-specialist",
+    "category": "レスポンシブとアクセシビリティ",
+    "difficulty": "標準",
+    "question": "業務の都合で、タブレットとして判定される幅の範囲を変更したい。最も適切な方法はどれか。",
+    "options": [
+      "ThemeのCSSにメディアクエリを追加すれば、判定の基準も変わる",
+      "Service Centerの環境設定でブレークポイントを変更する",
+      "body要素のクラスをJavaScriptで毎回書き換える",
+      "OutSystems UIのDeviceDetectionにあるSetDeviceBreakpointsアクションを、アプリの準備ができたタイミングで呼び出す"
+    ],
+    "answer": 3,
+    "explanation": "OutSystems UIの端末判定のブレークポイントは、DeviceDetectionフォルダにあるSetDeviceBreakpointsクライアントアクションで上書きできます。アプリの準備ができたタイミング（On Application Readyなど）で呼び出します。",
+    "wrongReasons": [
+      "メディアクエリを追加しても、OutSystems UIの端末判定の基準は変わらない。",
+      "ブレークポイントはService Centerで設定するものではない。",
+      "クラスを直接書き換えると、OutSystems UIの判定と食い違って表示が崩れる。"
+    ]
+  },
+  {
+    "id": "fe-ra-004",
+    "exam": "front-end-developer-specialist",
+    "category": "レスポンシブとアクセシビリティ",
+    "difficulty": "基礎",
+    "question": "スマートフォンで表示しているときだけ、Client Actionの中で別の画面へ遷移させたい。条件の判定に使うものとして最も適切なものはどれか。",
+    "options": [
+      "JavaScriptでnavigator.userAgentを解析する",
+      "画面の横幅をJavaScriptで取得し、自分で決めた値と比較する",
+      "OutSystems UIのDeviceDetectionにあるIsPhoneアクション（関数としても使える）",
+      "Site Propertyに端末の種類を保存しておく"
+    ],
+    "answer": 2,
+    "explanation": "OutSystems UIは、IsDesktop・IsTablet・IsPhoneなどの端末判定用のクライアントアクションを提供しており、関数として式の中でも使えます。If条件やコンテナの表示制御などに利用できます。",
+    "wrongReasons": [
+      "独自の解析はOutSystems UIの判定と食い違いやすく、保守も難しい。",
+      "独自の基準で判定すると、OutSystems UIの判定とずれることがある。",
+      "Site Propertyは環境全体の設定値で、利用者ごとの端末の種類は保存できない。"
+    ]
+  },
+  {
+    "id": "fe-ra-005",
+    "exam": "front-end-developer-specialist",
+    "category": "レスポンシブとアクセシビリティ",
+    "difficulty": "標準",
+    "question": "OutSystems UIでは、スマートフォンで表示するとContainerやボタンが全幅になる。ある要素だけはスマートフォンでも元の幅のままにしたい。最も適切な方法はどれか。",
+    "options": [
+      "その要素にCSSクラス「no-responsive」を付ける",
+      "その要素の幅をインラインスタイルで!important付きで指定する",
+      "Theme Editorでスマートフォン用のレイアウトを無効にする",
+      "スマートフォン用に別の画面を作る"
+    ],
+    "answer": 0,
+    "explanation": "OutSystems UIは、小さな画面での読みやすさのためにスマートフォンではContainerやボタンを全幅にします。この動作を要素ごとに打ち消すには、その要素に .no-responsive クラスを付けます。",
+    "wrongReasons": [
+      "!important付きのインラインスタイルは保守しにくく、推奨されない。",
+      "Theme Editorにスマートフォン用レイアウトを無効にする設定はない。",
+      "1つの要素の幅のために画面を分けるのは過剰である。"
+    ]
+  },
+  {
+    "id": "fe-ra-006",
+    "exam": "front-end-developer-specialist",
+    "category": "レスポンシブとアクセシビリティ",
+    "difficulty": "基礎",
+    "question": "OutSystems UIの組み込みのアクセシビリティ機能（フォーカス表示、Skip to content、コントラストの強調など）を有効にしたい。最も適切な方法はどれか。",
+    "options": [
+      "Service CenterでアクセシビリティをONにする",
+      "使っているレイアウトのEnableAccessibilityFeatures入力パラメータの既定値をTrueにする",
+      "Theme Editorでハイコントラストのパレットを選ぶ",
+      "各画面のOn ReadyでJavaScriptを使ってアクセシビリティ用のクラスを付ける"
+    ],
+    "answer": 1,
+    "explanation": "UI FlowsのLayoutsで使っているレイアウトを開き、EnableAccessibilityFeatures入力パラメータの既定値をTrueにすると、そのレイアウトを使う画面でフォーカス表示、Skip to content、リンクの高コントラスト、コントラストの強調が有効になります。",
+    "wrongReasons": [
+      "UIパターンのアクセシビリティ機能は、Service Centerで有効にするものではない。",
+      "配色を変えるだけでは、フォーカス表示などの機能は有効にならない。",
+      "レイアウトのパラメータで有効にでき、JavaScriptで操作する必要はない。"
+    ]
+  },
+  {
+    "id": "fe-ra-007",
+    "exam": "front-end-developer-specialist",
+    "category": "レスポンシブとアクセシビリティ",
+    "difficulty": "標準",
+    "question": "装飾目的だけの画像（区切り線の画像など）について、スクリーンリーダー向けの設定として最も適切なものはどれか。",
+    "options": [
+      "Attributesにalt属性を追加し、画像のファイル名を設定する",
+      "Attributesにalt属性を追加し、「装飾用の画像です」と設定する",
+      "Attributesにalt属性を追加し、空の値（alt=\"\"）を設定する",
+      "alt属性は設定しない"
+    ],
+    "answer": 2,
+    "explanation": "画像の代替テキストは、画像のAttributesにalt属性を追加して設定します。内容を伝える画像には説明を入れ、装飾目的の画像にはalt=\"\"を設定してスクリーンリーダーに読み上げさせないようにします。",
+    "wrongReasons": [
+      "ファイル名は利用者にとって意味がなく、不要な読み上げになる。",
+      "装飾用の画像の説明を読み上げても、利用者にとって有益な情報にはならない。",
+      "alt属性がないと、スクリーンリーダーがファイル名などを読み上げてしまうことがある。"
+    ]
+  },
+  {
+    "id": "fe-ra-008",
+    "exam": "front-end-developer-specialist",
+    "category": "レスポンシブとアクセシビリティ",
+    "difficulty": "応用",
+    "question": "フォームの入力内容に誤りがあるとき、スクリーンリーダーにフォームが無効であることを伝えたい。ARIAの設定として最も適切なものはどれか。",
+    "options": [
+      "フォームのAttributesに aria-invalid=If(Form1.Valid, \"false\", \"true\") のように式で設定する",
+      "フォームのAttributesに aria-invalid=\"true\" を固定で設定する",
+      "エラーメッセージの色を赤くする",
+      "フォームのAttributesに aria-hidden=\"true\" を設定する"
+    ],
+    "answer": 0,
+    "explanation": "ARIAの属性はAttributesに設定でき、式を使えば実行時の状態に応じて動的に変えられます。フォームの状態に応じてaria-invalidを切り替えると、スクリーンリーダーが利用者に誤りを伝えられます。",
+    "wrongReasons": [
+      "固定でtrueにすると、正しく入力された場合も無効と伝えてしまう。",
+      "色だけでは、スクリーンリーダーの利用者に状態が伝わらない。",
+      "aria-hiddenはフォームを支援技術から隠してしまい、逆効果である。"
+    ]
+  },
+  {
+    "id": "fe-ra-009",
+    "exam": "front-end-developer-specialist",
+    "category": "レスポンシブとアクセシビリティ",
+    "difficulty": "標準",
+    "question": "フォームを開いたときに、最初の入力欄にキーボードのフォーカスを当てたい。最も適切な実装はどれか。",
+    "options": [
+      "On InitializeでJavaScriptのfocus()を呼ぶ",
+      "画面のOn Readyで、OutSystems UIのAccessibilityにあるSetFocusアクションを呼び、WidgetIdに入力欄のIdを設定する",
+      "入力欄のStyle Classesに\"focus\"を付ける",
+      "入力欄のTab Indexを0にする"
+    ],
+    "answer": 1,
+    "explanation": "OutSystems UIのAccessibilityクライアントアクションにあるSetFocusを使うと、指定したウィジェットにフォーカスを当てられます。DOMの準備ができた後に実行されるOn Readyで呼び出します。",
+    "wrongReasons": [
+      "On InitializeはDOMの準備前に実行されるため、要素にフォーカスを当てられない。",
+      "クラスを付けても、見た目が変わるだけでフォーカスは移らない。",
+      "Tab Indexはタブキーで移動する順序の設定で、フォーカスを当てる処理ではない。"
+    ]
+  },
+  {
+    "id": "fe-ra-010",
+    "exam": "front-end-developer-specialist",
+    "category": "レスポンシブとアクセシビリティ",
+    "difficulty": "応用",
+    "question": "アクセシビリティの対応状況を確認するため、公開した画面を検査したい。OutSystemsのドキュメントで紹介されている方法として最も適切なものはどれか。",
+    "options": [
+      "Service CenterのErrorsログで、アクセシビリティの問題を確認する",
+      "TrueChangeの警告がなければ、アクセシビリティの基準を満たしていると判断する",
+      "Theme Editorのプレビューで、配色を目視確認する",
+      "ブラウザでWAVEなどの評価ツールやChromeのLighthouseを使い、指摘された問題をService Studioで修正する"
+    ],
+    "answer": 3,
+    "explanation": "アクセシビリティの問題は早い段階から検査して修正することが推奨されています。WAVEのような評価ツールやChrome DevToolsのLighthouseで問題を確認し、ページタイトルや代替テキストなどをService Studioで修正します。",
+    "wrongReasons": [
+      "Errorsログは実行時のエラーの記録で、アクセシビリティの問題は記録されない。",
+      "TrueChangeの警告がなくても、アクセシビリティの基準を満たしているとは限らない。",
+      "配色の目視確認だけでは、見出しや代替テキストなどの問題を見つけられない。"
+    ]
+  }
+]

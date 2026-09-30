@@ -1,0 +1,282 @@
+[
+  {
+    "id": "fe-pattern-001",
+    "exam": "front-end-developer-specialist",
+    "category": "UIパターンとレイアウト",
+    "difficulty": "基礎",
+    "question": "内容を3列に並べ、スマートフォンでは縦1列に並ぶようにしたい。最も適切な実装はどれか。",
+    "options": [
+      "ThemeのGrid設定で12列にし、Containerの幅を4列ずつにする",
+      "OutSystems UIのColumns3パターンを使い、PhoneBehaviorで列の折り返し方を設定する",
+      "Tableウィジェットで1行3列の表を作る",
+      "JavaScriptで画面幅を監視し、Containerの幅を書き換える"
+    ],
+    "answer": 1,
+    "explanation": "Columnsパターンは、端末ごとの列の折り返し方（TabletBehavior・PhoneBehavior）を設定できる構造パターンです。プラットフォームのグリッドにはレスポンシブな振る舞いがないため、端末に応じて列を変えたい場合はColumnsパターンを使います。",
+    "wrongReasons": [
+      "プラットフォームのグリッドにはレスポンシブな振る舞いがなく、スマートフォンで自動的に1列にはならない。",
+      "Tableはデータの表示用で、レイアウトの組み立てに使うべきではない。",
+      "JavaScriptで幅を操作するのは不要で、描画のちらつきや保守性の低下を招く。"
+    ]
+  },
+  {
+    "id": "fe-pattern-002",
+    "exam": "front-end-developer-specialist",
+    "category": "UIパターンとレイアウト",
+    "difficulty": "標準",
+    "question": "Columns3パターンのPhoneBehaviorを「Break First」にした。スマートフォンでの表示として最も適切なものはどれか。",
+    "options": [
+      "すべての列が縦に並び、それぞれ全幅になる",
+      "最後の列だけが全幅になり、他の列は横に並んだままになる",
+      "最初の列だけが全幅になり、残りの列は横に並んだままになる",
+      "列は折り返さず、すべて横に並んだままになる"
+    ],
+    "answer": 2,
+    "explanation": "Break Firstは最初の列だけを折り返して全幅にし、残りの列は横に並べたままにします。すべて折り返すのはBreak All、最後だけはBreak Last、折り返さないのはBreak Noneです。",
+    "wrongReasons": [
+      "すべての列が全幅になるのはBreak Allである。",
+      "最後の列だけが全幅になるのはBreak Lastである。",
+      "列を折り返さないのはBreak Noneである。"
+    ]
+  },
+  {
+    "id": "fe-pattern-003",
+    "exam": "front-end-developer-specialist",
+    "category": "UIパターンとレイアウト",
+    "difficulty": "標準",
+    "question": "商品画像をGalleryパターンで並べている。プロパティを何も変更しない場合の1行あたりの表示数（デスクトップ／タブレット／スマートフォン）として最も適切なものはどれか。",
+    "options": [
+      "3／2／1",
+      "4／3／1",
+      "4／2／2",
+      "6／4／2"
+    ],
+    "answer": 1,
+    "explanation": "Galleryパターンの1行あたりの表示数は、RowItemsDesktop・RowItemsTablet・RowItemsPhoneで設定でき、既定値はそれぞれ4・3・1です。",
+    "wrongReasons": [
+      "デスクトップの既定値は3ではなく4である。",
+      "タブレットの既定値は3、スマートフォンは1である。",
+      "既定値は4・3・1である。"
+    ]
+  },
+  {
+    "id": "fe-pattern-004",
+    "exam": "front-end-developer-specialist",
+    "category": "UIパターンとレイアウト",
+    "difficulty": "基礎",
+    "question": "デスクトップでは詳細な表、スマートフォンでは簡略なカードというように、端末の種類によって表示する内容そのものを切り替えたい。最も適切なパターンはどれか。",
+    "options": [
+      "Display on Device（OnDesktop・OnTablet・OnPhoneのプレースホルダーに内容を入れる）",
+      "Columns",
+      "Accordion",
+      "Floating Content"
+    ],
+    "answer": 0,
+    "explanation": "Display on Deviceパターンには、OnDesktop・OnTablet・OnPhoneのプレースホルダーがあり、端末の種類ごとに表示する要素を指定できます。",
+    "wrongReasons": [
+      "Columnsは列の並べ方を端末ごとに変えるもので、表示する内容を切り替えるものではない。",
+      "Accordionは内容を開閉するためのパターンである。",
+      "Floating Contentは他の要素の上に内容を重ねて表示するパターンである。"
+    ]
+  },
+  {
+    "id": "fe-pattern-005",
+    "exam": "front-end-developer-specialist",
+    "category": "UIパターンとレイアウト",
+    "difficulty": "標準",
+    "question": "Tabsパターンで、画面を開いたときに2番目のタブを選択状態にしたい。StartingTabプロパティに設定する値として最も適切なものはどれか。",
+    "options": [
+      "2",
+      "1",
+      "\"Tab2\"",
+      "設定できないため、On ReadyでJavaScriptを使って切り替える"
+    ],
+    "answer": 1,
+    "explanation": "TabsパターンのStartingTabは、最初に表示するタブのインデックスで、0から始まります。2番目のタブを選ぶには1を指定します。空の場合は1番目のタブが選択されます。",
+    "wrongReasons": [
+      "インデックスは0から始まるため、2は3番目のタブになる。",
+      "StartingTabは整数のインデックスで指定する。",
+      "StartingTabで設定できるため、JavaScriptは不要である。"
+    ]
+  },
+  {
+    "id": "fe-pattern-006",
+    "exam": "front-end-developer-specialist",
+    "category": "UIパターンとレイアウト",
+    "difficulty": "基礎",
+    "question": "Reactive Webアプリで、ヒーロー画像と自由なセクションを組み合わせたランディングページ風の画面を作りたい。OutSystems UIのレイアウトとして最も適切なものはどれか。",
+    "options": [
+      "LayoutSideMenu",
+      "LayoutTopMenu",
+      "LayoutBase",
+      "LayoutPopup"
+    ],
+    "answer": 2,
+    "explanation": "Reactive Web用のOutSystems UIには、LayoutSideMenu・LayoutTopMenu・LayoutBaseの完全にレスポンシブなレイアウトがあります。ヒーロー画像と独自のセクションを持つ画面には、LayoutBaseが用意されています。",
+    "wrongReasons": [
+      "LayoutSideMenuはサイドメニューを持つ業務アプリ向けのレイアウトである。",
+      "LayoutTopMenuは上部にメニューを持つレイアウトである。",
+      "LayoutPopupはTraditional WebでPopup用の画面に使うレイアウトである。"
+    ]
+  },
+  {
+    "id": "fe-pattern-007",
+    "exam": "front-end-developer-specialist",
+    "category": "UIパターンとレイアウト",
+    "difficulty": "標準",
+    "question": "Reactive WebアプリでLayoutSideMenuを使っている。スマートフォンで開いたときのメニューの動作として最も適切なものはどれか。",
+    "options": [
+      "メニューは常に画面の左側に表示されたままになる",
+      "メニューは画面の上部に横並びで表示される",
+      "メニューは表示されなくなり、利用者は画面を移動できない",
+      "メニューはページの内容の上にオーバーレイとして開く"
+    ],
+    "answer": 3,
+    "explanation": "Reactive Web用のレイアウトはどれも、Mobile端末で開くとメニューがページの内容の上にオーバーレイとして開き、すべてのメニュー項目が表示されます。",
+    "wrongReasons": [
+      "スマートフォンの限られた幅では、メニューを常に表示したままにはしない。",
+      "スマートフォンでは、メニューはオーバーレイとして開く。",
+      "メニューはオーバーレイとして利用できる。"
+    ]
+  },
+  {
+    "id": "fe-pattern-008",
+    "exam": "front-end-developer-specialist",
+    "category": "UIパターンとレイアウト",
+    "difficulty": "標準",
+    "question": "左側に社員の一覧、右側に選択した社員の詳細を表示する画面を作りたい。最も適切なパターンと、その注意点の組み合わせはどれか。",
+    "options": [
+      "Master Detailパターン。親要素の高さに合わせて表示されるため画面の内容の中で単独で使い、Tabsなどスワイプ操作を持つパターンの中には置かない",
+      "Master Detailパターン。Tabsの中に入れて使うのが推奨される",
+      "Galleryパターン。左右の比率はRowItemsDesktopで設定する",
+      "Accordionパターン。MultipleItemsをTrueにして一覧と詳細を同時に開く"
+    ],
+    "answer": 0,
+    "explanation": "Master Detailパターンは、一覧（左）と選択した項目の詳細（右）を表示するためのパターンです。親要素の高さに合わせて表示されるため画面内で単独で使い、Tabsのようなスワイプ操作を持つパターンの中では使わないようにします。",
+    "wrongReasons": [
+      "スワイプ操作を持つTabsなどの中での使用は避けるべきとされている。",
+      "Galleryは同じ種類の項目を並べて表示するパターンで、一覧と詳細の構成には使わない。",
+      "Accordionは内容を開閉するパターンで、一覧と詳細を並べる用途には向かない。"
+    ]
+  },
+  {
+    "id": "fe-pattern-009",
+    "exam": "front-end-developer-specialist",
+    "category": "UIパターンとレイアウト",
+    "difficulty": "基礎",
+    "question": "FAQ画面でAccordionパターンを使っている。既定では1つの項目を開くと他の項目が閉じるが、複数の項目を同時に開けるようにしたい。設定するプロパティとして最も適切なものはどれか。",
+    "options": [
+      "AccordionItemのStartsExpandedをTrueにする",
+      "AccordionのMultipleItemsをTrueにする",
+      "AccordionItemのIsDisabledをTrueにする",
+      "AccordionItemのIconをPlus/Minusにする"
+    ],
+    "answer": 1,
+    "explanation": "AccordionパターンのMultipleItemsをTrueにすると、複数の項目を同時に展開できます。既定値はFalseです。",
+    "wrongReasons": [
+      "StartsExpandedは、ページ表示時に項目を開いた状態にするかどうかの設定である。",
+      "IsDisabledは、項目をクリックできないようにする設定である。",
+      "Iconは開閉を示すアイコンの種類を変える設定である。"
+    ]
+  },
+  {
+    "id": "fe-pattern-010",
+    "exam": "front-end-developer-specialist",
+    "category": "UIパターンとレイアウト",
+    "difficulty": "標準",
+    "question": "検索結果が0件のときに、「条件に一致する結果がありません」という説明と、条件をリセットするボタンを表示したい。最も適切なパターンはどれか。",
+    "options": [
+      "Alert",
+      "Tooltip",
+      "Blank Slate",
+      "Notification"
+    ],
+    "answer": 2,
+    "explanation": "Blank Slateパターンは、表示するデータがないときなどに利用者に状況を伝えるためのパターンで、アイコン・内容・アクションのプレースホルダーを持ちます。",
+    "wrongReasons": [
+      "Alertは重要な情報やエラー、警告を目立たせて表示するパターンである。",
+      "Tooltipは要素に関する補足情報を表示するパターンである。",
+      "Notificationは一時的に表示する短いメッセージのためのパターンである。"
+    ]
+  },
+  {
+    "id": "fe-pattern-011",
+    "exam": "front-end-developer-specialist",
+    "category": "UIパターンとレイアウト",
+    "difficulty": "標準",
+    "question": "保存処理に時間がかかるボタンで、処理中はスピナーを表示してボタンを押せないようにしたい。最も適切な実装はどれか。",
+    "options": [
+      "Button Loadingパターンを使い、IsLoadingにBoolean型の変数を設定して、処理の前後でTrue／Falseを代入する",
+      "ボタンのOn ClickでJavaScriptを使ってボタンを非表示にする",
+      "処理中はPopupで画面全体を覆う",
+      "ボタンのEnabledを常にFalseにしておく"
+    ],
+    "answer": 0,
+    "explanation": "Button Loadingパターンは、すぐに終わらない処理の実行中にスピナーを表示し、ボタンを押せないようにします。IsLoadingに変数を設定し、処理の開始時にTrue、終了時にFalseを代入します。",
+    "wrongReasons": [
+      "JavaScriptでのDOM操作は推奨されず、処理中であることも利用者に伝わりにくい。",
+      "画面全体を覆うのは大げさで、処理中であることを伝える標準的な方法ではない。",
+      "常に無効にすると、ボタンをまったく使えなくなる。"
+    ]
+  },
+  {
+    "id": "fe-pattern-012",
+    "exam": "front-end-developer-specialist",
+    "category": "UIパターンとレイアウト",
+    "difficulty": "応用",
+    "question": "Wizardパターンで4ステップの入力画面を作る。現在のステップをInteger型のCurrentStepで管理している。1番目のWizard ItemのStatusに設定する式として最も適切なものはどれか。",
+    "options": [
+      "If(CurrentStep = 1, Entities.Steps.Active, Entities.Steps.Next)",
+      "CurrentStep = 1",
+      "If(CurrentStep = 1, Entities.Steps.Active, If(CurrentStep > 1, Entities.Steps.Past, Entities.Steps.Next))",
+      "If(CurrentStep > 1, Entities.Steps.Active, Entities.Steps.Past)"
+    ],
+    "answer": 2,
+    "explanation": "Wizard ItemのStatusは、そのステップが現在（Active）・完了済み（Past）・これから（Next）のどれかを表します。1番目のステップなら、CurrentStepが1のときActive、1より大きいときPast、それ以外はNextにします。",
+    "wrongReasons": [
+      "この式では、先に進んだ後も完了済み（Past）として表示されない。",
+      "Statusには真偽値ではなく、ステップの状態を表すStatic Entityの値を設定する。",
+      "現在のステップが2以上のときにActiveになり、状態が逆になってしまう。"
+    ]
+  },
+  {
+    "id": "fe-pattern-013",
+    "exam": "front-end-developer-specialist",
+    "category": "UIパターンとレイアウト",
+    "difficulty": "標準",
+    "question": "長いページの左側に目次を置き、項目をクリックすると該当するセクションまでスクロールさせたい。最も適切なパターンの組み合わせはどれか。",
+    "options": [
+      "Tabsパターンと、各タブのContent Item",
+      "Section Indexパターンと、Sectionパターン（Section Index ItemのScrollToWidgetIdに移動先のIdを設定）",
+      "Breadcrumbsパターンと、Linkウィジェット",
+      "Paginationパターンと、List"
+    ],
+    "answer": 1,
+    "explanation": "Section Indexパターンは、ページ内の内容を整理して素早く移動できるようにする目次です。各Section Index ItemのScrollToWidgetIdに移動先のSectionなどのIdを設定すると、クリックで該当箇所へスクロールします。",
+    "wrongReasons": [
+      "Tabsは内容を切り替えて表示するパターンで、長いページ内の移動には使わない。",
+      "Breadcrumbsは現在の画面の階層を示すパンくずリストである。",
+      "Paginationは一覧のページを切り替えるパターンである。"
+    ]
+  },
+  {
+    "id": "fe-pattern-014",
+    "exam": "front-end-developer-specialist",
+    "category": "UIパターンとレイアウト",
+    "difficulty": "応用",
+    "question": "Dropdown Searchパターンで社員を選ばせたい。画面を開いたときの初期選択をStartingSelectionで設定したが、後から変数の値を変えても選択状態が変わらない。理由として最も適切なものはどれか。",
+    "options": [
+      "StartingSelectionは初期状態にだけ使われる静的な設定で、動的には更新されないため",
+      "StartingSelectionにはText型の値しか設定できないため",
+      "OptionsListを設定していないと、StartingSelectionが無視されるため",
+      "Dropdown SearchはReactive Webでは選択状態を変更できないため"
+    ],
+    "answer": 0,
+    "explanation": "Dropdown SearchのStartingSelectionは、パターンの初期状態にだけ有効な静的なプロパティで、動的には更新されません。実行中に選択を変える場合は、パターンが提供するクライアントアクションなどを使います。",
+    "wrongReasons": [
+      "StartingSelectionは値とラベルを持つDropdownOptionのリストで設定する。",
+      "OptionsListは必須の設定だが、問題の原因は初期状態にしか使われない点にある。",
+      "Reactive Webでも選択状態は変更できる。"
+    ]
+  }
+]

@@ -1,0 +1,282 @@
+[
+  {
+    "id": "fe-css-001",
+    "exam": "front-end-developer-specialist",
+    "category": "CSSの適用と優先順位",
+    "difficulty": "基礎",
+    "question": "Themeのスタイルシートと画面（Screen）のスタイルシートの両方に、同じセレクタ .price-label で異なる文字色を定義した。画面ではどちらの色が適用されるか。",
+    "options": [
+      "Themeのスタイルシートの色",
+      "画面のスタイルシートの色",
+      "両方の色が混ざって表示される",
+      "先に作成した方のスタイルシートの色"
+    ],
+    "answer": 1,
+    "explanation": "OutSystemsでは、スタイルシートはBlock、Theme、画面…の順に読み込まれ、後から適用されたものが優先されます。同じ詳細度のセレクタなら、Themeより後に読み込まれる画面のスタイルシートの定義が適用されます。",
+    "wrongReasons": [
+      "Themeのスタイルシートは画面のスタイルシートより先に読み込まれるため、同じ詳細度なら上書きされる。",
+      "CSSでは同じプロパティは1つの値に決まり、色が混ざることはない。",
+      "優先順位は作成した順ではなく、読み込まれる順序と詳細度で決まる。"
+    ]
+  },
+  {
+    "id": "fe-css-002",
+    "exam": "front-end-developer-specialist",
+    "category": "CSSの適用と優先順位",
+    "difficulty": "応用",
+    "question": "共通部品のBlockのスタイルシートで .card の背景色を定義したが、そのBlockを置いた画面では、Themeにある同じ .card の定義の背景色で表示される。原因として最も適切なものはどれか。",
+    "options": [
+      "Blockのスタイルシートは公開（Public）しないと読み込まれないため",
+      "Blockのスタイルシートは画面では無視され、プレビューでしか使われないため",
+      "Blockのスタイルシートは、Themeのスタイルシートより先に読み込まれ優先順位が低いため",
+      "Themeで定義されたクラスは、Blockでは上書きできない仕様のため"
+    ],
+    "answer": 2,
+    "explanation": "スタイルシートの優先順位では、Blockのスタイルシートは（グリッド用のシステムスタイルに次いで）早く読み込まれ、Themeのスタイルシートより優先順位が低くなります。同じ詳細度のセレクタはThemeの定義で上書きされるため、詳細度を上げるかThemeで管理します。",
+    "wrongReasons": [
+      "BlockのスタイルシートはPublicかどうかに関係なく読み込まれる。",
+      "Blockのスタイルシートは実行時の画面でも読み込まれる。",
+      "Themeのクラスも、詳細度の高いセレクタや後に読み込まれるスタイルで上書きできる。"
+    ]
+  },
+  {
+    "id": "fe-css-003",
+    "exam": "front-end-developer-specialist",
+    "category": "CSSの適用と優先順位",
+    "difficulty": "標準",
+    "question": "あるボタンにStyles Editorで背景色を設定したが、さらにAttributesでstyle属性（インラインスタイル）にも背景色を設定している。実際に適用される背景色として最も適切なものはどれか。",
+    "options": [
+      "Styles Editorで設定した背景色",
+      "Themeのスタイルシートで定義された背景色",
+      "後から設定した方の背景色",
+      "Attributesのstyle属性（インラインスタイル）で設定した背景色"
+    ],
+    "answer": 3,
+    "explanation": "スタイルの優先順位は、Block、Theme、画面、Themeの追加スタイル（グリッド設定）、Styles Editorが生成したスタイル、インラインスタイルの順に高くなります。AttributesやExtended Propertiesで指定したインラインスタイルが最も優先されます。",
+    "wrongReasons": [
+      "Styles Editorのスタイルは、インラインスタイルによって上書きされる。",
+      "Themeのスタイルシートは、Styles Editorやインラインスタイルより優先順位が低い。",
+      "優先順位は設定した順ではなく、スタイルの種類と詳細度で決まる。"
+    ]
+  },
+  {
+    "id": "fe-css-004",
+    "exam": "front-end-developer-specialist",
+    "category": "CSSの適用と優先順位",
+    "difficulty": "応用",
+    "question": "OutSystemsでスタイルが適用される優先順位を、低いものから高いものへ正しく並べたものとして最も適切なものはどれか。",
+    "options": [
+      "Theme → Block → 画面 → Styles Editorのスタイル → インラインスタイル",
+      "Block → Theme → 画面 → Themeの追加スタイル（グリッド設定） → Styles Editorのスタイル → インラインスタイル",
+      "画面 → Theme → Block → インラインスタイル → Styles Editorのスタイル",
+      "インラインスタイル → Styles Editorのスタイル → 画面 → Theme → Block"
+    ],
+    "answer": 1,
+    "explanation": "スタイルシートは、グリッド用のシステムスタイル、Block、Theme（ベースTheme含む）、画面（Email）、Themeの追加スタイル（グリッド設定）、Styles Editorが生成したスタイル、インラインスタイルの順に適用され、最後に適用されたものが最も優先されます。",
+    "wrongReasons": [
+      "BlockのスタイルシートはThemeより先に読み込まれ、優先順位が低い。",
+      "画面のスタイルシートはThemeより後で、インラインスタイルが最も優先される。",
+      "インラインスタイルは最も優先順位が高い。"
+    ]
+  },
+  {
+    "id": "fe-css-005",
+    "exam": "front-end-developer-specialist",
+    "category": "CSSの適用と優先順位",
+    "difficulty": "基礎",
+    "question": "一覧の行が選択されているときだけ、Containerに「is-selected」クラスを追加したい。Reactive Webでの実装として最も適切なものはどれか。",
+    "options": [
+      "On RenderでJavaScriptを使ってクラスを追加・削除する",
+      "選択状態ごとに別のContainerを2つ用意し、Visibleで切り替える",
+      "Style Classesに If(IsSelected, \"row is-selected\", \"row\") のような式を設定する",
+      "Extended Propertiesにclass属性を追加する"
+    ],
+    "answer": 2,
+    "explanation": "Mobile・Reactive Webでは、Style Classesプロパティに式を書いて、状態に応じてクラスを動的に切り替えられます。JavaScriptでクラスを操作するより見通しがよく、描画時のちらつきも防げます。",
+    "wrongReasons": [
+      "JavaScriptでのクラス操作は、見通しの悪さや描画時のちらつきの原因になる。",
+      "同じ内容を二重に持つと保守が難しくなる。",
+      "Extended Propertiesでクラスを動的に指定するのはTraditional Webの方法である。"
+    ]
+  },
+  {
+    "id": "fe-css-006",
+    "exam": "front-end-developer-specialist",
+    "category": "CSSの適用と優先順位",
+    "difficulty": "標準",
+    "question": "外部のWebフォント用のスタイルシートをThemeで読み込むため、@importを使いたい。正しい使い方として最も適切なものはどれか。",
+    "options": [
+      "@importはスタイルシートの末尾に書く",
+      "@importには社内ネットワークからだけアクセスできるURLを指定する",
+      "@importはScreenのスタイルシートにしか書けない",
+      "@importはスタイルシートの先頭に書き、利用者のブラウザから公開アクセスできるURLを指定する"
+    ],
+    "answer": 3,
+    "explanation": "スタイルシートエディタで@importを使うときは、スタイルシートの一番上に書き、利用者のブラウザからアクセスできる公開URLを指定します。",
+    "wrongReasons": [
+      "@importは他のルールより前、スタイルシートの先頭に書く必要がある。",
+      "読み込むのは利用者のブラウザなので、利用者がアクセスできないURLでは読み込めない。",
+      "@importはThemeのスタイルシートでも使える。"
+    ]
+  },
+  {
+    "id": "fe-css-007",
+    "exam": "front-end-developer-specialist",
+    "category": "CSSの適用と優先順位",
+    "difficulty": "基礎",
+    "question": "チームでSassを使ってスタイルを書き、OutSystemsのスタイルシートエディタに直接貼り付けて変数や入れ子の記法を使いたいという案が出た。この案についての説明として最も適切なものはどれか。",
+    "options": [
+      "OutSystemsの開発ツールはSassやLESSなどのCSSプリプロセッサーに対応していないため、通常のCSS（CSS変数など）で書く",
+      "スタイルシートエディタにSassを書けば、公開時に自動でCSSに変換される",
+      "Sassはサポートされているが、LESSはサポートされていない",
+      "Themeのスタイルシートに限りSassを書ける"
+    ],
+    "answer": 0,
+    "explanation": "OutSystemsの開発ツールは、SassやLESSなどのCSSプリプロセッサーをサポートしていません。値の共通化には、標準のCSS変数を使います。",
+    "wrongReasons": [
+      "スタイルシートエディタにSassの自動変換機能はない。",
+      "SassもLESSもサポートされていない。",
+      "Themeのスタイルシートでも、プリプロセッサーの記法は使えない。"
+    ]
+  },
+  {
+    "id": "fe-css-008",
+    "exam": "front-end-developer-specialist",
+    "category": "CSSの適用と優先順位",
+    "difficulty": "標準",
+    "question": "特定の入力欄の幅を変えるため、ブラウザの開発者ツールで確認したIdを使い #b3-Input_Name { width: 200px; } と書いた。この書き方に対する指摘として最も適切なものはどれか。",
+    "options": [
+      "Idセレクタは詳細度が高いので、推奨される書き方である",
+      "要素のIdはスコープに応じてプラットフォームが管理しており変わる可能性があるため、クラスを付けてクラスセレクタで指定する",
+      "Idセレクタは画面のスタイルシートでは使えない",
+      "Idセレクタを使うと、スタイルがすべての画面に適用される"
+    ],
+    "answer": 1,
+    "explanation": "各要素のIdはスコープに応じてプラットフォームが管理しており、変わる可能性があります。予期しない表示崩れを防ぐため、Idセレクタは避けてCSSクラスで指定します。",
+    "wrongReasons": [
+      "詳細度の高さよりも、Idが変わる可能性がある点が問題で、推奨されない。",
+      "Idセレクタは書けるが、Idが変わると効かなくなる点が問題である。",
+      "Idセレクタは特定の要素にだけ適用される。"
+    ]
+  },
+  {
+    "id": "fe-css-009",
+    "exam": "front-end-developer-specialist",
+    "category": "CSSの適用と優先順位",
+    "difficulty": "標準",
+    "question": "スタイルシートエディタで、新しいクラスをアプリ内のすべての画面で使えるように定義したい。定義する場所として最も適切なものはどれか。",
+    "options": [
+      "現在選択している画面の名前のタブ",
+      "各Blockのスタイルシート",
+      "アプリ（モジュールのTheme）の名前のタブ",
+      "画面のAttributesのstyle属性"
+    ],
+    "answer": 2,
+    "explanation": "スタイルシートエディタでアプリ名（Theme）のタブに定義したスタイルは、すべての要素で使えます。画面やBlockの名前のタブに書くと、その画面・Blockに範囲が限られます。",
+    "wrongReasons": [
+      "画面のタブに書いたスタイルは、その画面に範囲が限られる。",
+      "Blockごとに書くとスタイルが重複し、読み込むファイルも増える。",
+      "インラインスタイルはその要素だけに適用され、クラスの定義にはならない。"
+    ]
+  },
+  {
+    "id": "fe-css-010",
+    "exam": "front-end-developer-specialist",
+    "category": "CSSの適用と優先順位",
+    "difficulty": "標準",
+    "question": "ThemeのGrid設定で列数を指定した。この設定による効果として最も適切なものはどれか。",
+    "options": [
+      "画面が自動的にスマートフォン向けのレイアウトに切り替わる",
+      "すべてのContainerが同じ幅に固定される",
+      "Theme Editorの配色が列ごとに変わる",
+      "要素の幅を列数で指定でき、Margin Leftで(Auto)を使うと値が自動で計算される"
+    ],
+    "answer": 3,
+    "explanation": "ThemeのGrid設定で列数を指定すると、要素の幅を列数で表せるようになり、Margin Leftに(Auto)を指定すると値が自動で計算されます。なお、プラットフォームのグリッドにはレスポンシブな振る舞いはないため、端末ごとの調整にはColumnsパターンなどを使います。",
+    "wrongReasons": [
+      "プラットフォームのグリッドにはレスポンシブな振る舞いはない。",
+      "幅を列数で指定できるようになるもので、すべてを同じ幅に固定するものではない。",
+      "配色とは関係がない。"
+    ]
+  },
+  {
+    "id": "fe-css-011",
+    "exam": "front-end-developer-specialist",
+    "category": "CSSの適用と優先順位",
+    "difficulty": "基礎",
+    "question": "Traditional WebアプリのウィジェットにCSSクラス「bold」と「red」を静的に設定する場合のStyle Classesの書き方として最も適切なものはどれか。",
+    "options": [
+      "bold red",
+      "\"bold red\"",
+      "\"bold\" + \"red\"",
+      "[bold, red]"
+    ],
+    "answer": 0,
+    "explanation": "Traditional Webアプリでは、Style Classesにクラス名をクォートなしでスペース区切りで書きます。Mobile・Reactive Webアプリでは、クォートで囲んだ文字列で指定する点が異なります。",
+    "wrongReasons": [
+      "クォートで囲むのは、Mobile・Reactive Webアプリの書き方である。",
+      "文字列の連結で書く必要はない。",
+      "配列の記法はStyle Classesでは使わない。"
+    ]
+  },
+  {
+    "id": "fe-css-012",
+    "exam": "front-end-developer-specialist",
+    "category": "CSSの適用と優先順位",
+    "difficulty": "標準",
+    "question": "独自のボタンのスタイルを、Theme Editorで設定したアプリの主要色（Primary）に合わせたい。色を指定する方法として最も適切なものはどれか。",
+    "options": [
+      "Theme Editorで選んだ色のカラーコードを調べ、CSSに直接書き込む",
+      "OutSystems UIのCSS変数（例：var(--color-primary)）を使って指定する",
+      "ボタンごとにStyles Editorで同じ色を設定する",
+      "JavaScriptでThemeの色を取得して、ボタンのstyle属性に設定する"
+    ],
+    "answer": 1,
+    "explanation": "OutSystems UIは色や余白などをCSS変数で定義しています。var(--color-primary)のようにCSS変数を使えば、Theme Editorで主要色を変えたときも独自のスタイルが自動で追従します。",
+    "wrongReasons": [
+      "カラーコードを直接書くと、主要色を変えたときに手作業での修正が必要になる。",
+      "ボタンごとの設定は重複が多く、変更時の修正漏れの原因になる。",
+      "JavaScriptでスタイルを操作するのは不要で、描画時のちらつきなどの原因にもなる。"
+    ]
+  },
+  {
+    "id": "fe-css-013",
+    "exam": "front-end-developer-specialist",
+    "category": "CSSの適用と優先順位",
+    "difficulty": "応用",
+    "question": "OutSystems UIのThemeをBase Themeにした自作Themeで、OutSystems UIが定義する .btn の角丸を変えたい。最も適切な方法はどれか。",
+    "options": [
+      "OutSystems UIモジュールを開いて、元のThemeのCSSを直接編集する",
+      "OutSystems UIのThemeをコピーして別名で保存し、すべてのCSSを書き換える",
+      "自作Themeのスタイルシートに、同じクラス名（.btn）で上書きしたいプロパティだけを定義する",
+      "すべてのボタンのAttributesにstyle属性で角丸を指定する"
+    ],
+    "answer": 2,
+    "explanation": "Base Themeは直接編集できませんが、自作Themeに同じクラス名でスタイルを定義すると、元のスタイルを上書きできます。変更したいプロパティだけを定義すれば、OutSystems UIの更新の恩恵も受け続けられます。",
+    "wrongReasons": [
+      "元のThemeは編集できず、OutSystems UIの更新で変更が失われる。",
+      "丸ごとコピーするとOutSystems UIの改善を取り込めなくなり、保守も難しくなる。",
+      "インラインスタイルの多用は保守しにくく、ベストプラクティスに反する。"
+    ]
+  },
+  {
+    "id": "fe-css-014",
+    "exam": "front-end-developer-specialist",
+    "category": "CSSの適用と優先順位",
+    "difficulty": "標準",
+    "question": "OutSystems UIのTabsパターンで、選択中のタブの見出しだけに下線を付けたい。最も適切なCSSはどれか。",
+    "options": [
+      ".osui-tabs__header-item.osui-tabs--is-active { border-bottom: 3px solid #000; }",
+      "#Tabs1 .active { border-bottom: 3px solid #000; }",
+      ".tabs:hover { border-bottom: 3px solid #000; }",
+      ".osui-tabs__content { border-bottom: 3px solid #000; }"
+    ],
+    "answer": 0,
+    "explanation": "Tabsパターンでは、見出しの各項目に .osui-tabs__header-item、選択中の項目に .osui-tabs--is-active が付きます。これらのクラスを組み合わせて、選択中の見出しだけにスタイルを指定できます。",
+    "wrongReasons": [
+      "要素のIdはプラットフォームが管理して変わりうるため、Idセレクタは避ける。",
+      ":hoverはマウスを重ねたときの状態で、選択中のタブを表すものではない。",
+      ".osui-tabs__content はタブの内容部分のクラスで、見出しではない。"
+    ]
+  }
+]

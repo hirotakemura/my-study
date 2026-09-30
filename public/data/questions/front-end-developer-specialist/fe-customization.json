@@ -1,0 +1,162 @@
+[
+  {
+    "id": "fe-custom-001",
+    "exam": "front-end-developer-specialist",
+    "category": "UIのカスタマイズ",
+    "difficulty": "基礎",
+    "question": "ボタンの文字色と余白を、CSSを書かずに見ながら調整したい。最も適切な機能はどれか。",
+    "options": [
+      "Theme Editor",
+      "Styles Editor（プロパティペインのStylesタブ）",
+      "Service CenterのTheme設定",
+      "Screen Templates"
+    ],
+    "answer": 1,
+    "explanation": "Styles Editorは、選択したウィジェットのフォント、幅・高さ、余白（Margin・Padding）、枠線などの基本的な見た目をGUIで変更できるパネルです。変更はそのウィジェットだけに適用されます。",
+    "wrongReasons": [
+      "Theme Editorはアプリ全体の配色やフォントを変える機能で、個々のウィジェットの調整には使わない。",
+      "Service Centerにウィジェットの見た目を編集する機能はない。",
+      "Screen Templatesは定義済みの画面を作る機能である。"
+    ]
+  },
+  {
+    "id": "fe-custom-002",
+    "exam": "front-end-developer-specialist",
+    "category": "UIのカスタマイズ",
+    "difficulty": "標準",
+    "question": "Styles Editorで1つのボタンに設定した見た目を、他の多くのボタンにも使いたい。最も適切な方法はどれか。",
+    "options": [
+      "他のボタンでも、Styles Editorで同じ値を1つずつ設定する",
+      "設定したボタンをコピーして、必要な場所に貼り付けていく",
+      "Styles Editorの「Save changes to reusable class」でクラスとして保存し、他のボタンのStyle Classesにそのクラスを追加する",
+      "Theme Editorで同じ色を選び直す"
+    ],
+    "answer": 2,
+    "explanation": "Styles Editorでの変更は、そのウィジェットにだけ適用されます。同じスタイルを使い回すには、クラスとして保存し、他のウィジェットのStyle Classesに追加します。",
+    "wrongReasons": [
+      "1つずつ設定すると重複が多く、変更時に修正漏れが起きやすい。",
+      "コピーではスタイルが共通化されず、後の変更をまとめて反映できない。",
+      "Theme Editorはアプリ全体の設定で、特定のスタイルを共通化する方法ではない。"
+    ]
+  },
+  {
+    "id": "fe-custom-003",
+    "exam": "front-end-developer-specialist",
+    "category": "UIのカスタマイズ",
+    "difficulty": "標準",
+    "question": "OutSystems UIのDate Pickerパターンで、パターンのプロパティにない、ライブラリ（Flatpickr）独自のイベントを使いたい。最も適切な方法はどれか。",
+    "options": [
+      "OutSystems UIモジュールを編集して、Date Pickerにイベントを追加する",
+      "Date PickerのHTMLをコピーして、自作のBlockに作り直す",
+      "On RenderでFlatpickrのライブラリを再読み込みする",
+      "OutSystems UIが提供するSetFlatpickrEventクライアントアクションで、イベントとコールバックを追加する"
+    ],
+    "answer": 3,
+    "explanation": "外部ライブラリを使うOutSystems UIパターンには、プロバイダーのイベントを追加・削除するクライアントアクションが用意されています。Date PickerではSetFlatpickrEventとUnsetFlatpickrEventを使います。",
+    "wrongReasons": [
+      "OutSystems UIモジュール自体を編集すると、更新時に変更が失われる。",
+      "自作に作り直すと保守の負担が大きく、パターンの改善も受けられない。",
+      "ライブラリを再読み込みしてもイベントは追加されず、描画のたびに処理が走る。"
+    ]
+  },
+  {
+    "id": "fe-custom-004",
+    "exam": "front-end-developer-specialist",
+    "category": "UIのカスタマイズ",
+    "difficulty": "応用",
+    "question": "Date Pickerパターンで、プロパティとして用意されていないFlatpickrの設定をJavaScriptから適用したい。最も適切な手順はどれか。",
+    "options": [
+      "パターンのInitializedイベントで受け取ったWidgetIdを使い、OutSystems UIのJavaScript API（DatePickerAPIのSetProviderConfigsなど）で設定を渡す",
+      "On Initializeで document.querySelector を使ってDate Pickerの要素を探し、属性を書き換える",
+      "ページを開くたびにflatpickr()を新しく呼び出して、別のインスタンスを作る",
+      "Date PickerのExtendedClassに設定値を文字列で渡す"
+    ],
+    "answer": 0,
+    "explanation": "外部ライブラリを使うパターンにはInitializedイベントがあり、WidgetIdを受け取れます。このIdを使ってOutSystems UIのJavaScript APIからプロバイダーのインスタンスを取得したり、SetProviderConfigsで設定を渡したりできます。",
+    "wrongReasons": [
+      "On InitializeではDOMの準備ができておらず、DOMを直接操作する方法も推奨されない。",
+      "別のインスタンスを作ると、パターンが管理するインスタンスと競合する。",
+      "ExtendedClassはCSSクラスを追加するためのプロパティで、ライブラリの設定は渡せない。"
+    ]
+  },
+  {
+    "id": "fe-custom-005",
+    "exam": "front-end-developer-specialist",
+    "category": "UIのカスタマイズ",
+    "difficulty": "標準",
+    "question": "OutSystems UIのパターンに、独自のCSSクラス「promo」を追加して見た目を変えたい。最も適切な方法はどれか。",
+    "options": [
+      "パターンのExtendedClassプロパティに \"promo\" を設定し、Themeのスタイルシートで .promo のスタイルを定義する",
+      "パターンの内部のHTMLを直接編集して、classを書き足す",
+      "On ReadyでJavaScriptを使い、パターンの要素にクラスを追加する",
+      "パターンを置いた画面のAttributesにclass属性を追加する"
+    ],
+    "answer": 0,
+    "explanation": "OutSystems UIのパターンには、独自のスタイルクラスを追加するExtendedClassプロパティがあります。クラスを設定し、その見た目はThemeのCSSで定義します。",
+    "wrongReasons": [
+      "パターン内部のHTMLは直接編集できず、更新時の互換性も失われる。",
+      "JavaScriptでのクラス操作は、見通しの悪さや描画時のちらつきの原因になる。",
+      "画面にクラスを付けても、パターン自体の要素には適用されない。"
+    ]
+  },
+  {
+    "id": "fe-custom-006",
+    "exam": "front-end-developer-specialist",
+    "category": "UIのカスタマイズ",
+    "difficulty": "基礎",
+    "question": "Theme Editorで変更できる項目として最も適切でないものはどれか。",
+    "options": [
+      "主要色（Primary）、ヘッダー、背景の色",
+      "フォントの種類と基準のサイズ",
+      "余白、ヘッダーの高さ、枠線の形、影",
+      "画面ごとのウィジェットの配置や表示順"
+    ],
+    "answer": 3,
+    "explanation": "Theme Editorでは、配色（Primary・Header・Background）、フォント、余白やヘッダーの高さ、枠線の形や影、ログイン画面の背景などアプリ全体のスタイルを変更できます。画面ごとのウィジェットの配置は画面の編集で行います。",
+    "wrongReasons": [
+      "配色はTheme Editorで変更できる。",
+      "フォントの種類と基準のサイズはTheme Editorで変更できる。",
+      "余白やヘッダーの高さ、枠線の形、影はTheme Editorで変更できる。"
+    ]
+  },
+  {
+    "id": "fe-custom-007",
+    "exam": "front-end-developer-specialist",
+    "category": "UIのカスタマイズ",
+    "difficulty": "標準",
+    "question": "Styles Editorで設定した余白が、画面上で反映されていないように見える。同じウィジェットのAttributes（Extended Properties）にはstyle属性でmarginが指定されている。原因として最も適切なものはどれか。",
+    "options": [
+      "Styles Editorの設定は、公開しないとプレビューにも反映されないため",
+      "Styles Editorの設定は、Attributesのstyle属性の値によってCSSの詳細度の規則に従い上書きされるため",
+      "Styles Editorでは余白を設定できないため",
+      "Styles Editorの設定は、Theme Editorを開くとリセットされるため"
+    ],
+    "answer": 1,
+    "explanation": "Styles Editorでの設定は、Extended Properties（Attributes）のstyle属性の値によって、CSSの詳細度の規則に従い上書きされることがあります。インラインスタイルは最も優先順位が高いため、どちらか一方で管理するようにします。",
+    "wrongReasons": [
+      "Styles Editorの変更は、Service Studioのプレビューにも反映される。",
+      "Styles EditorのLayoutでMarginとPaddingを設定できる。",
+      "Theme Editorを開いても、Styles Editorの設定はリセットされない。"
+    ]
+  },
+  {
+    "id": "fe-custom-008",
+    "exam": "front-end-developer-specialist",
+    "category": "UIのカスタマイズ",
+    "difficulty": "応用",
+    "question": "アラビア語に対応するため、Multilingualの機能でロケール「ar」を設定した。右から左（RTL）の表示について正しい説明として最も適切なものはどれか。",
+    "options": [
+      "RTLに対応するには、すべての画面のCSSを手作業で左右反転させる必要がある",
+      "OutSystems UIのパターンはRTLに対応しておらず、独自に作り直す必要がある",
+      "ロケールに応じてbody要素に「is-rtl」クラスが付き、OutSystems UIのパターンは既定でRTLに対応する。内容を切り替えたい場合はIsRTLアクションで判定できる",
+      "RTLはMobileアプリだけで利用でき、Reactive Webでは使えない"
+    ],
+    "answer": 2,
+    "explanation": "Multilingualの機能でRTLの言語を適用すると、プラットフォームがbody要素に「is-rtl」クラスを付け、表示の向きが右から左になります。OutSystems UIのパターンはすべて既定でRTLに対応しており、内容を切り替えたい場合はIsRTLアクションで判定できます。",
+    "wrongReasons": [
+      "Multilingualの機能を使えば、is-rtlクラスによって自動でRTLが適用される。",
+      "OutSystems UIのパターンは、既定ですべてRTLに対応している。",
+      "RTLはReactive Webアプリでも利用できる。"
+    ]
+  }
+]

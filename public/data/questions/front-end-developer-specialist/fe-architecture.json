@@ -1,0 +1,122 @@
+[
+  {
+    "id": "fe-arch-001",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンドアーキテクチャと再利用",
+    "difficulty": "基礎",
+    "question": "複数のアプリで一貫した見た目を実現するための、OutSystems UIを基にしたフロントエンドの構成として最も適切なものはどれか。",
+    "options": [
+      "各アプリがOutSystems UIのThemeを個別にコピーしてカスタマイズする",
+      "OutSystems UIを土台にプロジェクトのThemeを作り、それを基にStyle Guideとアプリを構成する",
+      "すべてのスタイルを各アプリの画面のスタイルシートに書く",
+      "アプリごとに独自のCSSフレームワークを一から作る"
+    ],
+    "answer": 1,
+    "explanation": "推奨される構成では、OutSystems UIを土台にプロジェクト（企業）のThemeを作り、そのThemeを基にしたStyle Guideで使うパターンやスタイルを定義して、各アプリはそれに沿って作ります。",
+    "wrongReasons": [
+      "個別にコピーすると、共通の見た目の変更を一か所で行えなくなる。",
+      "画面ごとにスタイルを書くと、重複が増えて一貫性を保てない。",
+      "一から作ると、OutSystems UIの最適化やテスト済みのパターンを生かせない。"
+    ]
+  },
+  {
+    "id": "fe-arch-002",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンドアーキテクチャと再利用",
+    "difficulty": "標準",
+    "question": "Style Guideを作成する目的として最も適切なものはどれか。",
+    "options": [
+      "アプリのサーバー処理の性能を上げるため",
+      "データベースの設計を統一するため",
+      "ブランドの色やパターンを使える形でまとめ、アプリ間でUIの一貫性とブランドルールの順守を確保するため",
+      "アプリのセキュリティの設定を共通化するため"
+    ],
+    "answer": 2,
+    "explanation": "Style Guideは、ブランドのThemeの色やパターンを使える形でまとめたもので、アプリ全体で一貫したユーザー体験を作るための基盤です。ブランドルールの順守やUIの一貫性、使いやすさの向上に役立ちます。",
+    "wrongReasons": [
+      "Style Guideは見た目の一貫性のためのもので、サーバー処理の性能とは関係ない。",
+      "データベースの設計はStyle Guideの対象ではない。",
+      "セキュリティの設定はStyle Guideの目的ではない。"
+    ]
+  },
+  {
+    "id": "fe-arch-003",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンドアーキテクチャと再利用",
+    "difficulty": "標準",
+    "question": "日付の選択を行う子のBlockで日付が変わったら、同じ画面にある別のBlock（グラフ）を更新したい。Reactive Webでの実装として最も適切なものはどれか。",
+    "options": [
+      "子のBlockでEventを定義して発生させ、親の画面でそのHandlerからグラフのBlockの入力パラメータを更新し、グラフのBlockはOn Parameters Changedでデータを再取得する",
+      "子のBlockからグラフのBlockのAggregateを直接Refreshする",
+      "日付をClient Variableに保存し、グラフのBlockで定期的に確認する",
+      "日付が変わるたびに画面全体を再読み込みする"
+    ],
+    "answer": 0,
+    "explanation": "Block同士は直接やり取りせず、親を介して連携します。子のBlockはEventで親に通知し、親はハンドラーで別のBlockの入力パラメータを更新します。更新されたBlockは、On Parameters Changedで必要な再取得などを行います。",
+    "wrongReasons": [
+      "Blockから別のBlockの内部の要素を直接操作することはできない。",
+      "Client Variableでのやり取りは結合がわかりにくく、定期的な確認も無駄が多い。",
+      "画面全体の再読み込みは遅く、入力中の状態も失われる。"
+    ]
+  },
+  {
+    "id": "fe-arch-004",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンドアーキテクチャと再利用",
+    "difficulty": "基礎",
+    "question": "ヘッダーとフッターを全画面で共通にし、変更を一か所で反映したい。最も適切な方法はどれか。",
+    "options": [
+      "各画面にヘッダーとフッターのウィジェットをコピーする",
+      "ヘッダーとフッターをBlockとして作成し、各画面で再利用する",
+      "ヘッダーとフッターの内容をSite Propertyに保存する",
+      "ヘッダーとフッターをJavaScriptで動的に生成する"
+    ],
+    "answer": 1,
+    "explanation": "共通のUIをBlockとして作って各画面で再利用すると、Blockを変更するだけで、それを使うすべての画面に変更が反映されます。再利用性と保守性が高まります。",
+    "wrongReasons": [
+      "コピーでは、変更のたびにすべての画面を修正する必要がある。",
+      "Site PropertyはUIの部品を共有する仕組みではない。",
+      "JavaScriptでのUIの生成は保守性が低く、ローコードの利点を失う。"
+    ]
+  },
+  {
+    "id": "fe-arch-005",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンドアーキテクチャと再利用",
+    "difficulty": "応用",
+    "question": "他のアプリの公開Blockを自分のモジュールに追加しようとしたところ、依存関係が不足しているというエラーで失敗した。そのBlockの中では、さらに別のモジュールのBlockが使われている。原因として最も適切なものはどれか。",
+    "options": [
+      "公開Blockは、同じアプリの中でしか再利用できないため",
+      "Blockの中に別のBlockを含めることはできないため",
+      "Blockを追加するには、Service CenterでBlockを承認する必要があるため",
+      "内側のBlockの提供元モジュールに対して、Monitor and Add Dependenciesの権限を持っていないため"
+    ],
+    "answer": 3,
+    "explanation": "Blockを追加するには、そのBlockの提供元モジュールに対して少なくともMonitor and Add Dependenciesの権限が必要です。Blockが別のモジュールのBlockを含む場合は、その内側のBlockの提供元モジュールに対する権限も必要で、なければ依存関係の不足で失敗します。",
+    "wrongReasons": [
+      "公開Blockは、他のアプリでも再利用できる。",
+      "Blockの中に別のBlockを含めることはできる。",
+      "Blockの追加にService Centerでの承認は必要ない。"
+    ]
+  },
+  {
+    "id": "fe-arch-006",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンドアーキテクチャと再利用",
+    "difficulty": "標準",
+    "question": "全社共通のTheme用モジュールに、ボタンの見た目の改善を加えて公開した。このThemeを使う各アプリについて、正しい説明として最も適切なものはどれか。",
+    "options": [
+      "Themeの変更はどのアプリにも反映されない",
+      "Themeの変更は、各アプリのCSSに手作業でコピーする必要がある",
+      "見た目の全体的な変更をグローバルThemeで一か所に行えるため、各アプリで個別にスタイルを修正する必要がない",
+      "Themeの変更を反映するには、各アプリのThemeを作り直す必要がある"
+    ],
+    "answer": 2,
+    "explanation": "共通のグローバルThemeを継承する構成では、見た目の全体的な変更をグローバルThemeで一か所に行えます。各アプリで同じスタイルを個別に修正する必要がなく、一貫性も保てます（Themeは強い依存関係のため、利用側の再公開で最新の内容が取り込まれます）。",
+    "wrongReasons": [
+      "グローバルThemeを継承していれば、その変更は各アプリに取り込まれる。",
+      "手作業でのコピーは、グローバルThemeで共通化する意味を失わせる。",
+      "Themeを作り直す必要はなく、継承によって変更が取り込まれる。"
+    ]
+  }
+]

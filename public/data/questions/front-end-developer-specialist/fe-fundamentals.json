@@ -1,0 +1,202 @@
+[
+  {
+    "id": "fe-basic-001",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンド基礎",
+    "difficulty": "基礎",
+    "question": "Reactive Webの画面で、ボタンを押すとPopupを開き、Popup内の「閉じる」ボタンで閉じるようにしたい。最も適切な実装はどれか。",
+    "options": [
+      "Boolean型のLocal Variableを作ってPopupのShow Popupプロパティに設定し、各ボタンのClient ActionでAssignによりTrue／Falseを切り替える",
+      "PopupのVisibleプロパティをJavaScriptで書き換える",
+      "Popup用の画面を別に作り、ボタンでその画面へ遷移させる",
+      "Popupを毎回Blockとして動的に生成し、閉じるときに削除する"
+    ],
+    "answer": 0,
+    "explanation": "Reactive WebのPopupウィジェットは、Show PopupプロパティにBoolean型の変数を設定して表示を切り替えます。開くボタンで変数をTrue、閉じるボタンでFalseに代入するだけで、同じ画面上で開閉できます。",
+    "wrongReasons": [
+      "JavaScriptでDOMを直接操作するのは推奨されず、Popupの開閉はShow Popupの変数で制御する。",
+      "別画面への遷移は、利用者が同じページにとどまれるPopupの利点を失う。",
+      "Popupは変数で開閉を切り替えるもので、動的に生成・削除する必要はない。"
+    ]
+  },
+  {
+    "id": "fe-basic-002",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンド基礎",
+    "difficulty": "基礎",
+    "question": "Reactive Webアプリで、Containerウィジェットに「card」と「highlight」の2つのCSSクラスを静的に設定したい。Style Classesプロパティの書き方として最も適切なものはどれか。",
+    "options": [
+      "card highlight",
+      "\"card highlight\"",
+      "\"card\", \"highlight\"",
+      ".card.highlight"
+    ],
+    "answer": 1,
+    "explanation": "Mobile・Reactive WebアプリのStyle Classesでは、クラス名をダブルクォートで囲み、スペースで区切って指定します（例：\"bold red\"）。クォートなしで書くのはTraditional Webアプリの書き方です。",
+    "wrongReasons": [
+      "クォートを付けない書き方はTraditional Webアプリの場合である。",
+      "クラスはカンマ区切りの別々の文字列ではなく、1つの文字列の中でスペースで区切る。",
+      "Style Classesにはクラス名を書くもので、CSSセレクタの記法は使わない。"
+    ]
+  },
+  {
+    "id": "fe-basic-003",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンド基礎",
+    "difficulty": "標準",
+    "question": "Reactive Webアプリで作成した公開（Public）Blockを、別のアプリで再利用したい。再利用できるアプリの組み合わせとして最も適切なものはどれか。",
+    "options": [
+      "Reactive Webアプリだけで再利用できる",
+      "Traditional Webアプリだけで再利用できる",
+      "Reactive WebアプリとMobileアプリで再利用できる",
+      "Reactive Web、Mobile、Traditional Webのすべてのアプリで再利用できる"
+    ],
+    "answer": 2,
+    "explanation": "Reactive WebのBlockは、Reactive WebアプリとMobileアプリの両方で再利用できます。Traditional WebのWeb Blockは、Traditional Webアプリでのみ再利用できます。",
+    "wrongReasons": [
+      "Reactive WebのBlockはMobileアプリでも再利用できる。",
+      "Reactive WebのBlockはTraditional Webアプリでは使えない。",
+      "Traditional WebアプリではReactive WebのBlockは使えない。"
+    ]
+  },
+  {
+    "id": "fe-basic-004",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンド基礎",
+    "difficulty": "標準",
+    "question": "ダッシュボード系の画面で共通の配置（上段に2つのエリア、下段に1つのエリア）を使い回し、中身は画面ごとに変えたい。最も適切な実装はどれか。",
+    "options": [
+      "各画面に同じContainerの構成をコピーして作る",
+      "レイアウト用のBlockを作り、中身を入れる場所にPlaceholderを置いて、各画面でそのBlockを使い中身を配置する",
+      "Theme Editorで画面の配置を設定する",
+      "画面ごとにCSSで絶対配置（position: absolute）を指定する"
+    ],
+    "answer": 1,
+    "explanation": "Blockに固定の構成を作り、画面ごとに変わる部分にPlaceholderを置くと、レイアウトとして再利用できます。各画面ではBlockを配置し、Placeholderに画面固有の内容を入れます。",
+    "wrongReasons": [
+      "コピーでは配置を変更するたびに全画面を修正する必要があり、保守性が低い。",
+      "Theme Editorは色やフォントなどのスタイルを変える機能で、画面の配置は作れない。",
+      "絶対配置は画面サイズの変化に弱く、レスポンシブな表示にも向かない。"
+    ]
+  },
+  {
+    "id": "fe-basic-005",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンド基礎",
+    "difficulty": "基礎",
+    "question": "一覧画面や詳細画面を素早く作りたい。組み込みのScreen Templatesについて正しい説明として最も適切なものはどれか。",
+    "options": [
+      "空の画面が作られるだけで、レイアウトは自分で作る必要がある",
+      "Screen Templatesは本番環境でしか使えない",
+      "Screen Templatesで作った画面は編集できない",
+      "定義済みのレイアウト・ウィジェット・スタイル・ロジックとサンプルデータを持つ画面が作られ、エンティティをドロップして実データに置き換えられる"
+    ],
+    "answer": 3,
+    "explanation": "Screen Templatesを使うと、あらかじめ用意されたレイアウトやウィジェット、スタイル、ロジックを持つ画面をサンプルデータ付きで作成できます。エンティティをウィジェットにドロップすると、Service Studioが画面を更新します。",
+    "wrongReasons": [
+      "Screen Templatesはレイアウトやウィジェットが定義済みの画面を作る機能である。",
+      "Screen Templatesは開発時にService Studioで使う機能である。",
+      "作成した画面は通常の画面と同じように自由に編集できる。"
+    ]
+  },
+  {
+    "id": "fe-basic-006",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンド基礎",
+    "difficulty": "標準",
+    "question": "画面のタイトル文字を、スクリーンリーダーが見出しとして認識できるh1要素で出力したい。最も適切な方法はどれか。",
+    "options": [
+      "HTML Elementウィジェットを置き、TagにH1（h1）を指定してその中にテキストを入れる",
+      "TextウィジェットのStyle Classesに\"h1\"を指定する",
+      "Expressionウィジェットで\"<h1>タイトル</h1>\"という文字列を表示する",
+      "Containerのフォントサイズを大きくする"
+    ],
+    "answer": 0,
+    "explanation": "HTML Elementウィジェットでは、Tagプロパティで出力するHTML要素を指定できます。h1を指定してテキストを入れると、見出し構造としてスクリーンリーダーなどの支援技術に伝わります。",
+    "wrongReasons": [
+      "クラスで見た目を見出し風にしても、HTMLの要素はh1にならない。",
+      "Expressionは既定で文字列をエスケープして表示するため、h1要素にはならない。",
+      "見た目を大きくしても、見出しとしての意味は支援技術に伝わらない。"
+    ]
+  },
+  {
+    "id": "fe-basic-007",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンド基礎",
+    "difficulty": "標準",
+    "question": "ToolboxでOutSystems UIの「Columns」を検索したが、ウィジェットが表示されない。原因と対処として最も適切なものはどれか。",
+    "options": [
+      "OutSystems UIはMobileアプリ専用のため、Reactive Webでは使えない",
+      "Remove unused referencesの設定で依存関係が外れているため、Toolboxの「Search in other modules」でOutSystemsUIのウィジェットを探して依存関係を追加する",
+      "Theme Editorを開き直すと、Toolboxに表示される",
+      "Columnsは廃止されたため、Containerを並べて代用するしかない"
+    ],
+    "answer": 1,
+    "explanation": "Remove unused referencesの設定が有効だと、使っていないOutSystems UIの要素への依存関係が外され、Toolboxに表示されないことがあります。「Search in other modules」でOutSystemsUIモジュールのウィジェットを選び、依存関係を追加します。",
+    "wrongReasons": [
+      "OutSystems UIのパターンはReactive Webアプリでも使える。",
+      "Theme Editorは見た目の設定で、依存関係は追加されない。",
+      "Columnsパターンは利用でき、依存関係を追加すれば表示される。"
+    ]
+  },
+  {
+    "id": "fe-basic-008",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンド基礎",
+    "difficulty": "応用",
+    "question": "社内向けアプリの共通の見た目と機能を持つ独自のアプリテンプレートを作り、新規アプリ作成時に選べるようにしたい。テンプレートとして認識させるための条件として最も適切なものはどれか。",
+    "options": [
+      "モジュール名の末尾に「_Template」を付けるだけでよい",
+      "LifeTimeでモジュールにテンプレートのタグを付ける",
+      "モジュール名を「Template_<名前>」にし、モジュールのプロパティに説明（Description）とアイコンを設定して公開する",
+      "Service Centerでモジュールをテンプレートとして登録する"
+    ],
+    "answer": 2,
+    "explanation": "独自のアプリケーションテンプレートにするには、モジュール名を「Template_」で始め、説明とアイコンを設定して公開します。なお、テンプレートから作成済みのアプリは、後からテンプレートを変更しても影響を受けません。",
+    "wrongReasons": [
+      "必要なのは「Template_」の接頭辞で、説明とアイコンの設定も必要である。",
+      "LifeTimeのタグ付けはテンプレートの条件ではない。",
+      "Service Centerでテンプレートを登録する仕組みはない。"
+    ]
+  },
+  {
+    "id": "fe-basic-009",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンド基礎",
+    "difficulty": "標準",
+    "question": "入力フォームで、Labelウィジェットと入力欄を正しく関連付けたい。最も適切な方法はどれか。",
+    "options": [
+      "LabelとInputを同じContainerに入れる",
+      "LabelのテキストとInputのNameを同じ文字列にする",
+      "InputのPrompt（プレースホルダー）にラベルの文字を入れ、Labelは使わない",
+      "LabelウィジェットのInput Widgetプロパティで、対応する入力欄を選択する"
+    ],
+    "answer": 3,
+    "explanation": "LabelウィジェットのInput Widgetプロパティで入力欄を指定すると、ラベルと入力欄が関連付けられ、スクリーンリーダーが入力欄の説明として読み上げられるようになります。",
+    "wrongReasons": [
+      "同じContainerに入れるだけでは、要素同士は関連付けられない。",
+      "名前をそろえても、ラベルと入力欄は関連付けられない。",
+      "プレースホルダーは入力すると消えるため、ラベルの代わりにはならない。"
+    ]
+  },
+  {
+    "id": "fe-basic-010",
+    "exam": "front-end-developer-specialist",
+    "category": "フロントエンド基礎",
+    "difficulty": "応用",
+    "question": "独自のWeb用Themeを作成し、そのLayout用Blockを自作している。画面の主な内容を表示するために、Layout BlockのPlaceholderとして必ず用意すべきものとして最も適切なものはどれか。",
+    "options": [
+      "MainContent",
+      "Breadcrumbs",
+      "Actions",
+      "Footer"
+    ],
+    "answer": 0,
+    "explanation": "Web用のThemeでは、画面の主な内容はLayoutブロックのMainContentプレースホルダーに配置されるため、MainContentは必須です。BreadcrumbsやActions、Footerなどは画面の種類によって任意です。",
+    "wrongReasons": [
+      "Breadcrumbsは任意のプレースホルダーである。",
+      "Actionsは画面の種類によって任意のプレースホルダーである。",
+      "Footerは任意のプレースホルダーである。"
+    ]
+  }
+]

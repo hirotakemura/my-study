@@ -1,0 +1,242 @@
+[
+  {
+    "id": "fe-theme-001",
+    "exam": "front-end-developer-specialist",
+    "category": "テーマとスタイルシート",
+    "difficulty": "基礎",
+    "question": "モジュールに2つのThemeがあり、既定で使うThemeを切り替えたい。設定する場所として最も適切なものはどれか。",
+    "options": [
+      "各画面のプロパティで、Themeを1つずつ選ぶ",
+      "InterfaceタブでモジュールのプロパティのDefaultsにあるDefault Themeを選ぶ",
+      "Service CenterでモジュールのThemeを切り替える",
+      "Theme Editorでパレットを選び直す"
+    ],
+    "answer": 1,
+    "explanation": "モジュールの既定のThemeは、Interfaceタブでモジュール名を選び、プロパティのDefaultsセクションにあるDefault Themeで設定します。UI Flowや画面は、既定でこのThemeを引き継ぎます。",
+    "wrongReasons": [
+      "画面ごとに設定するのは手間がかかり、既定のThemeを変える方法ではない。",
+      "Themeの切り替えはService Studioで行う開発時の設定である。",
+      "Theme Editorは見た目をカスタマイズする機能で、使うThemeを切り替えるものではない。"
+    ]
+  },
+  {
+    "id": "fe-theme-002",
+    "exam": "front-end-developer-specialist",
+    "category": "テーマとスタイルシート",
+    "difficulty": "標準",
+    "question": "OutSystems UIのスタイルを一切使わず、自作のCSSだけで見た目を作るThemeを用意したい。最も適切な作り方はどれか。",
+    "options": [
+      "新しいThemeを追加し、Base Themeを(None)にする",
+      "OutSystems UIのThemeのCSSをすべて削除する",
+      "Theme EditorのReset Theme Editorを押す",
+      "新しいThemeを追加し、Base ThemeをOutSystems UIにしたままCSSを空にする"
+    ],
+    "answer": 0,
+    "explanation": "新しいThemeのBase Themeを(None)にすると、スタイルを持たない空のThemeになり、要素には自作したCSSだけが適用されます。UI FlowのThemeに設定すれば、そのUI Flow配下の画面で使えます。",
+    "wrongReasons": [
+      "OutSystems UIのTheme自体は編集できない。",
+      "Reset Theme EditorはTheme Editorで行った変更を元に戻す機能である。",
+      "Base ThemeがOutSystems UIのままなら、そのスタイルは引き継がれる。"
+    ]
+  },
+  {
+    "id": "fe-theme-003",
+    "exam": "front-end-developer-specialist",
+    "category": "テーマとスタイルシート",
+    "difficulty": "標準",
+    "question": "既存のThemeをBase Themeとして新しいThemeを作成した。新しいThemeについて正しい説明として最も適切なものはどれか。",
+    "options": [
+      "Base ThemeのCSSはコピーされ、以後Base Themeを変更しても反映されない",
+      "Base ThemeのCSSは引き継がれず、レイアウトだけが引き継がれる",
+      "Base ThemeのレイアウトとCSSを引き継ぎ、新しいThemeのスタイルシートに同じクラス名で定義したスタイルで上書きできる",
+      "新しいThemeでは、Base Themeと同じクラス名は使えない"
+    ],
+    "answer": 2,
+    "explanation": "新しいThemeはBase ThemeのレイアウトとCSSを継承します。Base Theme自体は編集できませんが、新しいThemeのスタイルシートに同じクラス名でスタイルを書けば上書きできます。",
+    "wrongReasons": [
+      "Base ThemeのCSSはコピーではなく継承される。",
+      "Base ThemeのCSSも継承される。",
+      "同じクラス名で定義することで、元のスタイルを上書きできる。"
+    ]
+  },
+  {
+    "id": "fe-theme-004",
+    "exam": "front-end-developer-specialist",
+    "category": "テーマとスタイルシート",
+    "difficulty": "基礎",
+    "question": "管理者向けの画面群だけ、別のThemeで表示したい。これらの画面は「AdminFlow」というUI Flowにまとまっている。最も適切な方法はどれか。",
+    "options": [
+      "AdminFlowのThemeプロパティに管理者用のThemeを設定する",
+      "モジュールのDefault Themeを管理者用のThemeに変更する",
+      "管理者用の画面のスタイルシートに、Themeの内容をすべてコピーする",
+      "管理者用の画面を別のアプリに移す"
+    ],
+    "answer": 0,
+    "explanation": "UI FlowのThemeプロパティにThemeを設定すると、そのUI Flow配下のすべての画面がそのThemeを使います。特定の画面群だけ見た目を変えたい場合に適しています。",
+    "wrongReasons": [
+      "Default Themeを変えると、管理者用以外の画面の見た目も変わってしまう。",
+      "画面ごとにコピーするとスタイルが重複し、保守が難しくなる。",
+      "見た目を変えるためだけにアプリを分ける必要はない。"
+    ]
+  },
+  {
+    "id": "fe-theme-005",
+    "exam": "front-end-developer-specialist",
+    "category": "テーマとスタイルシート",
+    "difficulty": "標準",
+    "question": "Theme Editorを使って会社のロゴに合わせた配色にしたい。Theme Editorについて正しい説明として最も適切なものはどれか。",
+    "options": [
+      "Theme Editorは、Base ThemeがないThemeでのみ使える",
+      "Theme EditorはService Centerから開いて、本番環境の見た目を直接変更する",
+      "Theme Editorでは色のみ変更でき、フォントや余白は変更できない",
+      "OutSystems UIのThemeをBase Themeにしている場合に使え、既定のパレットのほか、ロゴなどの画像から配色を作ることもできる"
+    ],
+    "answer": 3,
+    "explanation": "Theme Editorは、アプリがOutSystems UIのThemeをBase Themeにしている場合に使えます。用意された配色パレットから選ぶほか、ロゴなどの画像（png・jpeg）の主要な色から独自のパレットを作ることもできます。",
+    "wrongReasons": [
+      "Theme EditorはOutSystems UIのThemeをBase Themeにしている場合に使う。",
+      "Theme EditorはService Studioの中で使い、プレビューしながら変更する。",
+      "フォントの種類やサイズ、余白、角の形なども変更できる。"
+    ]
+  },
+  {
+    "id": "fe-theme-006",
+    "exam": "front-end-developer-specialist",
+    "category": "テーマとスタイルシート",
+    "difficulty": "基礎",
+    "question": "Theme Editorで「Primary」の色を変更した。主に影響する部分として最も適切なものはどれか。",
+    "options": [
+      "ウィジェットやOutSystems UIパターンの色（画面全体で主要な色）",
+      "ヘッダーの背景色だけ",
+      "画面の背景色だけ",
+      "ログイン画面の背景画像"
+    ],
+    "answer": 0,
+    "explanation": "PrimaryはウィジェットやOutSystems UIパターンに使われる、アプリ全体の主要な色です。ヘッダーの背景はHeader、画面の背景はBackgroundで個別に変更します。",
+    "wrongReasons": [
+      "ヘッダーの背景色はHeaderの設定で変更する。",
+      "画面の背景色はBackgroundの設定で変更する。",
+      "ログイン画面の背景は、Login Screenの背景の設定で変更する。"
+    ]
+  },
+  {
+    "id": "fe-theme-007",
+    "exam": "front-end-developer-specialist",
+    "category": "テーマとスタイルシート",
+    "difficulty": "標準",
+    "question": "Theme Editorでいろいろ試したが、Theme Editorで行ったスタイルの変更をすべて取り消して元に戻したい。最も適切な方法はどれか。",
+    "options": [
+      "Themeを削除して作り直す",
+      "スタイルシートエディタで、Theme Editorが生成したCSSを1行ずつ探して削除する",
+      "Theme EditorのReset Theme Editorを押す",
+      "モジュールをService Centerで以前のバージョンに戻す"
+    ],
+    "answer": 2,
+    "explanation": "Theme Editorで作成したスタイルの変更は、Reset Theme Editorを押すとまとめて削除できます。",
+    "wrongReasons": [
+      "Themeを作り直すと、他のカスタマイズまで失われる。",
+      "手作業での削除は手間がかかり、消し漏れや消しすぎの原因になる。",
+      "以前のバージョンに戻すと、Theme Editor以外の変更まで失われる。"
+    ]
+  },
+  {
+    "id": "fe-theme-008",
+    "exam": "front-end-developer-specialist",
+    "category": "テーマとスタイルシート",
+    "difficulty": "応用",
+    "question": "MobileアプリでTheme Editorを使い、ログイン画面（Login Screen）の背景をグラデーションの色に変更した。この変更が影響する範囲として最も適切なものはどれか。",
+    "options": [
+      "ログイン画面の背景だけが変わる",
+      "アプリのすべての画面の背景が変わる",
+      "ヘッダーの背景色も同じグラデーションになる",
+      "ログイン画面に加えて、Mobileアプリではスプラッシュ画面の背景も変わる"
+    ],
+    "answer": 3,
+    "explanation": "Theme EditorのLogin Screenの背景設定は、Common UI FlowのLogin画面の背景を変更し、Mobileアプリではスプラッシュ画面の背景も変わります。なおグラデーションは背景色に適用され、背景画像には適用されません。",
+    "wrongReasons": [
+      "Mobileアプリでは、スプラッシュ画面の背景も変わる。",
+      "通常の画面の背景はBackgroundの設定で変更するもので、この設定では変わらない。",
+      "ヘッダーの背景はHeaderの設定で変更する。"
+    ]
+  },
+  {
+    "id": "fe-theme-009",
+    "exam": "front-end-developer-specialist",
+    "category": "テーマとスタイルシート",
+    "difficulty": "標準",
+    "question": "全社共通のTheme用モジュールを設計している。このモジュールに含める内容として最も適切でないものはどれか。",
+    "options": [
+      "ThemeのCSSとレイアウト用のBlock",
+      "ロゴ画像、ログインのフローと例外処理",
+      "メニューと画面遷移のためのロジック",
+      "各アプリで使う日付計算などの汎用ユーティリティやアセット一式"
+    ],
+    "answer": 3,
+    "explanation": "Theme用モジュールは、CSS、レイアウトBlock、ロゴ、ログインのフローと例外処理、メニュー、業務横断のロール（役職など）といった共通の見た目に関わる要素に限定します。アセットやユーティリティの置き場として使うべきではありません。",
+    "wrongReasons": [
+      "CSSとレイアウトのBlockは、Themeモジュールの中心となる要素である。",
+      "ロゴやログインのフロー、例外処理もThemeモジュールに含める要素である。",
+      "メニューと遷移を支えるロジックも、Themeモジュールに含める要素である。"
+    ]
+  },
+  {
+    "id": "fe-theme-010",
+    "exam": "front-end-developer-specialist",
+    "category": "テーマとスタイルシート",
+    "difficulty": "応用",
+    "question": "独立した複数のアプリで、会社共通の見た目は共有したいが、メニュー構成とログインの方式はアプリごとに異なる。Themeの構成として最も適切なものはどれか。",
+    "options": [
+      "すべてのアプリで1つのグローバルTheme モジュールを共有し、メニューとログインもそこで共通化する",
+      "各アプリにThemeモジュールを持たせてグローバルThemeを継承し、メニューやログインはアプリごとのThemeで定義する",
+      "各アプリでOutSystems UIのThemeを個別にカスタマイズし、共通の見た目は手作業でそろえる",
+      "グローバルThemeのCSSを、各アプリの画面のスタイルシートにコピーする"
+    ],
+    "answer": 1,
+    "explanation": "アプリどうしが独立していて見た目だけを共有する場合は、各アプリが独自のThemeモジュールを持ち、共通のグローバルThemeを継承します。見た目の変更はグローバルThemeで行い、メニューやログインの方式は各アプリのThemeで定義します。",
+    "wrongReasons": [
+      "1つのThemeでメニューとログインまで共通化するのは、共通のポータルに属するアプリの場合である。",
+      "手作業でそろえると、見た目の変更のたびに全アプリの修正が必要になる。",
+      "コピーは重複を生み、共通の見た目を一か所で変更できなくなる。"
+    ]
+  },
+  {
+    "id": "fe-theme-011",
+    "exam": "front-end-developer-specialist",
+    "category": "テーマとスタイルシート",
+    "difficulty": "応用",
+    "question": "複数のアプリで使う共通部品のBlockを、共通サービス用のモジュールに作る。アプリごとにThemeが異なる。このBlockについて最も適切な説明はどれか。",
+    "options": [
+      "Blockは作成したモジュールのThemeで表示されるため、特定のアプリのThemeに合わせて作る",
+      "Blockは利用側モジュールのCSSで表示されるため、組み込みのベースThemeを前提に作り、各アプリの見た目に合わせられるようにする",
+      "Blockにはスタイルを一切適用できないため、利用側の画面でインラインスタイルを指定する",
+      "Themeの異なるアプリどうしでは、Blockを共有できない"
+    ],
+    "answer": 1,
+    "explanation": "Blockは利用する側のモジュールのCSSで表示され、最終的なアプリの見た目に合わせて変わります。見た目の異なる複数のアプリで再利用する共通部品は、組み込みのベースThemeを前提に作ります。",
+    "wrongReasons": [
+      "Blockは利用側のCSSで表示されるため、特定アプリのThemeに依存させるべきではない。",
+      "Blockにもスタイルは適用でき、インラインスタイルの多用はベストプラクティスに反する。",
+      "Themeが異なっても、公開したBlockは共有できる。"
+    ]
+  },
+  {
+    "id": "fe-theme-012",
+    "exam": "front-end-developer-specialist",
+    "category": "テーマとスタイルシート",
+    "difficulty": "標準",
+    "question": "Styles Editorでウィジェットに設定したスタイルを「Save changes to reusable class」で再利用可能なクラスとして保存しようとしたが、できない。原因として最も適切なものはどれか。",
+    "options": [
+      "モジュールにローカルのThemeがないため",
+      "ウィジェットがContainerの中にあるため",
+      "モジュールがReactive Webアプリのため",
+      "Styles Editorで設定したスタイルは、クラスとして保存できない仕様のため"
+    ],
+    "answer": 0,
+    "explanation": "Styles Editorで設定したスタイルをクラスとして保存するには、モジュールにローカルのThemeが必要です。保存したクラスは、他のウィジェットのStyle Classesに追加して再利用できます。",
+    "wrongReasons": [
+      "ウィジェットの配置場所は、クラスとして保存できるかどうかに関係ない。",
+      "Reactive Webアプリでもクラスとして保存できる。",
+      "ローカルのThemeがあれば、クラスとして保存できる。"
+    ]
+  }
+]

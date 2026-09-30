@@ -1,0 +1,242 @@
+[
+  {
+    "id": "fe-js-001",
+    "exam": "front-end-developer-specialist",
+    "category": "JavaScript",
+    "difficulty": "基礎",
+    "question": "Client ActionのJavaScriptノードで、ノードに定義した入力パラメータ「Name」の値を読み、出力パラメータ「Greeting」に値を設定したい。最も適切なコードはどれか。",
+    "options": [
+      "var name = Name; Greeting = \"Hello \" + name;",
+      "var name = $parameters.Name; $parameters.Greeting = \"Hello \" + name;",
+      "var name = $actions.Name; return \"Hello \" + name;",
+      "var name = document.getElementById(\"Name\").value; $public.Greeting = \"Hello \" + name;"
+    ],
+    "answer": 1,
+    "explanation": "JavaScriptノードは独自のスコープを持ち、定義した入力・出力パラメータには$parametersオブジェクトからアクセスします。出力パラメータは、ノードのエディタで事前に定義しておく必要があります。",
+    "wrongReasons": [
+      "パラメータは変数名で直接参照できず、$parametersを通して参照する。",
+      "$actionsはクライアントアクションを呼び出すためのオブジェクトで、returnで出力は返せない。",
+      "パラメータはDOMから読むものではなく、$publicはOutSystemsのJavaScript APIのためのオブジェクトである。"
+    ]
+  },
+  {
+    "id": "fe-js-002",
+    "exam": "front-end-developer-specialist",
+    "category": "JavaScript",
+    "difficulty": "標準",
+    "question": "JavaScriptノードの中で、$parameters.ResultCode = 200; と書いて出力パラメータを返そうとしたところ、TrueChangeにエラーが表示された。原因として最も適切なものはどれか。",
+    "options": [
+      "出力パラメータは$parametersに値を代入するだけでは追加できず、JavaScriptノードのエディタで定義しておく必要があるため",
+      "出力パラメータには数値を設定できないため",
+      "JavaScriptノードでは出力パラメータを使えないため",
+      "$parametersは読み取り専用のため"
+    ],
+    "answer": 0,
+    "explanation": "JavaScriptノードの出力パラメータは、$parametersオブジェクトに値を代入するだけで動的に追加することはできません。エディタのParametersで定義しておかないと、TrueChangeでエラーになり公開できません。",
+    "wrongReasons": [
+      "出力パラメータには、定義したデータ型の値を設定できる。",
+      "JavaScriptノードでも入力・出力パラメータを定義して使える。",
+      "定義済みの出力パラメータには$parametersを通して値を設定できる。"
+    ]
+  },
+  {
+    "id": "fe-js-003",
+    "exam": "front-end-developer-specialist",
+    "category": "JavaScript",
+    "difficulty": "標準",
+    "question": "JavaScriptノードから、モジュールに定義したClient Action「ShowSummary」（出力パラメータTotalを持つ同期のアクション）を呼び出し、その結果を使いたい。最も適切なコードはどれか。",
+    "options": [
+      "var total = ShowSummary().Total;",
+      "var total = $public.ShowSummary().Total;",
+      "var result = $actions.ShowSummary(); var total = result.Total;",
+      "$actions.ShowSummary(function(total) { ... });"
+    ],
+    "answer": 2,
+    "explanation": "JavaScriptノードからクライアントアクションを呼ぶには、$actionsオブジェクトを使います。同期のアクションの戻り値は、出力パラメータを持つ通常のJavaScriptオブジェクトです。",
+    "wrongReasons": [
+      "クライアントアクションは関数名で直接呼べず、$actionsを通して呼ぶ。",
+      "$publicはOutSystemsのJavaScript APIのためのオブジェクトである。",
+      "同期のアクションは戻り値として結果を返し、コールバック関数は受け取らない。"
+    ]
+  },
+  {
+    "id": "fe-js-004",
+    "exam": "front-end-developer-specialist",
+    "category": "JavaScript",
+    "difficulty": "応用",
+    "question": "サーバー呼び出しを含む（非同期の）Client Action「LoadData」をJavaScriptノードから呼び、結果の出力パラメータCountを使いたい。最も適切なコードはどれか。",
+    "options": [
+      "var count = $actions.LoadData().Count; $parameters.Count = count;",
+      "$actions.LoadData().then(function(result) { $parameters.Count = result.Count; $resolve(); }).catch(function(err) { $reject(err); });",
+      "$actions.LoadData(); setTimeout(function() { $parameters.Count = 0; }, 1000);",
+      "await $public.LoadData(); $parameters.Count = LoadData.Count;"
+    ],
+    "answer": 1,
+    "explanation": "非同期のクライアントアクションを呼ぶと、戻り値は出力パラメータではなくPromiseになります。結果はthen()で受け取り、エラーはcatch()などで必ず処理します。呼び出し元のJavaScriptノードも$resolve()・$reject()で完了を知らせます。",
+    "wrongReasons": [
+      "非同期のアクションはPromiseを返すため、すぐに出力パラメータを参照すると正しい値にならない。",
+      "一定時間待つ方法では完了を保証できず、結果も受け取れない。",
+      "クライアントアクションは$actionsから呼び出し、$publicはJavaScript APIのためのオブジェクトである。"
+    ]
+  },
+  {
+    "id": "fe-js-005",
+    "exam": "front-end-developer-specialist",
+    "category": "JavaScript",
+    "difficulty": "応用",
+    "question": "JavaScriptノードで外部ライブラリの非同期APIを呼び、完了後に出力パラメータを返したい。$resolve()の使い方として最も適切なものはどれか。",
+    "options": [
+      "$resolve(result) のように、結果を引数に渡して返す",
+      "$resolve()はPromiseを自分で作ったときにだけ使え、new Promiseで囲む必要がある",
+      "$resolve()を使うと、そのクライアントアクションは同期のアクションとして扱われる",
+      "出力の値は$parametersに設定してから、引数なしで$resolve()を呼ぶ"
+    ],
+    "answer": 3,
+    "explanation": "$resolve()は引数を取らず、出力値は$parametersに設定します。$resolve()や$reject()を使うと、そのJavaScriptノードを含むクライアントアクションは非同期として扱われ、生成されるコードがPromiseで囲まれるため、自分でPromiseを作る必要はありません。",
+    "wrongReasons": [
+      "$resolve()は引数を取らない。",
+      "生成されるコードがPromiseで囲まれるため、自分でPromiseを作る必要はない。",
+      "$resolve()を使うと、そのクライアントアクションは非同期として扱われる。"
+    ]
+  },
+  {
+    "id": "fe-js-006",
+    "exam": "front-end-developer-specialist",
+    "category": "JavaScript",
+    "difficulty": "標準",
+    "question": "非同期のクライアントアクションの中でエラーが発生したとき、OutSystemsの例外として扱い、Exception Handlerで処理させたい。JavaScriptノードでの書き方として最も適切なものはどれか。",
+    "options": [
+      "$reject(new Error(\"エラーの内容\"));",
+      "throw \"エラーの内容\"; のあとに$resolve()を呼ぶ",
+      "$parameters.Error = true; とだけ書く",
+      "console.error(\"エラーの内容\");"
+    ],
+    "answer": 0,
+    "explanation": "$reject()を呼ぶとOutSystemsの例外が発生し、最初に見つかったException Handlerで処理されます（独自のハンドラがなければGlobal Exception Handler）。Errorオブジェクトを渡すとメッセージを指定できます。",
+    "wrongReasons": [
+      "例外を投げた後の$resolve()は実行されず、非同期のアクションとして正しく完了を伝えられない。",
+      "出力パラメータを設定するだけでは、OutSystemsの例外は発生しない。",
+      "コンソールに出力するだけでは、例外として処理されない。"
+    ]
+  },
+  {
+    "id": "fe-js-007",
+    "exam": "front-end-developer-specialist",
+    "category": "JavaScript",
+    "difficulty": "基礎",
+    "question": "JavaScriptノードから、画面上部に「保存しました」というフィードバックメッセージを表示したい。最も適切なコードはどれか。",
+    "options": [
+      "alert(\"保存しました\");",
+      "$actions.FeedbackMessage(\"保存しました\");",
+      "$public.FeedbackMessage.showFeedbackMessage(\"保存しました\", 1);",
+      "document.body.innerHTML += \"保存しました\";"
+    ],
+    "answer": 2,
+    "explanation": "OutSystemsのJavaScript APIは$publicオブジェクトから利用できます。フィードバックメッセージは、FeedbackMessageモジュールのshowFeedbackMessageで表示します。",
+    "wrongReasons": [
+      "ブラウザ標準のalertはアプリの見た目と統一されず、操作もブロックする。",
+      "$actionsはクライアントアクションを呼び出すためのもので、このような呼び方はできない。",
+      "DOMを直接書き換えるとアプリの描画を壊す可能性があり、推奨されない。"
+    ]
+  },
+  {
+    "id": "fe-js-008",
+    "exam": "front-end-developer-specialist",
+    "category": "JavaScript",
+    "difficulty": "標準",
+    "question": "外部のグラフ描画ライブラリ（.jsファイル）を、ある画面だけで使いたい。最も適切な方法はどれか。",
+    "options": [
+      "JavaScriptノードの中に、ライブラリのコードをすべて貼り付ける",
+      "ライブラリをScriptsフォルダに取り込み（Import Script）、その画面のRequired Scriptsに追加する",
+      "On Renderのたびに、scriptタグを動的に追加して読み込む",
+      "ThemeのスタイルシートでライブラリのURLを@importする"
+    ],
+    "answer": 1,
+    "explanation": "外部ライブラリは、Scriptsフォルダに取り込むか他モジュールのScriptを参照し、画面やBlockのRequired Scriptsプロパティに追加します。Required Scriptsはグローバルスコープで評価され、その画面の要素が描画される前に読み込まれます。",
+    "wrongReasons": [
+      "ノードにコードを貼ると、実行のたびにライブラリ全体が評価され保守性も悪い。",
+      "描画のたびに読み込むと、同じスクリプトが何度も読み込まれてしまう。",
+      "@importはCSSを読み込むためのもので、JavaScriptは読み込めない。"
+    ]
+  },
+  {
+    "id": "fe-js-009",
+    "exam": "front-end-developer-specialist",
+    "category": "JavaScript",
+    "difficulty": "応用",
+    "question": "モジュール・Block・画面のそれぞれにRequired Scriptsを設定している。実行時にスクリプトが実行される順序として最も適切なものはどれか。",
+    "options": [
+      "画面 → Block → モジュール",
+      "Block → 画面 → モジュール",
+      "モジュール → 画面 → Block",
+      "モジュール → Block → 画面"
+    ],
+    "answer": 3,
+    "explanation": "スクリプトは、モジュールのRequired Scripts、BlockのRequired Scripts、画面のRequired Scriptsの順に実行されます。モジュールで定義したスクリプトはアプリの起動時に読み込まれるため、On Application Readyの時点で利用できます。",
+    "wrongReasons": [
+      "モジュールのスクリプトが最初に読み込まれる。",
+      "モジュールのスクリプトが最初で、画面のスクリプトが最後である。",
+      "Blockのスクリプトは、画面のスクリプトより先に実行される。"
+    ]
+  },
+  {
+    "id": "fe-js-010",
+    "exam": "front-end-developer-specialist",
+    "category": "JavaScript",
+    "difficulty": "標準",
+    "question": "Reactive Webアプリで、jQueryを導入してDOMを直接操作し、表示を切り替える実装が提案された。OutSystemsの推奨に照らした評価として最も適切なものはどれか。",
+    "options": [
+      "DOMを直接操作するライブラリはReactive・Mobileアプリの動作を壊しやすく保守も難しくなるため推奨されず、変数やIf・Style Classesなどのローコードの機能で表示を切り替える",
+      "jQueryはOutSystems UIの内部で使われているため、積極的に使うべきである",
+      "DOMの直接操作は、On Initializeで行えば問題ない",
+      "jQueryを使えば、画面の描画が常に速くなる"
+    ],
+    "answer": 0,
+    "explanation": "OutSystemsは、jQueryのようにDOMを直接操作するライブラリの使用を推奨していません。Reactive・Mobileアプリの描画の仕組みと衝突して不具合の原因になり、保守も難しくなります。表示の切り替えはローコードの機能で実装します。",
+    "wrongReasons": [
+      "DOMを直接操作するライブラリの使用は推奨されていない。",
+      "On InitializeはDOMの準備前に実行されるため、DOMの操作にはそもそも使えない。",
+      "DOMの直接操作は描画の不整合を招きやすく、速くなるとは限らない。"
+    ]
+  },
+  {
+    "id": "fe-js-011",
+    "exam": "front-end-developer-specialist",
+    "category": "JavaScript",
+    "difficulty": "標準",
+    "question": "画面のデータを変更した直後に、描画が終わってから要素の高さを測りたい。OutSystemsのJavaScript APIで最も適切な方法はどれか。",
+    "options": [
+      "setTimeoutで1秒待ってから測る",
+      "$public.View.render() が返すPromiseの完了を待ってから測る",
+      "On Initializeで測る",
+      "$public.View.getCurrentScreenRootElement() を呼ぶと描画が完了するので、その直後に測る"
+    ],
+    "answer": 1,
+    "explanation": "ViewのrenderメソッドはPromiseを返し、現在のデータの変更を反映して画面・Blockの描画が終わると解決されます。ブラウザが変更を描画した後に実行したい処理に使います。",
+    "wrongReasons": [
+      "一定時間待つ方法では、描画の完了を保証できない。",
+      "On Initializeは描画の前に実行される。",
+      "getCurrentScreenRootElementは現在の画面のDOM要素を返すだけで、描画の完了を待つものではない。"
+    ]
+  },
+  {
+    "id": "fe-js-012",
+    "exam": "front-end-developer-specialist",
+    "category": "JavaScript",
+    "difficulty": "基礎",
+    "question": "JavaScriptノードで、開発中の調査用にメッセージをブラウザのコンソールだけでなくService Centerにも記録したい。最も適切な方法はどれか。",
+    "options": [
+      "console.logを使う",
+      "alertを使う",
+      "$public.Loggerのメソッドを使う",
+      "localStorageにメッセージを保存する"
+    ],
+    "answer": 2,
+    "explanation": "OutSystemsのJavaScript APIのLoggerは、console.logのようにメッセージやエラーを記録し、あわせてService Centerにも記録します。",
+    "wrongReasons": [
+      "console.logはブラウザのコンソールにしか出力されない。",
+      "alertは利用者に表示されるだけで、記録は残らない。",
+      "localStorageは利用者の端末にしか保存されず、Service Centerでは確認できない。"
+    ]
+  }
+]

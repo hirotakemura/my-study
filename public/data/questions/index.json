@@ -4,18 +4,122 @@
       "id": "web-developer-specialist",
       "name": "Web Developer Specialist（OutSystems 11 Reactive）",
       "passRate": 0.7,
-      "mock": { "count": 30, "minutes": 90 },
+      "mock": {
+        "count": 30,
+        "minutes": 90
+      },
       "categories": [
-        { "name": "非同期処理", "weight": 13, "file": "web-developer-specialist/async.json" },
-        { "name": "ベストプラクティス：データ", "weight": 13, "file": "web-developer-specialist/bp-data.json" },
-        { "name": "ベストプラクティス：画面", "weight": 13, "file": "web-developer-specialist/bp-screens.json" },
-        { "name": "ベストプラクティス：クエリ", "weight": 10, "file": "web-developer-specialist/bp-queries.json" },
-        { "name": "ベストプラクティス：ロジック", "weight": 14, "file": "web-developer-specialist/bp-logic.json" },
-        { "name": "例外・トランザクション処理", "weight": 7, "file": "web-developer-specialist/exceptions.json" },
-        { "name": "統合：外部データベース", "weight": 7, "file": "web-developer-specialist/integration-db.json" },
-        { "name": "統合：REST API", "weight": 6, "file": "web-developer-specialist/integration-rest.json" },
-        { "name": "トラブルシューティング", "weight": 13, "file": "web-developer-specialist/troubleshooting.json" },
-        { "name": "チーム開発", "weight": 4, "file": "web-developer-specialist/team.json" }
+        {
+          "name": "非同期処理",
+          "weight": 13,
+          "file": "web-developer-specialist/async.json"
+        },
+        {
+          "name": "ベストプラクティス：データ",
+          "weight": 13,
+          "file": "web-developer-specialist/bp-data.json"
+        },
+        {
+          "name": "ベストプラクティス：画面",
+          "weight": 13,
+          "file": "web-developer-specialist/bp-screens.json"
+        },
+        {
+          "name": "ベストプラクティス：クエリ",
+          "weight": 10,
+          "file": "web-developer-specialist/bp-queries.json"
+        },
+        {
+          "name": "ベストプラクティス：ロジック",
+          "weight": 14,
+          "file": "web-developer-specialist/bp-logic.json"
+        },
+        {
+          "name": "例外・トランザクション処理",
+          "weight": 7,
+          "file": "web-developer-specialist/exceptions.json"
+        },
+        {
+          "name": "統合：外部データベース",
+          "weight": 7,
+          "file": "web-developer-specialist/integration-db.json"
+        },
+        {
+          "name": "統合：REST API",
+          "weight": 6,
+          "file": "web-developer-specialist/integration-rest.json"
+        },
+        {
+          "name": "トラブルシューティング",
+          "weight": 13,
+          "file": "web-developer-specialist/troubleshooting.json"
+        },
+        {
+          "name": "チーム開発",
+          "weight": 4,
+          "file": "web-developer-specialist/team.json"
+        }
+      ]
+    },
+    {
+      "id": "front-end-developer-specialist",
+      "name": "Front-end Developer Specialist（OutSystems 11 Reactive）",
+      "passRate": 0.7,
+      "mock": {
+        "count": 30,
+        "minutes": 90
+      },
+      "categories": [
+        {
+          "name": "フロントエンド基礎",
+          "weight": 10,
+          "file": "front-end-developer-specialist/fe-fundamentals.json"
+        },
+        {
+          "name": "CSSの適用と優先順位",
+          "weight": 14,
+          "file": "front-end-developer-specialist/fe-css.json"
+        },
+        {
+          "name": "テーマとスタイルシート",
+          "weight": 12,
+          "file": "front-end-developer-specialist/fe-themes.json"
+        },
+        {
+          "name": "UIパターンとレイアウト",
+          "weight": 14,
+          "file": "front-end-developer-specialist/fe-patterns.json"
+        },
+        {
+          "name": "UIのカスタマイズ",
+          "weight": 8,
+          "file": "front-end-developer-specialist/fe-customization.json"
+        },
+        {
+          "name": "JavaScript",
+          "weight": 12,
+          "file": "front-end-developer-specialist/fe-javascript.json"
+        },
+        {
+          "name": "スタイリングのベストプラクティス",
+          "weight": 8,
+          "file": "front-end-developer-specialist/fe-best-practices.json"
+        },
+        {
+          "name": "レスポンシブとアクセシビリティ",
+          "weight": 10,
+          "file": "front-end-developer-specialist/fe-responsive-a11y.json"
+        },
+        {
+          "name": "デバッグとトラブルシューティング",
+          "weight": 6,
+          "file": "front-end-developer-specialist/fe-debugging.json"
+        },
+        {
+          "name": "フロントエンドアーキテクチャと再利用",
+          "weight": 6,
+          "file": "front-end-developer-specialist/fe-architecture.json"
+        }
       ]
     }
   ]

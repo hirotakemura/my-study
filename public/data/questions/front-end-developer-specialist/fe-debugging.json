@@ -1,0 +1,122 @@
+[
+  {
+    "id": "fe-debug-001",
+    "exam": "front-end-developer-specialist",
+    "category": "デバッグとトラブルシューティング",
+    "difficulty": "基礎",
+    "question": "Themeに定義したスタイルが、ある画面だけで効いていない。どのCSSルールが適用・上書きされているかを調べる方法として最も適切なものはどれか。",
+    "options": [
+      "Service CenterのGeneralログを確認する",
+      "Service Studioのデバッガーでブレークポイントを置く",
+      "ブラウザの開発者ツールで要素を検査し、適用されているスタイルと打ち消されているスタイルを確認する",
+      "Themeを作り直して、スタイルを最初から書き直す"
+    ],
+    "answer": 2,
+    "explanation": "ブラウザの開発者ツールで要素を検査すると、その要素に適用されているCSSルールと、他のルールに上書きされているルールを確認できます。詳細度や読み込み順による上書きの原因を特定できます。",
+    "wrongReasons": [
+      "Generalログはサーバー側の活動の記録で、CSSの適用状況はわからない。",
+      "デバッガーはロジックの実行を調べる道具で、CSSの適用状況は確認できない。",
+      "原因を調べずに作り直すと、同じ問題を繰り返すおそれがある。"
+    ]
+  },
+  {
+    "id": "fe-debug-002",
+    "exam": "front-end-developer-specialist",
+    "category": "デバッグとトラブルシューティング",
+    "difficulty": "標準",
+    "question": "JavaScriptノードに文法の誤りがある状態で公開しようとした。OutSystemsでの扱いとして最も適切なものはどれか。",
+    "options": [
+      "公開はできるが、実行時にブラウザのコンソールにだけエラーが出る",
+      "JavaScriptノードのエディタが構文をチェックし、TrueChangeにエラーが表示される",
+      "JavaScriptの誤りは自動で修正されて公開される",
+      "Service CenterのErrorsログにだけ記録される"
+    ],
+    "answer": 1,
+    "explanation": "JavaScriptノードのエディタは、構文の強調表示や補完に加えて、コードのエラーや警告をチェックします。JavaScriptの構文エラーはTrueChangeに表示されます。",
+    "wrongReasons": [
+      "構文の誤りは、開発時にTrueChangeで検出される。",
+      "コードが自動で修正されることはない。",
+      "構文エラーは開発時にService Studioで検出される。"
+    ]
+  },
+  {
+    "id": "fe-debug-003",
+    "exam": "front-end-developer-specialist",
+    "category": "デバッグとトラブルシューティング",
+    "difficulty": "標準",
+    "question": "Client Actionの中のJavaScriptノードの、特定の行で処理を止めて値を確認したい。Service Studioのデバッガーについて正しい説明として最も適切なものはどれか。",
+    "options": [
+      "JavaScriptノードの中の任意の行にブレークポイントを置ける",
+      "JavaScriptノードにはブレークポイントを置けない",
+      "ブレークポイントはJavaScriptノードの要素そのものには置けるが、中の特定の行には置けない",
+      "JavaScriptノードをデバッグするには、ノードをServer Actionに移す必要がある"
+    ],
+    "answer": 2,
+    "explanation": "Service Studioのブレークポイントは、JavaScript要素そのものには設定できますが、要素の中の特定の行には設定できません。コードの中を詳しく調べる場合は、ブラウザの開発者ツールも併用します。",
+    "wrongReasons": [
+      "JavaScript要素の中の特定の行にはブレークポイントを置けない。",
+      "JavaScript要素そのものにはブレークポイントを置ける。",
+      "JavaScriptノードはクライアント側の要素で、Server Actionには移せない。"
+    ]
+  },
+  {
+    "id": "fe-debug-004",
+    "exam": "front-end-developer-specialist",
+    "category": "デバッグとトラブルシューティング",
+    "difficulty": "応用",
+    "question": "非同期のクライアントアクションで$reject()が呼ばれたが、呼び出し側にcatchもException Handlerもない。利用者の画面で起こることとして最も適切なものはどれか。",
+    "options": [
+      "何も起こらず、処理はそのまま成功したように続く",
+      "アプリが強制終了する",
+      "エラーの内容はService Centerにだけ記録され、画面には何も表示されない",
+      "既定の動作として、画面上部にエラーのフィードバックメッセージが表示される（Global Exception Handlerで処理される）"
+    ],
+    "answer": 3,
+    "explanation": "$reject()やcatchされないエラーは、既定では画面上部にエラーのフィードバックメッセージを表示します。独自のException Handlerがなければ、Global Exception Handlerで処理されます。非同期のアクションを呼ぶときは、エラー処理を必ず書くことが推奨されています。",
+    "wrongReasons": [
+      "$reject()はOutSystemsの例外を発生させるため、成功として続くことはない。",
+      "アプリが強制終了することはない。",
+      "既定では、画面にエラーのフィードバックメッセージが表示される。"
+    ]
+  },
+  {
+    "id": "fe-debug-005",
+    "exam": "front-end-developer-specialist",
+    "category": "デバッグとトラブルシューティング",
+    "difficulty": "標準",
+    "question": "PWAとして配布するMobileアプリの画面ロジックを、ネイティブのプラグインを使わずにパソコン上でデバッグしたい。デバッグの対象として最も適切なものはどれか。",
+    "options": [
+      "Debugger > Debug SetupでEmulate using Google Chromeを選び、Chromeでエミュレートしてデバッグする",
+      "必ず実機にネイティブのアプリをインストールしてデバッグする",
+      "Service CenterのGeneralログだけで調査する",
+      "Traditional Webのアプリとして作り直してデバッグする"
+    ],
+    "answer": 0,
+    "explanation": "ネイティブのプラグインを実行する必要がなければ、Google Chromeでアプリをエミュレートしてパソコン上でデバッグできます。PWAとして配布するアプリも、Debug SetupでEmulate using Google Chromeを選びます。",
+    "wrongReasons": [
+      "ネイティブのプラグインを使わない確認なら、Chromeでのエミュレートで足りる。",
+      "ログだけでは、画面のロジックを1ステップずつ確認できない。",
+      "デバッグのためにアプリの種類を変える必要はない。"
+    ]
+  },
+  {
+    "id": "fe-debug-006",
+    "exam": "front-end-developer-specialist",
+    "category": "デバッグとトラブルシューティング",
+    "difficulty": "基礎",
+    "question": "WAVEで画面を検査したところ「ページタイトルがない」という指摘があった。Service Studioでの修正として最も適切なものはどれか。",
+    "options": [
+      "画面にTextウィジェットでタイトルを追加する",
+      "UI Flowsで該当する画面を選び、プロパティのTitleに画面のタイトルを入力する",
+      "ThemeのCSSでtitle要素のスタイルを変更する",
+      "JavaScriptでdocument.titleを毎回書き換える"
+    ],
+    "answer": 1,
+    "explanation": "スクリーンリーダーはページタイトルで現在のページを伝えます。画面のプロパティのTitleに入力すると、ページタイトルが設定されます。既定のLogin画面はタイトルが空なので、Common UI FlowのLogin画面にも設定します。",
+    "wrongReasons": [
+      "画面上に文字を表示しても、ページのタイトル（title要素）は設定されない。",
+      "CSSではページタイトルの内容を設定できない。",
+      "画面のTitleプロパティで設定でき、JavaScriptで書き換える必要はない。"
+    ]
+  }
+]
