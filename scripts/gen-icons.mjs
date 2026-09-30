@@ -7,8 +7,8 @@ const require = createRequire(import.meta.url)
 // ローカルに無ければグローバルの playwright を使う
 const { chromium } = (() => { try { return require('playwright') } catch { return require(process.env.PW_PATH) } })()
 
-const CROP = [150, 110, 960] // x, y, 辺（通常のアイコン）
-const TIGHT = [190, 230, 880] // ファビコン・ヘッダー用（より大きく見せる）
+const CROP = [200, 150, 900] // x, y, 辺（通常のアイコン）
+const TIGHT = [270, 220, 760] // ファビコン・ヘッダー用（より大きく見せる）
 const JOBS = [
   ['icon-512.png', 512, CROP],
   ['icon-192.png', 192, CROP],
