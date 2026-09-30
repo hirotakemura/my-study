@@ -7,18 +7,19 @@ import Quiz from './pages/Quiz'
 import Exams from './pages/Exams'
 import Review from './pages/Review'
 import Settings from './pages/Settings'
+import { Icon, type IconName } from './icons'
 
-const NAV: { route: Route; label: string; icon: string }[] = [
-  { route: 'home', label: 'ホーム', icon: '🏠' },
-  { route: 'quiz', label: '演習', icon: '📝' },
-  { route: 'exams', label: '受験', icon: '🎓' },
-  { route: 'review', label: '振り返り', icon: '📊' },
+const NAV: { route: Route; label: string; icon: IconName }[] = [
+  { route: 'home', label: 'ホーム', icon: 'home' },
+  { route: 'quiz', label: '演習', icon: 'quiz' },
+  { route: 'exams', label: '受験', icon: 'exams' },
+  { route: 'review', label: '振り返り', icon: 'review' },
 ]
 
 const TITLES: Record<Route, string> = {
-  home: 'OutSystems 学習',
-  quiz: 'OutSystems 問題演習',
-  exams: 'OutSystems 受験スケジュール',
+  home: '学習ホーム',
+  quiz: '問題演習',
+  exams: '受験スケジュール',
   review: '今週の振り返り',
   settings: '設定・バックアップ',
 }
@@ -47,13 +48,21 @@ export default function App() {
   return (
     <div className="app">
       <header className="topbar">
-        <h1>{TITLES[route]}</h1>
+        <div className="brand">
+          <span className="brand-mark">
+            <Icon name="logo" />
+          </span>
+          <div className="brand-text">
+            <small>OUTSYSTEMS STUDY</small>
+            <h1>{TITLES[route]}</h1>
+          </div>
+        </div>
         <button
           className="icon-btn"
           aria-label="設定"
           onClick={() => navigate(route === 'settings' ? 'home' : 'settings')}
         >
-          {route === 'settings' ? '✕' : '⚙️'}
+          <Icon name={route === 'settings' ? 'close' : 'settings'} />
         </button>
       </header>
       <main className="content">
@@ -72,7 +81,7 @@ export default function App() {
             aria-current={route === n.route ? 'page' : undefined}
           >
             <span className="tab-icon" aria-hidden>
-              {n.icon}
+              <Icon name={n.icon} />
             </span>
             <span>{n.label}</span>
           </button>

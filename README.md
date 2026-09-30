@@ -5,6 +5,8 @@ OutSystems Specialist資格（最終目標：Expert Developer）の問題演習�
 
 > TOEICの学習管理は別アプリに分離しました。新しいTOEICアプリを作るためのプロンプトは [docs/TOEIC_APP_PROMPT.md](docs/TOEIC_APP_PROMPT.md) にあります。以前このアプリで記録したTOEICのデータは、⚙️（設定）の「TOEICデータを書き出す」で移行用のJSONとして保存できます。
 
+> アプリアイコンを画像生成AIで作るためのプロンプトは [docs/ICON_PROMPT.md](docs/ICON_PROMPT.md) にあります。
+
 ## 機能
 
 | 画面 | 内容 |
