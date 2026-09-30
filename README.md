@@ -10,7 +10,7 @@ OutSystems Specialist資格（最終目標：Expert Developer）の問題演習�
 | 画面 | 内容 |
 |---|---|
 | ホーム | 次の試験までのカウントダウンと準備状況（着手数・正答率・直近の模試）、状況に応じた「今日のおすすめ」（苦手分野／未着手／間違えた問題／本番模試をワンタップで開始）、今日の学習時間・連続学習日数・今週の合計、この後の受験予定 |
-| 演習 | Web Developer Specialist（200問）と Front-end Developer Specialist（100問）のオリジナル4択問題。試験は画面上部で切り替え。未着手の問題数（全体・分野別）、分野別の正答率（70%未満を強調）、ランダム10問／本番模試（30問・90分・合格70%）／間違えた問題／未着手の問題／分野別の出題。選択肢は毎回シャッフル、回答後すぐに正誤と解説を表示 |
+| 演習 | Web Developer Specialist（200問）と Front-end Developer Specialist（100問）、Mobile Developer Specialist（100問）のオリジナル4択問題。試験は画面上部で切り替え。未着手の問題数（全体・分野別）、分野別の正答率（70%未満を強調）、ランダム10問／本番模試（30問・90分・合格70%）／間違えた問題／未着手の問題／分野別の出題。選択肢は毎回シャッフル、回答後すぐに正誤と解説を表示 |
 | 受験 | 5つのSpecialist試験の日程と結果（未受験／合格／不合格）。不合格時は1週間後の予備枠を再受験日として提案。Expert Developerまでの進捗 |
 | 振り返り | 週ごとの学習時間（問題演習／その他）、回答数・正答率・模試、分野別正答率の変化、来週の受験予定、振り返りメモ。日曜日は起動時に自動で表示 |
 | 設定（⚙️） | ダークモード、JSONでのエクスポート／インポート、旧TOEICデータの書き出し、データ初期化 |
@@ -70,9 +70,20 @@ public/data/
         ├── fe-responsive-a11y.json   # レスポンシブとアクセシビリティ（10問）
         ├── fe-debugging.json         # デバッグとトラブルシューティング（6問）
         └── fe-architecture.json      # フロントエンドアーキテクチャと再利用（6問）
-
-> Front-end Developer Specialist の分野と比率は暫定です（公式の出題比率が掲載されている learn.outsystems.com を参照できなかったため、公開されている出題トピックを基に設定）。公式の比率が確認できたら `index.json` の `weight` と問題数を調整してください。
+    └── mobile-developer-specialist/      # Mobile Developer Specialist（計100問）
+        ├── mo-basics.json            # モバイルアプリの基礎とライフサイクル（10問）
+        ├── mo-local-storage.json     # ローカルストレージ（12問）
+        ├── mo-sync.json              # オフラインとデータ同期（16問）
+        ├── mo-plugins.json           # ネイティブプラグイン（12問）
+        ├── mo-ui.json                # モバイルのUIとUX（10問）
+        ├── mo-performance.json       # 性能のベストプラクティス（10問）
+        ├── mo-security.json          # セキュリティ（8問）
+        ├── mo-distribution.json      # アプリのビルドと配布（12問）
+        ├── mo-debugging.json         # デバッグとトラブルシューティング（6問）
+        └── mo-architecture.json      # アーキテクチャと再利用（4問）
 ```
+
+> Front-end Developer Specialist と Mobile Developer Specialist の分野と比率は暫定です（公式の出題比率が掲載されている learn.outsystems.com の試験詳細はログインが必要なため、公開されている出題トピックを基に設定）。公式の比率が確認できたら `index.json` の `weight` と問題数を調整してください。
 
 ### 問題の形式
 

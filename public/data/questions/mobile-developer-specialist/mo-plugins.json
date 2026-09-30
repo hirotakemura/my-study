@@ -1,0 +1,242 @@
+[
+  {
+    "id": "mo-plugin-001",
+    "exam": "mobile-developer-specialist",
+    "category": "ネイティブプラグイン",
+    "difficulty": "基礎",
+    "question": "Mobileアプリでカメラを使って写真を撮りたい。OutSystemsがサポートするプラグインを使う手順として最も適切なものはどれか。",
+    "options": [
+      "ForgeからCamera Pluginをインストールし、Manage Dependenciesでプラグインの要素をモジュールに追加して、Client Actionからプラグインのアクションを呼ぶ",
+      "JavaScriptでブラウザのカメラAPIを直接呼ぶ",
+      "Service Centerでカメラの使用を許可する設定をする",
+      "Reactive Webアプリに変更してから、カメラ機能を有効にする"
+    ],
+    "answer": 0,
+    "explanation": "サポートされているプラグインはForgeからインストールし、Service StudioのManage Dependencies（Ctrl+Q）でプラグインの要素を参照して使います。多くのプラグインのロジックはLogic > Client Actionsのプラグイン名の下にあります。",
+    "wrongReasons": [
+      "プラグインを使えばネイティブの機能を使え、独自のJavaScriptで実装する必要はない。",
+      "カメラの利用はプラグインを追加して行うもので、Service Centerの設定ではない。",
+      "ネイティブのカメラ機能はMobileアプリでプラグインを使って利用する。"
+    ]
+  },
+  {
+    "id": "mo-plugin-002",
+    "exam": "mobile-developer-specialist",
+    "category": "ネイティブプラグイン",
+    "difficulty": "標準",
+    "question": "すでに配布済みのMobileアプリに、Barcodeプラグインを新たに追加して公開した。利用者の端末で必要になることとして最も適切なものはどれか。",
+    "options": [
+      "何もしなくても、次回起動時に自動で使えるようになる",
+      "端末を再起動すれば使えるようになる",
+      "プラグインの追加・削除・変更ではネイティブのシェルが作り直されるため、新しいアプリのビルドを配布してインストールしてもらう必要がある",
+      "Service Centerでプラグインを有効にすれば、すべての端末で使える"
+    ],
+    "answer": 2,
+    "explanation": "アプリにプラグインを追加・削除・変更すると、OutSystemsはネイティブのシェルを作り直すため、新しいアプリのパッケージを利用者に配布してインストールしてもらう必要があります。画面やロジックの変更のような自動更新だけでは反映されません。",
+    "wrongReasons": [
+      "プラグインの追加はネイティブの部分の変更で、自動更新だけでは反映されない。",
+      "再起動しても、ネイティブの部分は更新されない。",
+      "Service Centerの設定ではなく、新しいビルドのインストールが必要である。"
+    ]
+  },
+  {
+    "id": "mo-plugin-003",
+    "exam": "mobile-developer-specialist",
+    "category": "ネイティブプラグイン",
+    "difficulty": "標準",
+    "question": "連絡先に登録するプラグインのアクションを使っている。デスクトップのブラウザで動作確認するとエラーで止まり、プラグインに対応していない端末でもアプリが落ちることがある。最も適切な対策はどれか。",
+    "options": [
+      "ブラウザでは動作確認をせず、常に実機だけで確認する",
+      "プラグインの呼び出しをClient Actionで包み、プラグインが使えるかを先に確認して、使えない場合はエラーや確認用の仮データを返す（フォールバックを用意する）",
+      "プラグインのアクションの前後にLogMessageを入れる",
+      "プラグインを使わず、すべての機能をサーバー側で実装する"
+    ],
+    "answer": 1,
+    "explanation": "デスクトップのブラウザではネイティブのプラグインは使えません。プラグインの呼び出しをClient Actionで包み、プラグインが利用できるか確認して、使えない場合はエラーや仮データを返すフォールバックを用意すると、ブラウザでの確認もしやすく、非対応の端末でのクラッシュも防げます。",
+    "wrongReasons": [
+      "実機だけでの確認は効率が悪く、非対応の端末でのクラッシュも防げない。",
+      "ログを入れても、プラグインが使えない場合のエラーは防げない。",
+      "カメラや連絡先などの端末の機能はサーバー側では実装できない。"
+    ]
+  },
+  {
+    "id": "mo-plugin-004",
+    "exam": "mobile-developer-specialist",
+    "category": "ネイティブプラグイン",
+    "difficulty": "基礎",
+    "question": "MobileアプリをPWAとしても配布する。PWAで使えるかどうかについて、正しい説明として最も適切なものはどれか。",
+    "options": [
+      "OutSystemsのプラグインは、すべてPWAでも使える",
+      "PWAでは、プラグインは一切使えない",
+      "PWAでプラグインを使うには、Service Centerで有効にする必要がある",
+      "プラグインごとにPWAでの対応状況が異なり、Barcode・Camera・LocationなどはPWAでも使えるが、Key StoreやLocal NotificationsなどはPWAでは使えない"
+    ],
+    "answer": 3,
+    "explanation": "OutSystemsがサポートするプラグインは、プラグインごとにPWAでの対応状況が異なります。ネイティブの機能に依存するプラグインを使うアプリをPWAで配布する場合は、利用者の体験を見直す必要があります。",
+    "wrongReasons": [
+      "PWAで使えないプラグインもある。",
+      "Barcode・Camera・LocationなどはPWAでも使える。",
+      "PWAでの対応はプラグイン自体が決まっており、Service Centerで有効にするものではない。"
+    ]
+  },
+  {
+    "id": "mo-plugin-005",
+    "exam": "mobile-developer-specialist",
+    "category": "ネイティブプラグイン",
+    "difficulty": "標準",
+    "question": "OutSystemsがサポートしていないApache Cordovaのプラグインを使いたい。最も適切な方法はどれか。",
+    "options": [
+      "ForgeのTemplate Pluginを基に、プラグイン専用のラッパーモジュールを作り、Extensibility Configurationでプラグインを参照して、必要なアクションを公開する",
+      "CordovaプラグインのJavaScriptを、各画面のJavaScriptノードに貼り付ける",
+      "Integration Studioで.NETのExtensionとしてプラグインを取り込む",
+      "Service CenterでCordovaプラグインのURLを登録する"
+    ],
+    "answer": 0,
+    "explanation": "CordovaプラグインをMobileアプリで使うには、モジュールで包む必要があります。ForgeのTemplate Pluginを基にプラグインごとに専用のラッパーモジュール（とアプリ）を作り、Extensibility Configurationでプラグインを参照し、関連するアクションやエンティティを公開します。",
+    "wrongReasons": [
+      "プラグインのネイティブの部分はビルドに含める必要があり、JavaScriptの貼り付けでは使えない。",
+      ".NETのExtensionはサーバー側の拡張で、端末のネイティブ機能は扱えない。",
+      "プラグインはモジュールのExtensibility Configurationで参照するもので、Service Centerで登録するものではない。"
+    ]
+  },
+  {
+    "id": "mo-plugin-006",
+    "exam": "mobile-developer-specialist",
+    "category": "ネイティブプラグイン",
+    "difficulty": "応用",
+    "question": "ラッパーモジュールのExtensibility Configurationで、公開リポジトリにあるCordovaプラグインを参照する。ビルドの再現性の観点で最も適切な指定はどれか。",
+    "options": [
+      "{\"plugin\": {\"url\": \"https://example.com/sampleplugin.git\"}}（常に最新を取得）",
+      "{\"plugin\": {\"url\": \"https://example.com/sampleplugin.git#1.1.0\"}}（タグ付けしたバージョン、またはフォークしたリポジトリを指定）",
+      "{\"plugin\": {\"identifier\": \"sampleplugin\", \"url\": \"https://example.com/sampleplugin.git\", \"resource\": \"my-plugin\"}}（すべての参照方法を同時に指定）",
+      "プラグインの参照はExtensibility Configurationではなく、画面のRequired Scriptsに指定する"
+    ],
+    "answer": 1,
+    "explanation": "OutSystemsがサポートするプラグインでない限り、リポジトリをフォークするか、#1.1.0のようにタグ付けしたバージョンを指定することが推奨されます。タグを使わないと、プラグインの変更でビルドが壊れたり、ビルドごとに異なる結果になったりするおそれがあります。",
+    "wrongReasons": [
+      "バージョンを固定しないと、プラグインの更新による予期しない変更がビルドに入る。",
+      "pluginキーで使える参照方法は、url・identifier・resourceのいずれか1つだけである。",
+      "Cordovaプラグインは、モジュールのExtensibility Configurationで参照する。"
+    ]
+  },
+  {
+    "id": "mo-plugin-007",
+    "exam": "mobile-developer-specialist",
+    "category": "ネイティブプラグイン",
+    "difficulty": "標準",
+    "question": "自作のCordovaプラグインを、Data タブのResourcesにZIPファイルとして取り込み、Extensibility Configurationから参照する。このResourceの設定として最も適切なものはどれか。",
+    "options": [
+      "Deploy ActionをDeploy to Target Directoryにする",
+      "ZIPファイルを展開してから、各ファイルを別々のResourceとして取り込む",
+      "ResourceをPublicにする",
+      "Deploy ActionをDo Nothingにし、Extensibility Configurationのresourceキーでファイルを指定する"
+    ],
+    "answer": 3,
+    "explanation": "ZIPファイルでプラグインを参照する場合は、Resourcesに取り込んだZIPのDeploy ActionをDo Nothingにし、Extensibility Configurationでresourceキーを使ってファイルとプラグインを指定します。",
+    "wrongReasons": [
+      "プラグインのZIPはビルドで使うもので、サーバーのディレクトリに配置する必要はない。",
+      "プラグインはZIPファイルのまま参照する。",
+      "Publicにしても、プラグインとして参照されるわけではない。"
+    ]
+  },
+  {
+    "id": "mo-plugin-008",
+    "exam": "mobile-developer-specialist",
+    "category": "ネイティブプラグイン",
+    "difficulty": "基礎",
+    "question": "自作したCordovaプラグインの動作を確認したい。確認できる環境として最も適切なものはどれか。",
+    "options": [
+      "ネイティブのMobileアプリとしてビルドした端末",
+      "Service Studioのプレビュー",
+      "デスクトップのChromeでのエミュレート",
+      "PWAとしてブラウザで開いたアプリ"
+    ],
+    "answer": 0,
+    "explanation": "Cordovaプラグインの機能は、ネイティブのMobileアプリでしか確認できません。ブラウザやPWAではネイティブの部分が動作しないため、フォールバックを用意しておくと、それ以外の部分の確認がしやすくなります。",
+    "wrongReasons": [
+      "Service Studioのプレビューでは、ネイティブのプラグインは動作しない。",
+      "Chromeでのエミュレートでは、ネイティブのプラグインは実行できない。",
+      "PWAでは、Cordovaのネイティブのプラグインは動作しない。"
+    ]
+  },
+  {
+    "id": "mo-plugin-009",
+    "exam": "mobile-developer-specialist",
+    "category": "ネイティブプラグイン",
+    "difficulty": "標準",
+    "question": "iOSとAndroidの両方に配布するアプリで、Androidにしか対応していないプラグインを使っている。iOS向けのビルドを生成したときに起こることとして最も適切なものはどれか。",
+    "options": [
+      "iOS向けでは自動でそのプラグインが除外され、ビルドは成功する",
+      "ビルドは成功するが、iOSでアプリを開くと必ずクラッシュする",
+      "対象のプラットフォームでサポートされていないプラグインを使うと、アプリの生成（ビルド）に失敗する",
+      "iOSでもAndroidのプラグインがそのまま動作する"
+    ],
+    "answer": 2,
+    "explanation": "対象のプラットフォームがサポートしていないプラグインを使うと、アプリの生成に失敗します。対象のプラットフォームに合ったプラグインを使う必要があり、生成時のエラーはMABSのエラー一覧で確認できます。",
+    "wrongReasons": [
+      "サポートしていないプラグインが自動で除外されることはない。",
+      "対応していないプラグインがあると、ビルドの段階で失敗する。",
+      "Android専用のプラグインはiOSでは動作しない。"
+    ]
+  },
+  {
+    "id": "mo-plugin-010",
+    "exam": "mobile-developer-specialist",
+    "category": "ネイティブプラグイン",
+    "difficulty": "基礎",
+    "question": "オープンソースのライセンスで提供されているプラグインをアプリで使っている。ライセンスの扱いとして最も適切なものはどれか。",
+    "options": [
+      "OutSystemsのプラグインにはライセンスがないため、何もしなくてよい",
+      "プラグインのライセンスをアプリに含め（通常はアプリの「About」ページなど）、ライセンス契約を守る",
+      "ライセンスはService Centerに登録すればよい",
+      "ライセンスはソースコードのコメントに書けばよい"
+    ],
+    "answer": 1,
+    "explanation": "プラグインを使う場合は、そのライセンス契約を守るためにプラグインのライセンスをアプリに含めます。一般的には、プラグインを使うアプリのAboutページなどに記載します。",
+    "wrongReasons": [
+      "プラグインにもライセンスがあり、守る必要がある。",
+      "Service Centerに登録してもアプリの利用者には示されない。",
+      "コメントに書いても、アプリの利用者には示されない。"
+    ]
+  },
+  {
+    "id": "mo-plugin-011",
+    "exam": "mobile-developer-specialist",
+    "category": "ネイティブプラグイン",
+    "difficulty": "応用",
+    "question": "プラグインの設定値（例：ログの出力レベル）を、開発環境だけ変えてトラブルシュートしたい。アプリを変更・デプロイせずに環境ごとに設定を変える方法として最も適切なものはどれか。",
+    "options": [
+      "開発環境でだけ、Extensibility Configurationを書き換えて公開する",
+      "Site Propertyに設定値を保存し、プラグインがそれを読むようにする",
+      "LifeTimeで、その環境のExtensibility Configurationの既定値を上書きする",
+      "Service Studioで環境ごとに別のモジュールを作る"
+    ],
+    "answer": 2,
+    "explanation": "Extensibility Configurationは、LifeTimeを使って特定の環境だけ既定値を上書きできます。例えば、開発環境だけプラグインのログレベルを上げて調査し、品質保証や本番環境では既定の設定を保てます。",
+    "wrongReasons": [
+      "環境ごとに異なるコードを公開すると、デプロイの一貫性が失われる。",
+      "プラグインのネイティブの設定はビルド時に使われ、Site Propertyでは変更できない。",
+      "環境ごとにモジュールを分けると、保守の負担が大きくなる。"
+    ]
+  },
+  {
+    "id": "mo-plugin-012",
+    "exam": "mobile-developer-specialist",
+    "category": "ネイティブプラグイン",
+    "difficulty": "標準",
+    "question": "複数のCordovaプラグインを自作してアプリで使う。ラッパーモジュールの構成として最も適切なものはどれか。",
+    "options": [
+      "すべてのプラグインを1つのモジュールにまとめて包む",
+      "プラグインごとに専用のアプリを作り、その中にラッパーモジュールを1つだけ置く",
+      "プラグインを使うEnd-userモジュールの中で、直接Extensibility Configurationに列挙する",
+      "Themeモジュールでプラグインを包む"
+    ],
+    "answer": 1,
+    "explanation": "Cordovaプラグインは、それぞれ専用のモジュールとアプリで包むことが推奨されます。複数のプラグインを使う場合は、プラグインごとに1つのラッパーモジュールを持つアプリを作り、関連するアクションとエンティティを公開します。",
+    "wrongReasons": [
+      "1つのモジュールにまとめると、個々のプラグインの管理や更新が難しくなる。",
+      "プラグインはラッパーモジュールで包んで再利用できるようにする。",
+      "Themeモジュールは共通の見た目のためのもので、プラグインを包む場所ではない。"
+    ]
+  }
+]

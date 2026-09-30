@@ -1,0 +1,122 @@
+[
+  {
+    "id": "mo-debug-001",
+    "exam": "mobile-developer-specialist",
+    "category": "デバッグとトラブルシューティング",
+    "difficulty": "基礎",
+    "question": "ネイティブのプラグインを使わない画面のロジックを、手早くデバッグしたい。最も適切なデバッグの方法はどれか。",
+    "options": [
+      "Debuggerタブのデバッグ対象でGoogle Chromeを選び、PCのブラウザでアプリをエミュレートしてデバッグする",
+      "毎回Releaseビルドを生成して端末にインストールし、動作を確認する",
+      "Service CenterのError Logだけを見て原因を推測する",
+      "Android StudioとXcodeで、ネイティブのコードを確認する"
+    ],
+    "answer": 0,
+    "explanation": "ネイティブのプラグインを実行する必要がなければ、PCのGoogle Chromeでアプリをエミュレートしてデバッグできます。アプリのロジックを確認するのに便利です。ただし性能や使い心地は、実際の端末で確認します。",
+    "wrongReasons": [
+      "Releaseビルドではデバッグできず、毎回のビルドとインストールも手間がかかる。",
+      "ログだけでは、ロジックの流れや変数の値を順に確認できない。",
+      "ネイティブのツールは、クラッシュやプラグインの調査に使うもので、ロジックの確認には過剰である。"
+    ]
+  },
+  {
+    "id": "mo-debug-002",
+    "exam": "mobile-developer-specialist",
+    "category": "デバッグとトラブルシューティング",
+    "difficulty": "標準",
+    "question": "カメラのプラグインを使う処理を、実際の端末でデバッグしたい。準備として最も適切なものはどれか。",
+    "options": [
+      "Releaseビルドを生成してインストールし、USBで接続する",
+      "PCのChromeでエミュレートすれば、カメラのプラグインも実行できる",
+      "Debug（Android）またはDevelopment（iOS）のビルドを生成して端末にインストールし、USBで接続してデバッグを許可する",
+      "PWAとして配布し、端末のブラウザで開く"
+    ],
+    "answer": 2,
+    "explanation": "端末でデバッグするには、Debug（Android）またはDevelopment（iOS）のビルドを生成してインストールし、端末をUSBでPCに接続します。AndroidではUSBデバッグを有効にし、iOSではWeb Inspectorを有効にしてPCを信頼します。",
+    "wrongReasons": [
+      "Releaseビルドはデバッグ用ではない。",
+      "ネイティブのプラグインはPCでは実行できない。",
+      "PWAではネイティブのプラグインが動かない場合があり、端末のデバッグ手順にもならない。"
+    ]
+  },
+  {
+    "id": "mo-debug-003",
+    "exam": "mobile-developer-specialist",
+    "category": "デバッグとトラブルシューティング",
+    "difficulty": "応用",
+    "question": "ネイティブアプリが特定の端末で起動直後にクラッシュし、プラグインが原因と疑われる。調査の方法として最も適切なものはどれか。",
+    "options": [
+      "Service StudioのDebuggerでOn Application Readyにブレークポイントを置く",
+      "Debug（Android）またはDevelopment（iOS）のビルドを生成し、Android StudioやXcodeなどのネイティブのツールでデバッグする",
+      "PCのChromeでエミュレートして、同じクラッシュを再現する",
+      "Theme Editorで画面の設定を初期化する"
+    ],
+    "answer": 1,
+    "explanation": "アプリのクラッシュやプラグインの問題、ネイティブのコードを調べるには、Android StudioやXcodeといった各プラットフォームのネイティブのツールでデバッグします。その前に、Debug（Android）またはDevelopment（iOS）のビルドを生成しておきます。",
+    "wrongReasons": [
+      "ネイティブ層でのクラッシュは、Service StudioのDebuggerでは原因を追えないことがある。",
+      "Chromeではネイティブのプラグインが動かないため、プラグインのクラッシュは再現できない。",
+      "Theme Editorは見た目の設定で、クラッシュの調査とは関係ない。"
+    ]
+  },
+  {
+    "id": "mo-debug-004",
+    "exam": "mobile-developer-specialist",
+    "category": "デバッグとトラブルシューティング",
+    "difficulty": "標準",
+    "question": "端末のアプリで、ある画面に表示されるはずのデータが表示されない。サーバーのデータベースには対象のデータがある。次に確認すべきこととして最も適切なものはどれか。",
+    "options": [
+      "アプリを再インストールして様子を見る",
+      "サーバーのAggregateの条件を見直す",
+      "端末の画面の明るさの設定を確認する",
+      "データが端末のローカルストレージにあるかを確認し、あれば画面のAggregate（JOINの種類など）を、なければ同期の実装やフィルターを見直す"
+    ],
+    "answer": 3,
+    "explanation": "端末でデータが見えない場合は、まずサーバーにデータがあるかを確認し、次に端末のローカルストレージにあるかを確認します（ローカルエンティティを閲覧する画面を作るなど）。あれば画面のAggregateのJOIN（Only With / With or Without）などを、なければ同期のフィルター（利用者や日付の範囲）を見直します。",
+    "wrongReasons": [
+      "再インストールでは原因が分からず、同期の不具合があれば再発する。",
+      "サーバーにはデータがあるため、問題は同期か端末側のAggregateにある。",
+      "画面の明るさはデータの表示有無と関係ない。"
+    ]
+  },
+  {
+    "id": "mo-debug-005",
+    "exam": "mobile-developer-specialist",
+    "category": "デバッグとトラブルシューティング",
+    "difficulty": "標準",
+    "question": "一覧の画面で、データが空の状態と取得後の状態が素早く切り替わり、表示がちらつく。改善策として最も適切なものはどれか。",
+    "options": [
+      "新しい状態が決まるまで直前の状態を保持する（バッファ）など、条件分岐とデータ取得のタイミングを見直す",
+      "画面のCSSをすべてJavaScriptで適用する",
+      "一覧の取得をOn Initializeに移し、描画前に全件を取得する",
+      "ちらつきは端末の問題なので、アプリ側では対応できない"
+    ],
+    "answer": 0,
+    "explanation": "データの変化によるちらつきは、画面の条件分岐のロジックや、AggregateとData Actionの結果が得られるタイミングを見直して解消します。遷移中は、新しい状態が決まるまで直前の状態を保持するバッファを使うと滑らかになります。",
+    "wrongReasons": [
+      "JavaScriptでのスタイルの適用は、描画後の変化でちらつきの原因になる。",
+      "On Initializeでの取得は画面の表示を遅くし、推奨されない。",
+      "ちらつきはアプリのロジックやスタイルの設計で改善できる。"
+    ]
+  },
+  {
+    "id": "mo-debug-006",
+    "exam": "mobile-developer-specialist",
+    "category": "デバッグとトラブルシューティング",
+    "difficulty": "応用",
+    "question": "新しいバージョンを公開した後、一部の利用者から「アップデートできなかったので再起動してください」と表示されたと報告があった。原因を調べる方法として最も適切なものはどれか。",
+    "options": [
+      "利用者にアプリを再インストールしてもらい、報告がなくなるのを待つ",
+      "Service Centerのログで「Upgrade failed - rolling back to previous application version」を探し、原因を確認して新しいバージョンで修正する",
+      "新しいバージョンを削除し、前のバージョンを再公開する",
+      "端末の通信が弱いのが原因と判断し、調査は行わない"
+    ],
+    "answer": 1,
+    "explanation": "端末でアプリの更新ができない場合、アプリは最後に正常に動作したバージョンに戻ります。原因はService Centerのログで「Upgrade failed - rolling back to previous application version」を探すと確認でき、その情報をもとに新しいバージョンで修正します。",
+    "wrongReasons": [
+      "再インストールは端末のデータを消し、原因も分からない。",
+      "原因を確認しないまま戻しても、次の公開で同じ問題が起こりうる。",
+      "通信のほか、ローカルストレージのデータモデルの更新失敗なども原因になりうる。"
+    ]
+  }
+]

@@ -1,0 +1,202 @@
+[
+  {
+    "id": "mo-perf-001",
+    "exam": "mobile-developer-specialist",
+    "category": "性能のベストプラクティス",
+    "difficulty": "基礎",
+    "question": "Mobileアプリで、複雑な集計計算をClient Actionの中で行っており、端末によっては非常に遅い。モバイルのベストプラクティスとして最も適切な改善はどれか。",
+    "options": [
+      "計算をJavaScriptノードに書き換える",
+      "計算を複数のClient Actionに分割する",
+      "複雑なデータ処理や計算はサーバー側で行い、サーバーへの要求を最小限にして、結果をクライアント側に保持する",
+      "計算結果を毎回ローカルストレージに書き込む"
+    ],
+    "answer": 2,
+    "explanation": "モバイルでは、重いロジックはサーバー側に置き、クライアント側の処理はできるだけ単純にします。複雑なデータ処理や計算はサーバー側で、少ない要求回数で行い、結果はクライアント側にキャッシュします。",
+    "wrongReasons": [
+      "JavaScriptに書き換えても端末で処理する点は変わらず、低コードの最適化も失われる。",
+      "分割しても、端末で行う処理の量は変わらない。",
+      "書き込みを増やすと、端末の負荷がさらに増える。"
+    ]
+  },
+  {
+    "id": "mo-perf-002",
+    "exam": "mobile-developer-specialist",
+    "category": "性能のベストプラクティス",
+    "difficulty": "標準",
+    "question": "画面を開くとき、On Initializeでプラグインのアクションとサーバーアクションを呼んでいるため、画面の遷移が遅い。最も適切な改善はどれか。",
+    "options": [
+      "On Initializeの処理を2つのClient Actionに分ける",
+      "遷移のアニメーションを無効にする",
+      "ホームモジュールのOn Application Readyに処理を移す",
+      "遅い処理は、画面が表示された後に実行されるOn Readyなどに移す（動作が変わりうるので十分にテストする）"
+    ],
+    "answer": 3,
+    "explanation": "On Initializeは画面のDOMが読み込まれる前に実行されるため、ネイティブのプラグインやサーバーの呼び出しなど遅い処理を置くと画面の表示が遅れます。こうした処理は、画面の表示後に実行されるOn Readyなどに移します。",
+    "wrongReasons": [
+      "分けても、描画前に実行される点は変わらない。",
+      "アニメーションを無効にしても、描画前の遅い処理は残る。",
+      "On Application Readyも描画をブロックするため、起動が遅くなる。"
+    ]
+  },
+  {
+    "id": "mo-perf-003",
+    "exam": "mobile-developer-specialist",
+    "category": "性能のベストプラクティス",
+    "difficulty": "標準",
+    "question": "画面で、あるAggregateのOn After Fetchから次のAggregateを取得し、さらにその結果で3つ目のAggregateを取得している。Mobileアプリで遅い。最も適切な改善はどれか。",
+    "options": [
+      "3つのAggregateを正しい順番で実行するData Actionを作り、1回のサーバー要求で全データを返す",
+      "3つのAggregateのFetchをすべてAt startにする",
+      "On After FetchをOn Renderに置き換える",
+      "3つのAggregateのMax. Recordsを大きくする"
+    ],
+    "answer": 0,
+    "explanation": "サーバーのAggregateのOn After Fetchで次のAggregateを順に実行すると、サーバーへの要求が何度も発生して遅くなります。正しい順番でAggregateを実行するData Actionを作れば、サーバーで1回の要求として処理され、すべてのデータを返せます。",
+    "wrongReasons": [
+      "前の結果に依存する取得を同時に始めると、正しい結果が得られない。",
+      "On Renderは描画のたびに実行され、要求がさらに増える。",
+      "取得件数を増やしても、要求の回数は減らない。"
+    ]
+  },
+  {
+    "id": "mo-perf-004",
+    "exam": "mobile-developer-specialist",
+    "category": "性能のベストプラクティス",
+    "difficulty": "基礎",
+    "question": "Mobileアプリで表示する商品画像のファイルサイズが大きく、電波の弱い環境で表示が遅い。最も適切な対策はどれか。",
+    "options": [
+      "画像のサイズ（バイト数）と縦横の寸法を、対象の端末と利用者に合わせて小さくし、必要なら画像の取得を後回しにする",
+      "高解像度の端末に合わせて、さらに大きな画像を用意する",
+      "画像をBase64でAggregateに含めて取得する",
+      "すべての画像をスプラッシュ画面で先に読み込む"
+    ],
+    "answer": 0,
+    "explanation": "大きな画像ファイルはダウンロード時間を増やし、古い端末や電波の弱い環境で性能を落とします。画像のバイト数と寸法を利用者の体験に合わせて小さくし、主要な内容より後に取得することも検討します。",
+    "wrongReasons": [
+      "大きな画像は、ダウンロード時間とストレージの消費を増やす。",
+      "Base64はデータ量が増え、Aggregateの取得も遅くなる。",
+      "起動時にすべての画像を読み込むと、利用開始までの時間が長くなる。"
+    ]
+  },
+  {
+    "id": "mo-perf-005",
+    "exam": "mobile-developer-specialist",
+    "category": "性能のベストプラクティス",
+    "difficulty": "標準",
+    "question": "外部のJavaScriptライブラリを、複数の画面のJavaScriptノードにそれぞれ貼り付けて使っている。モバイルのベストプラクティスとして最も適切な改善はどれか。",
+    "options": [
+      "貼り付けたコードを圧縮して、読み込みを速くする",
+      "ライブラリをScript要素として取り込み、必要な画面のRequired Scriptsで使う。可能ならOutSystems UIやForgeの部品で代替する",
+      "ライブラリをOn Renderのたびに読み込み直す",
+      "ライブラリのコードをSite Propertyに保存する"
+    ],
+    "answer": 1,
+    "explanation": "外部のJavaScriptライブラリはモバイル端末では複雑すぎることがあるため、まずOutSystems UIやForgeの部品を検討します。どうしても必要な場合は、JavaScriptノードではなくScript要素として使うと、ライブラリの出所が1つになり、同じコードを何度も解析せずに済みます。",
+    "wrongReasons": [
+      "圧縮しても、同じコードが複数のノードで何度も解析される問題は残る。",
+      "描画のたびに読み込むと、負荷がさらに増える。",
+      "Site Propertyはコードを保存する場所ではなく、2000文字の上限もある。"
+    ]
+  },
+  {
+    "id": "mo-perf-006",
+    "exam": "mobile-developer-specialist",
+    "category": "性能のベストプラクティス",
+    "difficulty": "応用",
+    "question": "ブラウザの開発者ツールで見つけたOutSystemsの内部のJavaScript関数を、アプリのJavaScriptノードから直接呼んでいる。この実装に対する指摘として最も適切なものはどれか。",
+    "options": [
+      "内部の関数は処理が速いので、積極的に使うべきである",
+      "内部のAPIはサポートされておらず、アップグレードで変わって動かなくなる可能性があるため、公開されているJavaScript API（$public）を使う",
+      "内部の関数は、On Application Readyの中でだけ呼んでよい",
+      "内部の関数を使う場合は、Service Centerで許可すればよい"
+    ],
+    "answer": 1,
+    "explanation": "OutSystemsの内部のAPIはサポートされておらず、アップグレードのたびに変わる可能性があり、JavaScriptのコードが動かなくなる原因になります。OutSystemsが公開しているJavaScript APIを使います。",
+    "wrongReasons": [
+      "速さに関係なく、内部のAPIは予告なく変わるため使うべきではない。",
+      "呼ぶ場所に関係なく、内部のAPIはサポートされていない。",
+      "Service Centerで内部のAPIの利用を許可する仕組みはない。"
+    ]
+  },
+  {
+    "id": "mo-perf-007",
+    "exam": "mobile-developer-specialist",
+    "category": "性能のベストプラクティス",
+    "difficulty": "基礎",
+    "question": "Service StudioのTrueChangeに、Mobileアプリの性能に関する警告が表示されている。対応として最も適切なものはどれか。",
+    "options": [
+      "警告は公開の妨げにならないため、無視してよい",
+      "端末の性能が良ければ問題にならないため、無視してよい",
+      "警告は本番環境でしか意味がないため、開発中は対応しない",
+      "警告の内容を確認して修正する。放置すると性能の悪いアプリになるおそれがある"
+    ],
+    "answer": 3,
+    "explanation": "OutSystemsは開発中に性能上の問題になりうる点を自動で検出し、TrueChangeに警告として表示します。これらを放置すると性能の悪いアプリになるおそれがあるため、確認して修正します。",
+    "wrongReasons": [
+      "公開できても、警告を放置すると性能の低下につながる。",
+      "利用者の端末は多様で、低スペックの端末では特に問題になる。",
+      "開発中に対応しておくことで、本番での性能問題を防げる。"
+    ]
+  },
+  {
+    "id": "mo-perf-008",
+    "exam": "mobile-developer-specialist",
+    "category": "性能のベストプラクティス",
+    "difficulty": "標準",
+    "question": "複数の画面で、同じconsole.logやエラー表示のJavaScriptを繰り返し書いている。保守性を高める方法として最も適切なものはどれか。",
+    "options": [
+      "繰り返しのコードを1つのClient Action内のJavaScriptノードにまとめ、必要なところからそのClient Actionを呼ぶ",
+      "各画面のコードにコメントを付けて管理する",
+      "繰り返しのコードをwindowのグローバル関数として定義する",
+      "繰り返しのコードをClient Variableに保存する"
+    ],
+    "answer": 0,
+    "explanation": "同じJavaScriptを複数のノードで繰り返すと、保守の手間が増え誤りの原因になります。繰り返すコードはClient Actionの中のJavaScriptノードにまとめ、必要なときにそのClient Actionを呼び出します。",
+    "wrongReasons": [
+      "コメントを付けても、重複そのものは解消されない。",
+      "windowのグローバルなオブジェクトは破棄されずメモリを消費するため避ける。",
+      "Client Variableはコードを保存・実行する仕組みではない。"
+    ]
+  },
+  {
+    "id": "mo-perf-009",
+    "exam": "mobile-developer-specialist",
+    "category": "性能のベストプラクティス",
+    "difficulty": "応用",
+    "question": "オフライン同期の処理の中で、外部サービスの呼び出しや不要なサーバー呼び出しを追加し、例外も処理していない。この実装が引き起こしうる問題として最も適切なものはどれか。",
+    "options": [
+      "同期が遅くなったり、場合によってはアプリが完全に固まったりする",
+      "同期の結果がService Centerに記録されなくなるだけで、アプリには影響しない",
+      "同期が自動でサーバー側のTimerに切り替わる",
+      "特に問題はなく、同期の精度が上がる"
+    ],
+    "answer": 0,
+    "explanation": "オフライン同期のチェックリストでは、外部サービスへの不要な呼び出しや処理されない例外、サーバー呼び出しなど、同期を遅くするロジックを避けるよう求めています。同期が遅くなったり、アプリが完全に固まったりする原因になります。",
+    "wrongReasons": [
+      "同期の遅延やアプリの固まりとして、利用者に直接影響する。",
+      "端末の同期がサーバーのTimerに自動で切り替わる仕組みはない。",
+      "不要な呼び出しは同期の精度ではなく遅延につながる。"
+    ]
+  },
+  {
+    "id": "mo-perf-010",
+    "exam": "mobile-developer-specialist",
+    "category": "性能のベストプラクティス",
+    "difficulty": "標準",
+    "question": "Mobileアプリの画面で、JavaScriptからDOMを直接操作して表示を切り替えている。ときどき表示がおかしくなる。原因の説明として最も適切なものはどれか。",
+    "options": [
+      "OutSystemsのMobileアプリはDOMを持たないため",
+      "DOMの操作はサーバーで実行されるため、通信の遅れで表示がずれるため",
+      "OutSystemsのMobileアプリはReactを使っており、DOMを直接操作すると予測できない、または望ましくない動作につながるため",
+      "DOMの操作は、On Initializeで行わないと反映されないため"
+    ],
+    "answer": 2,
+    "explanation": "OutSystemsのMobileアプリはReactを使っているため、JavaScriptでDOMを操作すると予測できない動作につながることがあります。DOMの直接操作は高度なケースに限り、表示の切り替えは変数やIf、Style Classesなどのローコードの機能で行います。",
+    "wrongReasons": [
+      "MobileアプリもDOMを持つが、直接の操作が問題になる。",
+      "DOMの操作はクライアント側で実行される。",
+      "On InitializeはDOMの準備前に実行されるため、DOMの操作には使えない。"
+    ]
+  }
+]

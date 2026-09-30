@@ -121,6 +121,67 @@
           "file": "front-end-developer-specialist/fe-architecture.json"
         }
       ]
+    },
+    {
+      "id": "mobile-developer-specialist",
+      "name": "Mobile Developer Specialist（OutSystems 11）",
+      "passRate": 0.7,
+      "mock": {
+        "count": 30,
+        "minutes": 90
+      },
+      "categories": [
+        {
+          "name": "モバイルアプリの基礎とライフサイクル",
+          "weight": 10,
+          "file": "mobile-developer-specialist/mo-basics.json"
+        },
+        {
+          "name": "ローカルストレージ",
+          "weight": 12,
+          "file": "mobile-developer-specialist/mo-local-storage.json"
+        },
+        {
+          "name": "オフラインとデータ同期",
+          "weight": 16,
+          "file": "mobile-developer-specialist/mo-sync.json"
+        },
+        {
+          "name": "ネイティブプラグイン",
+          "weight": 12,
+          "file": "mobile-developer-specialist/mo-plugins.json"
+        },
+        {
+          "name": "モバイルのUIとUX",
+          "weight": 10,
+          "file": "mobile-developer-specialist/mo-ui.json"
+        },
+        {
+          "name": "性能のベストプラクティス",
+          "weight": 10,
+          "file": "mobile-developer-specialist/mo-performance.json"
+        },
+        {
+          "name": "セキュリティ",
+          "weight": 8,
+          "file": "mobile-developer-specialist/mo-security.json"
+        },
+        {
+          "name": "アプリのビルドと配布",
+          "weight": 12,
+          "file": "mobile-developer-specialist/mo-distribution.json"
+        },
+        {
+          "name": "デバッグとトラブルシューティング",
+          "weight": 6,
+          "file": "mobile-developer-specialist/mo-debugging.json"
+        },
+        {
+          "name": "アーキテクチャと再利用",
+          "weight": 4,
+          "file": "mobile-developer-specialist/mo-architecture.json"
+        }
+      ]
     }
   ]
 }

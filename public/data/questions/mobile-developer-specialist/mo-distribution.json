@@ -1,0 +1,242 @@
+[
+  {
+    "id": "mo-dist-001",
+    "exam": "mobile-developer-specialist",
+    "category": "アプリのビルドと配布",
+    "difficulty": "基礎",
+    "question": "OutSystemsでネイティブのMobileアプリ（AndroidやiOSのパッケージ）を生成したい。開発者の端末の準備として最も適切な説明はどれか。",
+    "options": [
+      "Android StudioとXcodeをインストールし、各プラットフォームのSDKを用意する必要がある",
+      "Mobile Apps Build Service（MABS）がクラウドでビルドするため、開発者の端末にSDKなどを用意する必要はない",
+      "Service Studioに専用のビルド用プラグインを追加する必要がある",
+      "Platform Serverにビルド用のSDKを手動でインストールする必要がある"
+    ],
+    "answer": 1,
+    "explanation": "ネイティブのパッケージは、OutSystemsのクラウドサービスであるMobile Apps Build Service（MABS）が生成します。ビルドはクラウドで行われるため、開発者の端末やサーバーにSDKをインストールする必要はありません。",
+    "wrongReasons": [
+      "ビルドはMABSがクラウドで行うため、ネイティブのSDKを用意する必要はない。",
+      "Service Studioに追加のビルド用プラグインは必要ない。",
+      "Platform ServerにSDKを入れる必要はなく、ビルドはMABSが担う。"
+    ]
+  },
+  {
+    "id": "mo-dist-002",
+    "exam": "mobile-developer-specialist",
+    "category": "アプリのビルドと配布",
+    "difficulty": "標準",
+    "question": "すでに端末に配布済みのネイティブアプリで、画面のレイアウトとClient Actionのロジックだけを変更して公開した。利用者の端末での反映として最も適切な説明はどれか。",
+    "options": [
+      "新しいアプリのビルドを作り、利用者が再インストールしないと反映されない",
+      "アプリストアの審査を経なければ反映されない",
+      "画面やロジックの変更は、アプリの更新（ホットアップデート）として端末に配信され、再インストールは不要である",
+      "利用者がアプリのキャッシュを手動で削除しないと反映されない"
+    ],
+    "answer": 2,
+    "explanation": "画面やロジック、リソースのような変更は、公開後にアプリの更新として端末に配信されるため、新しいネイティブのビルドや再インストールは不要です。新しいビルドが必要なのは、アプリ名やアイコン、プラグイン、Extensibility Configurationなどのネイティブの設定を変えた場合です。",
+    "wrongReasons": [
+      "画面やロジックの変更だけなら、新しいビルドや再インストールは必要ない。",
+      "アプリの更新はOutSystemsが配信するため、ストアの審査を経る必要はない。",
+      "キャッシュの手動削除は不要で、更新は自動で配信される。"
+    ]
+  },
+  {
+    "id": "mo-dist-003",
+    "exam": "mobile-developer-specialist",
+    "category": "アプリのビルドと配布",
+    "difficulty": "標準",
+    "question": "次の変更のうち、配布済みのネイティブアプリに反映するために新しいアプリのビルドが必要なものとして最も適切なものはどれか。",
+    "options": [
+      "画面に表示する文言の変更",
+      "Server Actionの処理内容の変更",
+      "Themeの色の一部を変えるCSSの変更",
+      "カメラ用のプラグインの追加や、アプリのアイコンの変更"
+    ],
+    "answer": 3,
+    "explanation": "アプリ名、アイコン、プラグインやその設定、Extensibility Configuration、エントリーモジュール、プラットフォームの設定などのネイティブに関わる変更は、新しいアプリのビルドを作ってインストールする必要があります。",
+    "wrongReasons": [
+      "画面の文言の変更は、アプリの更新として端末に配信される。",
+      "Server Actionはサーバーで実行されるため、公開すれば反映される。",
+      "CSSの変更はリソースの変更で、アプリの更新として配信される。"
+    ]
+  },
+  {
+    "id": "mo-dist-004",
+    "exam": "mobile-developer-specialist",
+    "category": "アプリのビルドと配布",
+    "difficulty": "基礎",
+    "question": "環境でMobile Apps Build Service（MABS）が使われているかを確認し、有効にしたい。確認と設定を行う場所として最も適切なものはどれか。",
+    "options": [
+      "Service Studioのモジュールのプロパティ",
+      "Service CenterのAdministration > Environment Configurationで設定し、Monitoring > Environment Healthで状態を確認する",
+      "LifeTimeのUser Management",
+      "Integration Studioの拡張機能の設定"
+    ],
+    "answer": 1,
+    "explanation": "MABSの利用はService CenterのAdministrationにあるEnvironment Configurationで有効にします。MABSの状態は、Service CenterのMonitoringにあるEnvironment Healthで確認できます。",
+    "wrongReasons": [
+      "モジュールのプロパティにMABSの有効化の設定はない。",
+      "User Managementは利用者や権限を管理する画面である。",
+      "Integration Studioは拡張機能を開発するツールで、MABSの設定とは関係ない。"
+    ]
+  },
+  {
+    "id": "mo-dist-005",
+    "exam": "mobile-developer-specialist",
+    "category": "アプリのビルドと配布",
+    "difficulty": "応用",
+    "question": "アプリごと、プラットフォームごとに使うMABSのバージョンを指定している。LifeTimeで開発環境から本番環境へデプロイする場合と、.oapファイルで配置する場合の違いとして最も適切な説明はどれか。",
+    "options": [
+      "MABSのバージョンはバージョンタグと一緒に保存されるため、LifeTimeのデプロイでは引き継がれるが、.oapで配置した場合は手動で設定する必要がある",
+      "どちらの方法でも、MABSのバージョンは常に最新に自動で切り替わる",
+      "どちらの方法でも、MABSのバージョンは引き継がれない",
+      ".oapで配置した場合だけ引き継がれ、LifeTimeのデプロイでは手動で設定する"
+    ],
+    "answer": 0,
+    "explanation": "MABSのバージョンはService Centerでアプリごと、プラットフォームごとに選び（最新または特定のバージョン）、バージョンタグとともに保存されます。そのためLifeTimeのデプロイでは引き継がれますが、.oapファイルで配置した場合は手動で設定します。",
+    "wrongReasons": [
+      "特定のバージョンを指定した場合、自動で最新に切り替わることはない。",
+      "LifeTimeのデプロイでは、バージョンタグとともに引き継がれる。",
+      "引き継がれるのはLifeTimeのデプロイで、.oapの場合は手動で設定する。"
+    ]
+  },
+  {
+    "id": "mo-dist-006",
+    "exam": "mobile-developer-specialist",
+    "category": "アプリのビルドと配布",
+    "difficulty": "標準",
+    "question": "Mobileアプリを独自のドメイン（例：app.example.com）で配布するように変更したい。必要な対応として最も適切なものはどれか。",
+    "options": [
+      "ドメインを変えるだけで、既存のアプリはそのまま新しいドメインに接続する",
+      "証明書は不要で、HTTPで接続すればよい",
+      "ドメインがSSL証明書のCN（またはSAN）と一致するようにし、設定後にアプリを生成し直す",
+      "Client Variableに新しいドメインを保存し、アプリが読み込むようにする"
+    ],
+    "answer": 2,
+    "explanation": "ネイティブアプリはサーバーのアドレスをビルドに含むため、独自のドメインを使う場合は、そのドメインが有効なSSL証明書のCNまたはSANと一致している必要があります。設定を変えたら、アプリを生成し直して配布します。",
+    "wrongReasons": [
+      "サーバーのアドレスはビルドに含まれるため、アプリの生成し直しが必要である。",
+      "Mobileアプリの通信には有効なSSL証明書によるHTTPSが必要である。",
+      "接続先のドメインをClient Variableで切り替える仕組みではない。"
+    ]
+  },
+  {
+    "id": "mo-dist-007",
+    "exam": "mobile-developer-specialist",
+    "category": "アプリのビルドと配布",
+    "difficulty": "基礎",
+    "question": "利用者がアプリストアを経由せずに、ブラウザからアプリをホーム画面に追加して使えるようにしたい。OutSystemsのMobileアプリでの方法として最も適切なものはどれか。",
+    "options": [
+      "アプリをReactive Web Appに作り直す",
+      "Service Centerでアプリのビルドを削除する",
+      "ネイティブのビルドをWebサーバーに置いてダウンロードさせる",
+      "アプリの配布設定でDistribute as PWAを有効にする（有効なSSL証明書が必要）"
+    ],
+    "answer": 3,
+    "explanation": "MobileアプリはProgressive Web App（PWA）としても配布できます。アプリの配布設定でDistribute as PWAを有効にすると、ブラウザから開いてホーム画面に追加できます。この切り替えに再公開は不要ですが、有効なSSL証明書が必要です。",
+    "wrongReasons": [
+      "作り直さなくても、MobileアプリをPWAとして配布できる。",
+      "ビルドを削除しても、PWAとして配布されるわけではない。",
+      "ネイティブのパッケージをWebから配っても、ホーム画面に追加するPWAにはならない。"
+    ]
+  },
+  {
+    "id": "mo-dist-008",
+    "exam": "mobile-developer-specialist",
+    "category": "アプリのビルドと配布",
+    "difficulty": "標準",
+    "question": "Google Playに公開するため、AndroidのビルドをAndroid App Bundle（AAB）形式で生成したい。前提条件として最も適切なものはどれか。",
+    "options": [
+      "Platform Server 11.12以降とMABS 7以降を使う",
+      "Platform Serverのバージョンに関係なく、Service Studioの設定だけで生成できる",
+      "AAB形式はiOS向けのビルドを生成したときにだけ作られる",
+      "AAB形式は生成できないため、APKをストアで変換してもらう"
+    ],
+    "answer": 0,
+    "explanation": "AndroidのAAB形式のビルドを生成するには、Platform Server 11.12以降とMABS 7以降が必要です。",
+    "wrongReasons": [
+      "AABの生成には、Platform ServerとMABSのバージョンの条件がある。",
+      "AABはAndroid向けの形式で、iOSのビルドとは関係ない。",
+      "条件を満たせばOutSystemsでAAB形式を生成できる。"
+    ]
+  },
+  {
+    "id": "mo-dist-009",
+    "exam": "mobile-developer-specialist",
+    "category": "アプリのビルドと配布",
+    "difficulty": "標準",
+    "question": "MABSで生成したAndroidのパッケージに、社内のセキュリティツールで独自の保護処理を後から追加して配布しようとしている。最も適切な指摘はどれか。",
+    "options": [
+      "生成されたパッケージは自由に加工してよいので、問題はない",
+      "生成されたビルドは改変しない。改変すると正しく動作しなくなったり、整合性のチェックに失敗したりするおそれがある",
+      "加工は許されるが、iOSのパッケージだけに限られる",
+      "加工した後でService Centerに再アップロードすれば問題ない"
+    ],
+    "answer": 1,
+    "explanation": "MABSが生成したビルドを後から改変することは推奨されません。アプリが正しく動作しなくなったり、整合性のチェックに失敗したりするおそれがあります。保護が必要な場合は、ビルドの工程に組み込まれたAppShieldのような仕組みを使います。",
+    "wrongReasons": [
+      "生成後の改変は、動作不良や整合性チェックの失敗の原因になる。",
+      "プラットフォームに関係なく、生成されたビルドの改変は避ける。",
+      "Service Centerに改変したパッケージを再アップロードする仕組みはない。"
+    ]
+  },
+  {
+    "id": "mo-dist-010",
+    "exam": "mobile-developer-specialist",
+    "category": "アプリのビルドと配布",
+    "difficulty": "応用",
+    "question": "Androidのアプリをストアで更新するため、新しいビルドのバージョンコードを確認している。OutSystemsでのバージョンコードの扱いとして最も適切な説明はどれか。",
+    "options": [
+      "バージョンコードは常に1に固定され、変更できない",
+      "バージョンコードは公開するたびにランダムな値になる",
+      "バージョンコードはMABSの外部で手動で書き換えるしかない",
+      "バージョンコードはビルドのたびに自動で増えるが、必要に応じて変更できる"
+    ],
+    "answer": 3,
+    "explanation": "ネイティブのビルドのバージョンコードは、新しいビルドを生成するたびに自動で増えます。ストアの要件に合わせる必要があるときなどは、アプリの設定で変更することもできます。",
+    "wrongReasons": [
+      "バージョンコードは自動で増え、変更もできる。",
+      "ランダムではなく、ビルドのたびに増えていく。",
+      "ビルドの外部で書き換えると整合性の問題につながり、設定で変更できる。"
+    ]
+  },
+  {
+    "id": "mo-dist-011",
+    "exam": "mobile-developer-specialist",
+    "category": "アプリのビルドと配布",
+    "difficulty": "標準",
+    "question": "テスト担当者の端末に、以前のAndroidのDebugビルドが入っている。新しいDebugビルドをインストールしようとしたところ失敗した。最も適切な対応はどれか。",
+    "options": [
+      "以前のバージョンをアンインストールしてから、新しいビルドをインストールする",
+      "端末を再起動すれば、そのままインストールできる",
+      "Releaseビルドに切り替えれば、上書きできる",
+      "Service Studioで1-Click Publishをやり直す"
+    ],
+    "answer": 0,
+    "explanation": "AndroidのDebugビルドをインストールする場合、端末にある以前のバージョンを先にアンインストールしておく必要があります。",
+    "wrongReasons": [
+      "再起動では、以前のバージョンとの競合は解消されない。",
+      "テスト用の配布でビルドの種類を変えても、根本の解決にはならない。",
+      "公開をやり直しても、端末に残る以前のバージョンは変わらない。"
+    ]
+  },
+  {
+    "id": "mo-dist-012",
+    "exam": "mobile-developer-specialist",
+    "category": "アプリのビルドと配布",
+    "difficulty": "応用",
+    "question": "非コアのコンポーネント（Forgeのプラグインなど）が使う外部の設定ファイルだけを変更した。ネイティブのビルドへの反映として最も適切な説明はどれか。",
+    "options": [
+      "公開すれば、端末にアプリの更新として自動で反映される",
+      "変更を検知して、MABSが自動で新しいビルドを生成する",
+      "この変更では新しいビルドが自動で作られないため、必要に応じて手動でアプリを生成し直す",
+      "非コアのコンポーネントの設定は、ネイティブのビルドには含まれない"
+    ],
+    "answer": 2,
+    "explanation": "非コアのコンポーネントの外部の設定ファイルの変更は、新しいビルドの生成を自動では引き起こしません。ビルドに反映させるには、手動でアプリを生成し直します。",
+    "wrongReasons": [
+      "ネイティブの設定に関わるため、アプリの更新だけでは反映されない。",
+      "この種類の変更では、新しいビルドは自動で生成されない。",
+      "外部の設定ファイルはビルドに含まれるため、生成し直しが必要になる。"
+    ]
+  }
+]

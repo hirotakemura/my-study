@@ -1,0 +1,322 @@
+[
+  {
+    "id": "mo-sync-001",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "基礎",
+    "question": "画面の「同期」ボタンを押したときに、バックグラウンドでオフライン同期を開始したい。ボタンのClient Actionで呼ぶアクションとして最も適切なものはどれか。",
+    "options": [
+      "OfflineDataSync",
+      "TriggerOfflineDataSync",
+      "ServerDataSync",
+      "OfflineDataSyncConfiguration"
+    ],
+    "answer": 1,
+    "explanation": "手動で同期を始めるときはTriggerOfflineDataSyncを呼びます。TriggerOfflineDataSyncはバックグラウンドでの非同期の同期と、同期イベントの発生に最適化されています。",
+    "wrongReasons": [
+      "OfflineDataSyncを直接呼ぶと、同期がバックグラウンドで実行されず画面が固まるおそれがあり、同期イベントも発生しない。",
+      "ServerDataSyncはサーバー側で実行されるロジックのためのアクションで、端末から同期を開始するものではない。",
+      "OfflineDataSyncConfigurationは自動同期の条件を設定するアクションである。"
+    ]
+  },
+  {
+    "id": "mo-sync-002",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "標準",
+    "question": "オフライン同期で、端末のローカルエンティティを更新する処理（例：SyncProducts）を作った。同期フレームワークの中でこの処理を実行させるために置く場所として最も適切なものはどれか。",
+    "options": [
+      "Client ActionsのOfflineDataSyncフォルダにあるOfflineDataSyncアクションのフローの中",
+      "画面のOn Initialize",
+      "ホームモジュールのOn Application Ready",
+      "Server ActionsのOfflineDataSyncフォルダにあるServerDataSyncアクションの中"
+    ],
+    "answer": 0,
+    "explanation": "ローカルとサーバーのデータを更新するアクションは、Client ActionsのOfflineDataSyncフォルダにあるOfflineDataSyncアクションのフローに置きます。こうすることで、他の処理に影響を与えずにバックグラウンドで同期を実行できます。",
+    "wrongReasons": [
+      "On Initializeでの処理は画面の描画を遅らせ、同期フレームワークの仕組みも使えない。",
+      "On Application Readyは描画をブロックするため、同期処理を置くと起動が遅くなる。",
+      "ServerDataSyncはサーバー側の処理を置く場所で、ローカルエンティティは更新できない。"
+    ]
+  },
+  {
+    "id": "mo-sync-003",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "基礎",
+    "question": "端末がオンラインに戻ったときと、ログインした後に、自動で同期を実行したい。設定する場所として最も適切なものはどれか。",
+    "options": [
+      "各画面のOn Readyで毎回TriggerOfflineDataSyncを呼ぶ",
+      "Service Centerの環境設定",
+      "OfflineDataSyncConfigurationアクションで、SyncOnOnlineとSyncOnLoginをTrueにする",
+      "Timerで1分ごとに同期を実行する"
+    ],
+    "answer": 2,
+    "explanation": "OfflineDataSyncConfigurationアクションで、自動同期の条件（SyncOnOnline、SyncOnLogin、SyncOnResume）と、エラー時の再試行（RetryOnError、RetryIntervalInSeconds）を設定できます。",
+    "wrongReasons": [
+      "画面を開くたびの同期は無駄が多く、オンライン復帰やログインの契機にもならない。",
+      "自動同期の条件はアプリ内のアクションで設定するもので、Service Centerの設定ではない。",
+      "Timerはサーバー側で動くもので、端末の同期を開始できない。"
+    ]
+  },
+  {
+    "id": "mo-sync-004",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "標準",
+    "question": "同期に失敗したときに、一定時間後に自動で再試行させたい。設定として最も適切なものはどれか。",
+    "options": [
+      "OnSyncErrorの中でTriggerOfflineDataSyncを繰り返し呼ぶ",
+      "OfflineDataSyncConfigurationでRetryOnErrorをTrueにし、RetryIntervalInSecondsで間隔を設定する",
+      "OfflineDataSyncの中に無限ループを作る",
+      "SyncOnResumeをTrueにする"
+    ],
+    "answer": 1,
+    "explanation": "OfflineDataSyncConfigurationのRetryOnErrorをTrueにすると、エラー時に新しい同期を試み、RetryIntervalInSecondsで再試行の間隔を秒単位で設定できます。",
+    "wrongReasons": [
+      "イベントの中で同期を繰り返し呼ぶと、同期の連鎖やループを招く。",
+      "無限ループはアプリを固まらせる原因になる。",
+      "SyncOnResumeはバックグラウンドからの復帰時に同期する設定で、エラー時の再試行ではない。"
+    ]
+  },
+  {
+    "id": "mo-sync-005",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "応用",
+    "question": "複数のエンティティを順番に同期するため、OnSyncCompleteのハンドラーの中でTriggerOfflineDataSyncを呼んで次の同期を開始している。この実装の問題点として最も適切なものはどれか。",
+    "options": [
+      "OnSyncCompleteの中ではサーバーを呼び出せない",
+      "OnSyncCompleteはエラー時にしか発生しない",
+      "特に問題はなく、推奨される実装である",
+      "OnSyncCompleteの中でTriggerOfflineDataSyncを呼ぶと、同期のループが発生する。順に同期したい場合は、TriggerOfflineDataSyncを続けて呼べばキューに入って順番に処理される"
+    ],
+    "answer": 3,
+    "explanation": "OnSyncCompleteの中でTriggerOfflineDataSyncを呼ぶと、同期が完了するたびに次の同期が始まるループになります。TriggerOfflineDataSyncで開始した同期はキューに入り順番に処理されるため、順に同期したい場合は続けて呼び出します。",
+    "wrongReasons": [
+      "問題は、サーバー呼び出しの可否ではなく、同期のループが発生する点にある。",
+      "OnSyncCompleteは同期が成功したときに発生するイベントである。",
+      "オフライン同期のチェックリストで避けるべき実装として挙げられている。"
+    ]
+  },
+  {
+    "id": "mo-sync-006",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "標準",
+    "question": "同期の対象が「顧客」「商品」「注文」とあり、画面によっては「注文」だけを同期したい。同期フレームワークでの実装として最も適切なものはどれか。",
+    "options": [
+      "画面ごとに別のOfflineDataSyncアクションを作る",
+      "TriggerOfflineDataSyncのSyncUnitに同期対象を表す文字列を渡し、OfflineDataSyncの中で分岐して必要なエンティティだけを同期する",
+      "注文の同期のときは、ローカルストレージの全データを削除してから同期する",
+      "注文だけを同期する場合は、OfflineDataSyncを直接呼ぶ"
+    ],
+    "answer": 1,
+    "explanation": "SyncUnitは、業務ロジックから同期のアクションに渡せる文字列の入力パラメータです。SyncUnitで処理を分岐させれば、更新が必要なエンティティだけを同期できます。",
+    "wrongReasons": [
+      "同期フレームワークのOfflineDataSyncは1つで、SyncUnitで処理を分ける。",
+      "関係のないデータまで削除すると、不要な再取得やデータの消失を招く。",
+      "OfflineDataSyncを直接呼ぶと、バックグラウンドで実行されず同期イベントも発生しない。"
+    ]
+  },
+  {
+    "id": "mo-sync-007",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "応用",
+    "question": "ログアウト前に最新の状態を送るため、キューで待っている古い同期を破棄して、すぐに新しい同期を実行したい。最も適切な方法はどれか。",
+    "options": [
+      "TriggerOfflineDataSyncを入力DiscardPendingSyncUnitsをTrueにして呼ぶ",
+      "アプリを再起動するよう利用者に案内する",
+      "OfflineDataSyncConfigurationでSyncOnOnlineをFalseにする",
+      "ローカルストレージをすべて削除してから同期する"
+    ],
+    "answer": 0,
+    "explanation": "TriggerOfflineDataSyncで開始した同期はキューで待機します。DiscardPendingSyncUnitsをTrueにして呼ぶと、同期のキューがクリアされ、待機中の同期を破棄して新しい同期をすぐに始められます。",
+    "wrongReasons": [
+      "再起動を案内するのは利用者の負担が大きく、確実にキューを制御できない。",
+      "SyncOnOnlineは自動同期の条件の設定で、待機中の同期は破棄されない。",
+      "ローカルデータの削除は、送信していない変更まで失う危険がある。"
+    ]
+  },
+  {
+    "id": "mo-sync-008",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "標準",
+    "question": "同期の開始・完了・失敗に応じて、画面に「同期中…」「同期に失敗しました」と表示したい。最も適切な実装はどれか。",
+    "options": [
+      "同期処理の中から、JavaScriptで画面のDOMを直接書き換える",
+      "画面のLayout（またはLayoutBlank）ブロックのOnSyncStart・OnSyncComplete・OnSyncErrorイベントにハンドラーを設定する",
+      "1秒ごとにローカルストレージを確認して、同期の状態を推測する",
+      "OfflineDataSyncの最後にFeedback Messageを置くだけにする"
+    ],
+    "answer": 1,
+    "explanation": "画面の元になっているLayoutやLayoutBlankブロックには、OnSyncStart、OnSyncComplete、OnSyncErrorのイベントがあります。これらのハンドラーで表示を切り替えると、利用者に同期の状態を伝えられます。",
+    "wrongReasons": [
+      "DOMの直接操作は推奨されず、同期の状態と表示がずれる原因になる。",
+      "定期的な確認は無駄が多く、同期の状態も正確にわからない。",
+      "最後に置くだけでは、開始や失敗を利用者に伝えられない。"
+    ]
+  },
+  {
+    "id": "mo-sync-009",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "基礎",
+    "question": "サーバーにある商品カタログを、端末で閲覧だけできればよい。データ量は少ない。適した同期パターンとして最も適切なものはどれか。",
+    "options": [
+      "Read/Write Data with Conflict Detection",
+      "Read/Write Data Last Write Wins",
+      "Read-Only Data",
+      "同期は不要で、毎回サーバーから取得する"
+    ],
+    "answer": 2,
+    "explanation": "Read-Only Dataパターンは、オフライン中は閲覧だけでよく、データ量が少ない場合に推奨されます。同期時にサーバーから全データを取得し、ローカルのデータを削除して作り直します。",
+    "wrongReasons": [
+      "端末でデータを変更しないため、競合検出の仕組みは不要である。",
+      "端末からサーバーへ変更を送る必要がないため、読み書きのパターンは不要である。",
+      "オフラインで閲覧するには、端末にデータを同期しておく必要がある。"
+    ]
+  },
+  {
+    "id": "mo-sync-010",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "標準",
+    "question": "閲覧だけのデータだが件数が多く、毎回全件を取得すると同期に時間がかかる。適した同期パターンとその仕組みとして最も適切なものはどれか。",
+    "options": [
+      "Read-Only Data。毎回全件を取得して作り直す",
+      "Read/Write Data Last Write Wins。端末の変更で上書きする",
+      "Read/Write Data with Conflict Detection。競合を記録して解決する",
+      "Read-Only Data Optimized。最後の同期時刻以降に変更・削除されたレコードだけを転送し、最後の同期時刻はサーバーが決める"
+    ],
+    "answer": 3,
+    "explanation": "Read-Only Data Optimizedパターンは、大量の閲覧用データ向けで、更新が必要なデータだけを転送します。レコードの更新日時と削除フラグで変更を追跡し、クライアントとサーバーの時計のずれを避けるため、最後の同期時刻はサーバーが決めます。",
+    "wrongReasons": [
+      "毎回全件を取得するため、大量データでは同期に時間がかかる。",
+      "閲覧だけのデータには、端末の変更を送るパターンは不要である。",
+      "閲覧だけのデータには、競合検出の仕組みは不要である。"
+    ]
+  },
+  {
+    "id": "mo-sync-011",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "応用",
+    "question": "Read-Only Data Optimizedパターンで、「最後に同期した日時」を端末の現在時刻（CurrDateTime）で記録していたところ、一部の更新が端末に届かないことがあった。最も適切な修正はどれか。",
+    "options": [
+      "同期の日時はサーバーが決めた時刻を返してもらい、それを記録する",
+      "端末の時刻を1時間早めて記録する",
+      "毎回、全件を取得するように変更する",
+      "日時の代わりに、同期した件数を記録する"
+    ],
+    "answer": 0,
+    "explanation": "端末とサーバーの時計がずれていると、端末の時刻を基準にした差分取得でデータの取りこぼしが起こります。Read-Only Data Optimizedパターンでは、同期の時刻をサーバーが決めて返し、端末はそれを記録します。",
+    "wrongReasons": [
+      "時刻をずらすのは場当たり的で、時計のずれの大きさによっては解決しない。",
+      "全件取得に戻すと、大量データでの同期の遅さという元の課題に戻る。",
+      "件数では、どのレコードが変更されたかを判定できない。"
+    ]
+  },
+  {
+    "id": "mo-sync-012",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "標準",
+    "question": "営業担当者が各自の訪問記録を端末で作成・編集し、同じレコードを複数人が同時に編集することはほとんどない。適した同期パターンとして最も適切なものはどれか。",
+    "options": [
+      "Read-Only Data",
+      "Read-Only Data Optimized",
+      "Read/Write Data Last Write Wins",
+      "同期は行わず、オンラインのときだけ入力させる"
+    ],
+    "answer": 2,
+    "explanation": "Read/Write Data Last Write Winsパターンは、複数の利用者がオフライン中に同じデータを変更する可能性が低い場合に推奨されます。端末の変更をサーバーに送り、サーバーでは最新の更新がそれまでの更新を上書きします。",
+    "wrongReasons": [
+      "端末でデータを作成・編集するため、閲覧専用のパターンでは足りない。",
+      "端末でデータを作成・編集するため、閲覧専用のパターンでは足りない。",
+      "オフラインで入力したいという要件を満たさない。"
+    ]
+  },
+  {
+    "id": "mo-sync-013",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "応用",
+    "question": "複数の点検員がオフライン中に同じ設備の記録を編集することがあり、他の人の変更を上書きして失うことは許されない。適した同期パターンと必要な対応の組み合わせとして最も適切なものはどれか。",
+    "options": [
+      "Read/Write Data Last Write Wins。最後に同期した人の内容を正とする",
+      "Read-Only Data。端末での編集を禁止する",
+      "Read/Write Data with Conflict Detection。競合した変更を記録し、自動または手動で解決する仕組みを用意する",
+      "Read-Only Data Optimized。変更されたレコードだけを送る"
+    ],
+    "answer": 2,
+    "explanation": "Read/Write Data with Conflict Detectionパターンは、複数の利用者がオフライン中に同じデータを変更する高度なシナリオ向けです。サーバーで競合する変更を検出して記録し、例えば端末とサーバーの版を並べて利用者に選ばせるなど、解決の仕組みを実装します。",
+    "wrongReasons": [
+      "後から同期した内容で上書きされ、他の人の変更が失われる。",
+      "端末での編集という要件を満たさない。",
+      "閲覧専用のパターンで、端末の変更をサーバーに送れない。"
+    ]
+  },
+  {
+    "id": "mo-sync-014",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "応用",
+    "question": "Read/Writeの同期パターンで、ローカルエンティティにIsFromServer・IsModified・IsActiveの属性を持たせる。端末で新規に追加されたレコードを取得するAggregateの条件として最も適切なものはどれか。",
+    "options": [
+      "IsModified = True and IsFromServer = True and IsActive = True",
+      "IsActive = False and IsFromServer = True",
+      "IsFromServer = True",
+      "IsFromServer = False and IsActive = True"
+    ],
+    "answer": 3,
+    "explanation": "IsFromServerはサーバーに存在するレコードか、IsModifiedは端末で変更されたか、IsActiveは端末で削除されていないかを表します。端末で追加されたレコードは、サーバーにはまだなく（IsFromServer = False）、削除されていない（IsActive = True）ものです。",
+    "wrongReasons": [
+      "この条件は、サーバーにあるレコードのうち端末で変更されたものを取得する。",
+      "この条件は、端末で削除されたレコードを取得する。",
+      "この条件は、サーバーから取得したレコードをすべて取得してしまう。"
+    ]
+  },
+  {
+    "id": "mo-sync-015",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "標準",
+    "question": "ローカルエンティティを右クリックして「Create Action to Sync Data (Read/Write)」で同期用のアクションを自動生成した。その後のアプリの実装で守るべきこととして最も適切なものはどれか。",
+    "options": [
+      "ローカルエンティティの既定のエンティティアクション（CreateOrUpdateLocal<entity>など）を、生成された…ForSyncアクションにすべて置き換えて使う",
+      "生成されたアクションは参考用なので、削除して既定のアクションを使い続ける",
+      "生成されたアクションは、サーバー側からしか呼び出せない",
+      "IsModifiedなどの属性は、同期のたびに手作業で削除する"
+    ],
+    "answer": 0,
+    "explanation": "自動生成では、同期に必要なメタ情報（IsFromServer・IsModified・IsActive）を正しく保つためのCreateOrUpdateLocal<entity>ForSyncなどのクライアントアクションが作られます。同期を確実に成功させるため、ローカルエンティティの既定のエンティティアクションをすべてこれらに置き換えます。",
+    "wrongReasons": [
+      "既定のアクションを使い続けると、メタ情報が更新されず同期が正しく動かない。",
+      "生成されるのはクライアントアクションで、端末のロジックから呼び出して使う。",
+      "メタ情報の属性は、同期の仕組みに必要なもので削除してはいけない。"
+    ]
+  },
+  {
+    "id": "mo-sync-016",
+    "exam": "mobile-developer-specialist",
+    "category": "オフラインとデータ同期",
+    "difficulty": "標準",
+    "question": "ある画面で同期ボタンを押すと「syncWrapper is not a function」というエラーが発生する。原因と対策として最も適切なものはどれか。",
+    "options": [
+      "OfflineDataSyncアクションが空のため。何か処理を追加する",
+      "TriggerOfflineDataSyncが呼び出すOfflineDataSyncEventsブロックが、その画面にないため。同じ画面にOfflineDataSyncEventsブロックを置く",
+      "端末がオフラインのため。オンラインにしてから再試行する",
+      "MABSのバージョンが古いため。アプリを再ビルドする"
+    ],
+    "answer": 1,
+    "explanation": "TriggerOfflineDataSyncは、同じ画面にあるOfflineDataSyncEventsブロックを呼び出します。テンプレートのレイアウトには既定で含まれていますが、このエラーが出る場合は、TriggerOfflineDataSyncを呼ぶ画面にOfflineDataSyncEventsブロックがあるか確認します。",
+    "wrongReasons": [
+      "OfflineDataSyncの中身が空でも、このエラーの原因にはならない。",
+      "オフラインが原因なら、このエラーではなく同期の失敗として扱われる。",
+      "このエラーはMABSのバージョンではなく、画面の構成の問題である。"
+    ]
+  }
+]
