@@ -5,7 +5,6 @@ import { isSunday, todayKey } from './lib/date'
 import Home from './pages/Home'
 import Quiz from './pages/Quiz'
 import Exams from './pages/Exams'
-import Toeic from './pages/Toeic'
 import Review from './pages/Review'
 import Settings from './pages/Settings'
 
@@ -13,15 +12,13 @@ const NAV: { route: Route; label: string; icon: string }[] = [
   { route: 'home', label: 'ホーム', icon: '🏠' },
   { route: 'quiz', label: '演習', icon: '📝' },
   { route: 'exams', label: '受験', icon: '🎓' },
-  { route: 'toeic', label: 'TOEIC', icon: '🎧' },
   { route: 'review', label: '振り返り', icon: '📊' },
 ]
 
 const TITLES: Record<Route, string> = {
-  home: '今日やること',
+  home: 'OutSystems 学習',
   quiz: 'OutSystems 問題演習',
   exams: 'OutSystems 受験スケジュール',
-  toeic: 'TOEIC ロードマップ',
   review: '今週の振り返り',
   settings: '設定・バックアップ',
 }
@@ -63,7 +60,6 @@ export default function App() {
         {route === 'home' && <Home />}
         {route === 'quiz' && <Quiz />}
         {route === 'exams' && <Exams />}
-        {route === 'toeic' && <Toeic />}
         {route === 'review' && <Review />}
         {route === 'settings' && <Settings />}
       </main>

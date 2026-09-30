@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { Async } from '../components/Async'
 import { loadAllQuestions, useLoad } from '../lib/content'
 import { todayKey } from '../lib/date'
-import { exportJson, importJson, resetData, updateData, useData } from '../lib/store'
+import { deleteToeicData, exportJson, exportToeicJson, hasToeicData, importJson, resetData, updateData, useData } from '../lib/store'
 import type { ThemeSetting } from '../types'
 
 const THEMES: { id: ThemeSetting; label: string }[] = [
@@ -17,14 +17,17 @@ export default function Settings() {
   const [msg, setMsg] = useState('')
   const content = useLoad(loadAllQuestions)
 
-  const download = () => {
-    const blob = new Blob([exportJson()], { type: 'application/json' })
+  const save = (text: string, name: string) => {
+    const blob = new Blob([text], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `my-study-backup-${todayKey()}.json`
+    a.download = name
     a.click()
     URL.revokeObjectURL(url)
+  }
+  const download = () => {
+    save(exportJson(), `outsystems-study-backup-${todayKey()}.json`)
     setMsg('バックアップをダウンロードしました')
   }
 
@@ -75,12 +78,41 @@ export default function Settings() {
         </div>
         {msg && <p className="small">{msg}</p>}
         <ul className="plain small muted">
-          <li>学習記録：{data.studyLogs.length}件</li>
           <li>問題の回答履歴：{data.answers.length}件</li>
-          <li>TOEIC模試スコア：{data.toeicScores.length}件</li>
+          <li>模試の記録：{data.mockExams.length}件</li>
+          <li>手動の学習記録：{data.studyLogs.filter((l) => l.subject === 'outsystems').length}件</li>
           <li>振り返りメモ：{Object.keys(data.reviewMemos).length}件</li>
         </ul>
       </section>
+
+      {hasToeicData(data) && (
+        <section className="card">
+          <h2>TOEICデータ（別アプリへの移行）</h2>
+          <p className="small muted">
+            TOEICの学習管理は別アプリに移しました。以前このアプリで記録したTOEICの学習時間・チェックリスト・スコアを書き出して、新しいTOEICアプリで読み込めます。
+          </p>
+          <div className="btn-row">
+            <button
+              className="btn primary"
+              onClick={() => {
+                save(exportToeicJson(), `toeic-data-${todayKey()}.json`)
+                setMsg('TOEICデータを書き出しました')
+              }}
+            >
+              TOEICデータを書き出す
+            </button>
+            <button
+              className="btn danger"
+              onClick={() =>
+                confirm('このアプリからTOEICデータを削除します。書き出し済みか確認してください。削除しますか？') &&
+                deleteToeicData()
+              }
+            >
+              このアプリから削除
+            </button>
+          </div>
+        </section>
+      )}
 
       <section className="card">
         <h2>問題データ</h2>
@@ -95,7 +127,7 @@ export default function Settings() {
             </ul>
           )}
         </Async>
-        <p className="small muted">問題・計画データは public/data 配下のJSONファイルで管理しています。</p>
+        <p className="small muted">問題・受験計画のデータは public/data 配下のJSONファイルで管理しています。</p>
       </section>
 
       <section className="card">

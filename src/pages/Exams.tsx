@@ -1,7 +1,7 @@
 import { Async } from '../components/Async'
-import { loadOsSchedule, useLoad } from '../lib/content'
+import { loadOsSchedule, loadQuestionIndex, useLoad } from '../lib/content'
 import { diffDays, formatJa, todayKey } from '../lib/date'
-import { navigate } from '../lib/router'
+import { openQuizFor } from '../lib/quizNav'
 import { scheduledExams, suggestRetake } from '../lib/stats'
 import { updateData, useData } from '../lib/store'
 import type { ExamResult, ExamStatus, OsExamSchedule } from '../types'
@@ -9,11 +9,15 @@ import type { ExamResult, ExamStatus, OsExamSchedule } from '../types'
 const STATUS_LABEL: Record<ExamStatus, string> = { untaken: '未受験', passed: '合格', failed: '不合格' }
 
 export default function Exams() {
-  const state = useLoad(loadOsSchedule)
-  return <Async state={state}>{(s) => <ExamsBody schedule={s} />}</Async>
+  const state = useLoad(() => Promise.all([loadOsSchedule(), loadQuestionIndex()]))
+  return (
+    <Async state={state}>
+      {([s, index]) => <ExamsBody schedule={s} examsWithQuestions={new Set(index.exams.map((e) => e.id))} />}
+    </Async>
+  )
 }
 
-function ExamsBody({ schedule }: { schedule: OsExamSchedule }) {
+function ExamsBody({ schedule, examsWithQuestions }: { schedule: OsExamSchedule; examsWithQuestions: Set<string> }) {
   const data = useData()
   const today = todayKey()
   const exams = scheduledExams(schedule, data)
@@ -124,8 +128,8 @@ function ExamsBody({ schedule }: { schedule: OsExamSchedule }) {
                 履歴：{result.history.map((h) => `${formatJa(h.date)} ${STATUS_LABEL[h.status]}`).join(' → ')}
               </p>
             )}
-            {e.id === 'web-developer-specialist' && e.status !== 'passed' && (
-              <button className="link" onClick={() => navigate('quiz')}>
+            {examsWithQuestions.has(e.id) && e.status !== 'passed' && (
+              <button className="link" onClick={() => openQuizFor(e.id)}>
                 📝 問題演習へ
               </button>
             )}

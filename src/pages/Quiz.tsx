@@ -1,8 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Async } from '../components/Async'
 import { loadAllQuestions, useLoad } from '../lib/content'
-import { categoryStats, pickWeighted, shuffle, wrongQuestionIds } from '../lib/stats'
-import { updateData, useData } from '../lib/store'
+import { formatMinutes } from '../lib/date'
+import { buildQuiz, getPreferredExam, takePendingStart, type StartKind } from '../lib/quizNav'
+import { useQuizTimer } from '../lib/quizTimer'
+import { categoryStats, shuffle, wrongQuestionIds } from '../lib/stats'
+import { getData, updateData, useData } from '../lib/store'
 import type { AnswerRecord, ExamQuestionSet, Question, QuestionIndex, QuizMode } from '../types'
 
 export default function Quiz() {
@@ -38,10 +41,25 @@ function makeSession(mode: QuizMode, title: string, exam: ExamQuestionSet, qs: Q
 
 let activeSession: Session | null = null
 
+function start(kind: StartKind, exam: ExamQuestionSet, questions: Question[], category?: string): Session | null {
+  const built = buildQuiz(kind, exam, questions, getData().answers, category)
+  return built ? makeSession(built.mode, built.title, exam, built.qs) : null
+}
+
 function QuizRoot({ index, questions }: { index: QuestionIndex; questions: Question[] }) {
-  const [examId, setExamId] = useState(index.exams[0]?.id)
-  // タブを切り替えても演習中の状態が消えないようモジュール変数に退避する
-  const [session, setSessionState] = useState<Session | null>(activeSession)
+  const preferred = getPreferredExam()
+  const [examId, setExamId] = useState(
+    index.exams.some((e) => e.id === preferred) ? (preferred as string) : index.exams[0]?.id,
+  )
+  // タブを切り替えても演習中の状態が消えないようモジュール変数に退避する。
+  // ホームなどから出題を指定されていれば、ここで開始する（演習中なら続きを優先）
+  const [session, setSessionState] = useState<Session | null>(() => {
+    const req = takePendingStart()
+    if (activeSession || !req) return activeSession
+    const ex = index.exams.find((e) => e.id === req.exam)
+    activeSession = ex ? start(req.kind, ex, questions.filter((q) => q.exam === ex.id), req.category) : null
+    return activeSession
+  })
   const setSession = (s: Session | null) => {
     activeSession = s
     setSessionState(s)
@@ -57,7 +75,10 @@ function QuizRoot({ index, questions }: { index: QuestionIndex; questions: Quest
       exam={exam}
       questions={examQs}
       onExamChange={setExamId}
-      onStart={(mode, title, qs) => qs.length && setSession(makeSession(mode, title, exam, qs))}
+      onStart={(kind, category) => {
+        const s = start(kind, exam, examQs, category)
+        if (s) setSession(s)
+      }}
     />
   )
 }
@@ -73,7 +94,7 @@ function Setup({
   exam: ExamQuestionSet
   questions: Question[]
   onExamChange: (id: string) => void
-  onStart: (mode: QuizMode, title: string, qs: Question[]) => void
+  onStart: (kind: StartKind, category?: string) => void
 }) {
   const data = useData()
   const stats = categoryStats(
@@ -104,24 +125,14 @@ function Setup({
       </p>
 
       <div className="mode-grid">
-        <button className="mode-btn" onClick={() => onStart('random', '全分野ランダム10問', shuffle(questions).slice(0, 10))}>
+        <button className="mode-btn" onClick={() => onStart('random')}>
           <span className="mode-icon">🎲</span>
           <b>ランダム10問</b>
           <span className="small muted">全分野から</span>
         </button>
         <button
           className="mode-btn"
-          onClick={() =>
-            onStart(
-              'mock',
-              '本番模試',
-              pickWeighted(
-                questions,
-                exam.categories.map((c) => ({ name: c.name, weight: c.weight })),
-                exam.mock.count,
-              ),
-            )
-          }
+          onClick={() => onStart('mock')}
         >
           <span className="mode-icon">⏱️</span>
           <b>本番模試</b>
@@ -132,7 +143,7 @@ function Setup({
         <button
           className="mode-btn"
           disabled={!wrongQs.length}
-          onClick={() => onStart('wrong', '間違えた問題の復習', shuffle(wrongQs))}
+          onClick={() => onStart('wrong')}
         >
           <span className="mode-icon">🔁</span>
           <b>間違えた問題</b>
@@ -144,7 +155,7 @@ function Setup({
         exam={exam}
         questions={questions}
         unanswered={unansweredQs}
-        onStart={(title, qs) => onStart('unanswered', title, qs)}
+        onStart={(category) => onStart('unanswered', category)}
       />
 
       <section className="card">
@@ -156,7 +167,7 @@ function Setup({
             const weak = s.rate !== null && s.rate < 0.7
             return (
               <li key={s.category} className={weak ? 'weak' : ''}>
-                <button className="cat-btn" disabled={!qs.length} onClick={() => onStart('category', s.category, shuffle(qs))}>
+                <button className="cat-btn" disabled={!qs.length} onClick={() => onStart('category', s.category)}>
                   <span className="cat-name">
                     {weak && '⚠️ '}
                     {s.category}
@@ -206,7 +217,7 @@ function UnansweredProgress({
   exam: ExamQuestionSet
   questions: Question[]
   unanswered: Question[]
-  onStart: (title: string, qs: Question[]) => void
+  onStart: (category?: string) => void
 }) {
   const total = questions.length
   const done = total - unanswered.length
@@ -226,7 +237,7 @@ function UnansweredProgress({
       {unanswered.length > 0 ? (
         <button
           className="btn primary block unanswered-start"
-          onClick={() => onStart('未着手の問題', shuffle(unanswered).slice(0, 10))}
+          onClick={() => onStart()}
         >
           未着手から10問解く
         </button>
@@ -243,7 +254,7 @@ function UnansweredProgress({
               <button
                 className="cat-btn"
                 disabled={!rest.length}
-                onClick={() => onStart(`未着手：${c.name}`, shuffle(rest))}
+                onClick={() => onStart(c.name)}
               >
                 <span className="cat-name">
                   {rest.length === 0 && '✅ '}
@@ -280,6 +291,8 @@ function useCountdown(deadline?: number) {
 
 function SessionView({ session, setSession }: { session: Session; setSession: (s: Session | null) => void }) {
   const remaining = useCountdown(session.finished ? undefined : session.deadline)
+  // 演習中の時間を学習時間に自動加算する
+  const studied = useQuizTimer(!session.finished)
   const { items, current, picks } = session
   const item = items[current]
   const picked = picks[current]
@@ -309,7 +322,8 @@ function SessionView({ session, setSession }: { session: Session; setSession: (s
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [remaining])
 
-  if (session.finished) return <ResultView session={session} onClose={() => setSession(null)} />
+  if (session.finished)
+    return <ResultView session={session} studiedSec={studied.current} onClose={() => setSession(null)} />
 
   const choose = (orig: number) => {
     if (picked !== null) return
@@ -426,7 +440,7 @@ function SessionView({ session, setSession }: { session: Session; setSession: (s
   )
 }
 
-function ResultView({ session, onClose }: { session: Session; onClose: () => void }) {
+function ResultView({ session, studiedSec, onClose }: { session: Session; studiedSec: number; onClose: () => void }) {
   const { items, picks, exam } = session
   const correct = items.filter((it, i) => picks[i] === it.q.answer).length
   const rate = items.length ? correct / items.length : 0
@@ -450,6 +464,7 @@ function ResultView({ session, onClose }: { session: Session; onClose: () => voi
           {correct} / {items.length}
         </div>
         <div className="sub">正答率 {Math.round(rate * 100)}%</div>
+        <p className="small muted">⏱ 今回の演習時間 {formatMinutes(Math.max(1, Math.round(studiedSec / 60)))}（学習時間に自動で記録しました）</p>
         {session.mode === 'mock' && (
           <p className={`verdict ${rate >= exam.passRate ? 'ok' : 'ng'}`}>
             {rate >= exam.passRate ? '🎉 合格ライン到達' : `合格ライン（${Math.round(exam.passRate * 100)}%）まであと少し`}

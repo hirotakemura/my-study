@@ -1,8 +1,8 @@
 import { useSyncExternalStore } from 'react'
 
 // ハッシュベースの簡易ルーター（GitHub Pages でもリロードで404にならない）
-export type Route = 'home' | 'quiz' | 'exams' | 'toeic' | 'review' | 'settings'
-const ROUTES: Route[] = ['home', 'quiz', 'exams', 'toeic', 'review', 'settings']
+export type Route = 'home' | 'quiz' | 'exams' | 'review' | 'settings'
+const ROUTES: Route[] = ['home', 'quiz', 'exams', 'review', 'settings']
 
 function read(): Route {
   const r = window.location.hash.replace(/^#\/?/, '') as Route

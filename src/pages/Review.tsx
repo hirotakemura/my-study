@@ -1,41 +1,49 @@
 import { useEffect, useState } from 'react'
 import { Async } from '../components/Async'
-import { loadOsSchedule, loadQuestionIndex, loadToeicRoadmap, useLoad } from '../lib/content'
-import { addDays, formatJa, toKey, formatMinutes, todayKey, weekStart } from '../lib/date'
-import { categoryStats, minutesBetween, minutesOn, scheduledExams } from '../lib/stats'
+import { loadOsSchedule, loadQuestionIndex, useLoad } from '../lib/content'
+import { addDays, formatJa, formatMinutes, todayKey, toKey, weekStart } from '../lib/date'
+import {
+  answerDate,
+  categoryStats,
+  daysBetween,
+  manualMinutesOn,
+  minutesBetween,
+  quizMinutesOn,
+  scheduledExams,
+} from '../lib/stats'
 import { updateData, useData } from '../lib/store'
-import type { OsExamSchedule, QuestionIndex, ToeicRoadmap } from '../types'
+import type { OsExamSchedule, QuestionIndex } from '../types'
 
 export default function Review() {
-  const state = useLoad(() => Promise.all([loadToeicRoadmap(), loadOsSchedule(), loadQuestionIndex()]))
-  return <Async state={state}>{([r, s, q]) => <ReviewBody roadmap={r} schedule={s} index={q} />}</Async>
+  const state = useLoad(() => Promise.all([loadOsSchedule(), loadQuestionIndex()]))
+  return <Async state={state}>{([s, q]) => <ReviewBody schedule={s} index={q} />}</Async>
 }
 
-function ReviewBody({ roadmap, schedule, index }: { roadmap: ToeicRoadmap; schedule: OsExamSchedule; index: QuestionIndex }) {
+function ReviewBody({ schedule, index }: { schedule: OsExamSchedule; index: QuestionIndex }) {
   const data = useData()
   const thisWeek = weekStart(todayKey())
   const [from, setFrom] = useState(thisWeek)
   const to = addDays(from, 6)
   const nextFrom = addDays(from, 7)
   const nextTo = addDays(from, 13)
-  const days = Array.from({ length: 7 }, (_, i) => addDays(from, i))
-  const maxDay = Math.max(60, ...days.map((d) => minutesOn(data, d)))
+  const days = daysBetween(from, to)
+  const maxDay = Math.max(60, ...days.map((d) => quizMinutesOn(data, d) + manualMinutesOn(data, d)))
   const prevTotal = minutesBetween(data, addDays(from, -7), addDays(from, -1))
   const total = minutesBetween(data, from, to)
 
-  // 分野別正答率の変化：先週末までの累計 → 今週末までの累計
-  const exam = index.exams[0]
-  const cats = exam?.categories.map((c) => c.name) ?? []
-  const before = exam ? categoryStats(data.answers.filter((a) => toLocalKey(a.at) < from), exam.id, cats) : []
-  const after = exam ? categoryStats(data.answers.filter((a) => toLocalKey(a.at) <= to), exam.id, cats) : []
   const weekAnswers = data.answers.filter((a) => {
-    const d = toLocalKey(a.at)
+    const d = answerDate(a)
+    return d >= from && d <= to
+  })
+  const weekCorrect = weekAnswers.filter((a) => a.correct).length
+  const weekMocks = data.mockExams.filter((m) => {
+    const d = toKey(new Date(m.at))
     return d >= from && d <= to
   })
 
-  const nextPhases = roadmap.phases.filter((p) => p.start <= nextTo && p.end >= nextFrom)
+  // 分野別正答率の変化：先週末までの累計 → 今週末までの累計（問題データがある試験ごと）
+  const examsWithData = index.exams.filter((e) => data.answers.some((a) => a.exam === e.id))
   const nextExams = scheduledExams(schedule, data).filter((e) => e.date >= nextFrom && e.date <= nextTo && e.status !== 'passed')
-  const toeicNext = roadmap.exam.date >= nextFrom && roadmap.exam.date <= nextTo
 
   return (
     <div className="stack">
@@ -63,83 +71,111 @@ function ReviewBody({ roadmap, schedule, index }: { roadmap: ToeicRoadmap; sched
             </div>
           </div>
           <div>
-            <div className="label">英語</div>
-            <div className="mid">{formatMinutes(minutesBetween(data, from, to, 'english'))}</div>
-            <div className="label">OutSystems</div>
-            <div className="mid">{formatMinutes(minutesBetween(data, from, to, 'outsystems'))}</div>
+            <div className="label">問題演習（自動）</div>
+            <div className="mid">{formatMinutes(minutesBetween(data, from, to, 'quiz'))}</div>
+            <div className="label">その他（手動）</div>
+            <div className="mid">{formatMinutes(minutesBetween(data, from, to, 'manual'))}</div>
           </div>
         </div>
         <ul className="day-bars">
           {days.map((d) => {
-            const en = minutesOn(data, d, 'english')
-            const os = minutesOn(data, d, 'outsystems')
+            const q = quizMinutesOn(data, d)
+            const m = manualMinutesOn(data, d)
             return (
               <li key={d}>
                 <span className="day">{formatJa(d).replace(/^\d+\//, '')}</span>
-                <span className="bars" title={`英語${en}分 / OutSystems${os}分`}>
-                  {en > 0 && <span className="seg english" style={{ width: `${(en / maxDay) * 100}%` }} />}
-                  {os > 0 && <span className="seg outsystems" style={{ width: `${(os / maxDay) * 100}%` }} />}
+                <span className="bars" title={`問題演習${q}分 / その他${m}分`}>
+                  {q > 0 && <span className="seg quiz" style={{ width: `${(q / maxDay) * 100}%` }} />}
+                  {m > 0 && <span className="seg manual" style={{ width: `${(m / maxDay) * 100}%` }} />}
                 </span>
-                <span className="small">
-                  {en + os ? formatMinutes(en + os) : data.minimumDone[d] ? '最低ライン✓' : '—'}
-                </span>
+                <span className="small">{q + m ? formatMinutes(q + m) : '—'}</span>
               </li>
             )
           })}
         </ul>
         <div className="legend small">
           <span>
-            <i className="english" /> 英語
+            <i className="quiz" /> 問題演習
           </span>
           <span>
-            <i className="outsystems" /> OutSystems
+            <i className="manual" /> その他
           </span>
         </div>
       </section>
 
-      {exam && (
-        <section className="card">
-          <h2>分野別正答率の変化</h2>
-          <p className="small muted">今週の回答数：{weekAnswers.length}問（先週末までの累計 → 今週末までの累計）</p>
+      <section className="card">
+        <h2>問題演習</h2>
+        <div className="grid-3">
+          <div>
+            <div className="label">回答数</div>
+            <div className="mid">{weekAnswers.length}問</div>
+          </div>
+          <div>
+            <div className="label">正答率</div>
+            <div className="mid">{weekAnswers.length ? `${Math.round((weekCorrect / weekAnswers.length) * 100)}%` : '—'}</div>
+          </div>
+          <div>
+            <div className="label">模試</div>
+            <div className="mid">{weekMocks.length}回</div>
+          </div>
+        </div>
+        {weekMocks.length > 0 && (
           <ul className="menu">
-            {cats.map((c, i) => {
-              const b = before[i].rate
-              const a = after[i].rate
-              const delta = a !== null && b !== null ? Math.round((a - b) * 100) : null
-              return (
-                <li key={c} className={a !== null && a < 0.7 ? 'weak-row' : ''}>
-                  <span className="small">{c}</span>
-                  <span className="small">
-                    {pct(b)} → <b>{pct(a)}</b>{' '}
-                    {delta !== null && delta !== 0 && (
-                      <span className={delta > 0 ? 'up' : 'down'}>
-                        {delta > 0 ? '▲' : '▼'}
-                        {Math.abs(delta)}
-                      </span>
-                    )}
-                  </span>
-                </li>
-              )
-            })}
+            {weekMocks.map((m) => (
+              <li key={m.at}>
+                <span className="small">{formatJa(toKey(new Date(m.at)))} 模試</span>
+                <span className="small">
+                  {m.correct}/{m.total}（{Math.round((m.correct / m.total) * 100)}%）
+                  <span className={`pill ${m.passed ? 'ok' : 'ng'}`}>{m.passed ? '合格' : '不合格'}</span>
+                </span>
+              </li>
+            ))}
           </ul>
-        </section>
-      )}
+        )}
+      </section>
+
+      {examsWithData.map((exam) => {
+        const cats = exam.categories.map((c) => c.name)
+        const before = categoryStats(data.answers.filter((a) => answerDate(a) < from), exam.id, cats)
+        const after = categoryStats(data.answers.filter((a) => answerDate(a) <= to), exam.id, cats)
+        return (
+          <section key={exam.id} className="card">
+            <h2>分野別正答率の変化</h2>
+            <p className="small muted">{exam.name}（先週末までの累計 → 今週末までの累計）</p>
+            <ul className="menu">
+              {cats.map((c, i) => {
+                const b = before[i].rate
+                const a = after[i].rate
+                const delta = a !== null && b !== null ? Math.round((a - b) * 100) : null
+                return (
+                  <li key={c} className={a !== null && a < exam.passRate ? 'weak-row' : ''}>
+                    <span className="small">{c}</span>
+                    <span className="small">
+                      {pct(b)} → <b>{pct(a)}</b>{' '}
+                      {delta !== null && delta !== 0 && (
+                        <span className={delta > 0 ? 'up' : 'down'}>
+                          {delta > 0 ? '▲' : '▼'}
+                          {Math.abs(delta)}
+                        </span>
+                      )}
+                    </span>
+                  </li>
+                )
+              })}
+            </ul>
+          </section>
+        )
+      })}
 
       <section className="card">
         <h2>来週の予定（{formatJa(nextFrom)}〜）</h2>
         <ul className="plain">
           {nextExams.map((e) => (
             <li key={e.id}>
-              🎓 {formatJa(e.date)} OutSystems {e.name} 受験
+              🎓 {formatJa(e.date)} {e.name} 受験
             </li>
           ))}
-          {toeicNext && <li>🎯 {formatJa(roadmap.exam.date)} TOEIC本番</li>}
-          {nextPhases.map((p) => (
-            <li key={p.id}>
-              🎧 TOEIC「{p.title}」：{p.commute.map((c) => `${c.label.replace(/（.*?）/g, '')}${c.minutes}分`).join('、')}
-            </li>
-          ))}
-          {!nextExams.length && !toeicNext && !nextPhases.length && <li className="muted">予定はありません</li>}
+          {!nextExams.length && <li className="muted">来週の受験予定はありません</li>}
         </ul>
       </section>
 
@@ -209,5 +245,3 @@ function pct(r: number | null) {
   return r === null ? '—' : `${Math.round(r * 100)}%`
 }
 
-// 回答日時(ISO/UTC)を端末ローカルの日付キーに変換
-const toLocalKey = (iso: string) => toKey(new Date(iso))

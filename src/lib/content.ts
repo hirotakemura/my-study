@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import type { ExamQuestionSet, OsExamSchedule, Question, QuestionIndex, ToeicRoadmap } from '../types'
+import type { ExamQuestionSet, OsExamSchedule, Question, QuestionIndex } from '../types'
 
 // 問題データ・計画データはアプリ本体と分離して public/data 配下の JSON から読み込む
 const BASE = `${import.meta.env.BASE_URL}data/`
@@ -21,7 +21,6 @@ function fetchJson<T>(path: string): Promise<T> {
 
 export const loadQuestionIndex = () => fetchJson<QuestionIndex>('questions/index.json')
 export const loadOsSchedule = () => fetchJson<OsExamSchedule>('plan/outsystems-exams.json')
-export const loadToeicRoadmap = () => fetchJson<ToeicRoadmap>('plan/toeic-roadmap.json')
 
 export async function loadQuestions(exam: ExamQuestionSet): Promise<Question[]> {
   const lists = await Promise.all(exam.categories.map((c) => fetchJson<Question[]>(`questions/${c.file}`)))

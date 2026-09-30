@@ -54,8 +54,6 @@ for (const exam of index.exams) {
 const os = read('plan/outsystems-exams.json')
 for (const d of [...os.exams.map((e) => e.date), ...os.reserveSlots])
   if (new Date(d).getUTCDay() !== 6) errors.push(`outsystems-exams: ${d} が土曜日ではない`)
-const toeic = read('plan/toeic-roadmap.json')
-for (const p of toeic.phases) if (p.start > p.end) errors.push(`toeic-roadmap: ${p.id} の期間が逆転`)
 
 if (warn.length) console.log('\n警告:\n- ' + warn.join('\n- '))
 if (errors.length) {

@@ -46,39 +46,11 @@ export interface OsExamSchedule {
   goal: { name: string; description: string }
 }
 
-export interface RoadmapTask {
-  id: string
-  text: string
-}
-
-export interface CommuteItem {
-  label: string
-  minutes: number
-}
-
-export interface RoadmapPhase {
-  id: string
-  title: string
-  start: string
-  end: string
-  summary: string
-  commute: CommuteItem[]
-  tasks: RoadmapTask[]
-  notes?: string[]
-}
-
-export interface ToeicRoadmap {
-  baseline: { total: number; listening: number; reading: number; label: string }
-  exam: { date: string; target: number; name: string }
-  longTermGoal: { score: number; label: string }
-  minimumLine: { label: string; minutes: number }
-  focus: string
-  phases: RoadmapPhase[]
-}
-
 // ===== ユーザーデータ（localStorage） =====
+/** english は旧TOEIC機能の記録（移行用に保持するだけで集計には使わない） */
 export type Subject = 'english' | 'outsystems'
 
+/** 手動で記録した学習時間（問題演習以外の学習） */
 export interface StudyLog {
   id: string
   date: string // YYYY-MM-DD
@@ -96,7 +68,7 @@ export interface AnswerRecord {
   mode: QuizMode
 }
 
-export type QuizMode = 'category' | 'random' | 'mock' | 'wrong' | 'unanswered'
+export type QuizMode = 'category' | 'random' | 'mock' | 'wrong' | 'unanswered' | 'weak'
 
 export type ExamStatus = 'untaken' | 'passed' | 'failed'
 
@@ -127,13 +99,16 @@ export type ThemeSetting = 'system' | 'light' | 'dark'
 export interface AppData {
   version: 1
   studyLogs: StudyLog[]
-  minimumDone: Record<string, boolean>
+  /** 問題演習で自動計測した学習時間（日付ごとの秒数） */
+  quizSeconds: Record<string, number>
   answers: AnswerRecord[]
   mockExams: MockExamRecord[]
   examResults: Record<string, ExamResult>
-  toeicChecks: Record<string, boolean>
-  toeicScores: MockScore[]
   reviewMemos: Record<string, string>
   lastReviewShown?: string
   settings: { theme: ThemeSetting }
+  // ---- 旧TOEIC機能のデータ（別アプリへの移行用に残す） ----
+  minimumDone?: Record<string, boolean>
+  toeicChecks?: Record<string, boolean>
+  toeicScores?: MockScore[]
 }

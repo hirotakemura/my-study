@@ -1,27 +1,53 @@
-import type { AnswerRecord, AppData, OsExamSchedule, Question, RoadmapPhase, Subject, ToeicRoadmap } from '../types'
-import { addDays, diffDays, weekStart } from './date'
+import type { AnswerRecord, AppData, OsExamSchedule, Question, QuestionIndex } from '../types'
+import { addDays, toKey, weekStart } from './date'
 
-export function minutesOn(data: AppData, date: string, subject?: Subject): number {
+// ===== 学習時間 =====
+// 学習時間 = 問題演習で自動計測した時間 + 手動で記録した時間（OutSystemsのみ。旧TOEICの記録は含めない）
+
+export function quizMinutesOn(data: AppData, date: string): number {
+  return Math.round((data.quizSeconds[date] ?? 0) / 60)
+}
+
+export function manualMinutesOn(data: AppData, date: string): number {
   return data.studyLogs
-    .filter((l) => l.date === date && (!subject || l.subject === subject))
+    .filter((l) => l.date === date && l.subject === 'outsystems')
     .reduce((s, l) => s + l.minutes, 0)
 }
 
-export function minutesBetween(data: AppData, from: string, to: string, subject?: Subject): number {
-  return data.studyLogs
-    .filter((l) => l.date >= from && l.date <= to && (!subject || l.subject === subject))
-    .reduce((s, l) => s + l.minutes, 0)
+export function minutesOn(data: AppData, date: string): number {
+  return quizMinutesOn(data, date) + manualMinutesOn(data, date)
 }
 
-export function studiedOn(data: AppData, date: string): boolean {
-  return minutesOn(data, date) > 0 || !!data.minimumDone[date]
+export function daysBetween(from: string, to: string): string[] {
+  const days: string[] = []
+  for (let d = from; d <= to; d = addDays(d, 1)) days.push(d)
+  return days
+}
+
+export function minutesBetween(data: AppData, from: string, to: string, kind?: 'quiz' | 'manual'): number {
+  return daysBetween(from, to).reduce(
+    (s, d) => s + (kind === 'quiz' ? quizMinutesOn(data, d) : kind === 'manual' ? manualMinutesOn(data, d) : minutesOn(data, d)),
+    0,
+  )
+}
+
+/** 回答日時(ISO)を端末ローカルの日付キーに変換 */
+export const answerDate = (a: AnswerRecord) => toKey(new Date(a.at))
+
+/** 学習した日：学習時間があるか、1問でも回答した日 */
+function studiedDays(data: AppData): Set<string> {
+  const days = new Set(data.answers.map(answerDate))
+  for (const [d, sec] of Object.entries(data.quizSeconds)) if (sec >= 30) days.add(d)
+  for (const l of data.studyLogs) if (l.subject === 'outsystems' && l.minutes > 0) days.add(l.date)
+  return days
 }
 
 /** 連続学習日数。今日まだ未学習なら昨日から数える（今日の途中で途切れた扱いにしない） */
 export function streak(data: AppData, today: string): number {
-  let day = studiedOn(data, today) ? today : addDays(today, -1)
+  const days = studiedDays(data)
+  let day = days.has(today) ? today : addDays(today, -1)
   let count = 0
-  while (studiedOn(data, day)) {
+  while (days.has(day)) {
     count++
     day = addDays(day, -1)
   }
@@ -31,24 +57,6 @@ export function streak(data: AppData, today: string): number {
 export function weekRange(today: string): { from: string; to: string } {
   const from = weekStart(today)
   return { from, to: addDays(from, 6) }
-}
-
-// ===== TOEIC ロードマップ =====
-
-export type PhaseInfo =
-  | { kind: 'before'; next: RoadmapPhase; daysUntil: number }
-  | { kind: 'in'; phase: RoadmapPhase }
-  | { kind: 'examDay' }
-  | { kind: 'after' }
-
-export function currentPhase(roadmap: ToeicRoadmap, today: string): PhaseInfo {
-  if (today === roadmap.exam.date) return { kind: 'examDay' }
-  if (today > roadmap.exam.date) return { kind: 'after' }
-  const phase = roadmap.phases.find((p) => today >= p.start && today <= p.end)
-  if (phase) return { kind: 'in', phase }
-  const next = roadmap.phases.find((p) => p.start > today)
-  if (next) return { kind: 'before', next, daysUntil: diffDays(today, next.start) }
-  return { kind: 'after' }
 }
 
 // ===== OutSystems 受験スケジュール =====
@@ -142,4 +150,37 @@ export function pickWeighted(questions: Question[], weights: { name: string; wei
   }
   const picked = quotas.flatMap((q) => shuffle(questions.filter((x) => x.category === q.name)).slice(0, q.n))
   return shuffle(picked)
+}
+
+// ===== 試験ごとの準備状況 =====
+
+export interface Readiness {
+  total: number
+  answered: number
+  rate: number | null
+  wrong: number
+  weakest?: { category: string; rate: number }
+  lastMock?: { correct: number; total: number; passed: boolean }
+}
+
+export function readiness(data: AppData, index: QuestionIndex, questions: Question[], examId: string): Readiness | null {
+  const exam = index.exams.find((e) => e.id === examId)
+  if (!exam) return null
+  const qs = questions.filter((q) => q.exam === examId)
+  const answers = data.answers.filter((a) => a.exam === examId)
+  const answered = new Set(answers.map((a) => a.questionId))
+  const correct = answers.filter((a) => a.correct).length
+  const stats = categoryStats(answers, examId, exam.categories.map((c) => c.name))
+    .filter((s) => s.rate !== null && s.total >= 3 && s.rate < exam.passRate)
+    .sort((a, b) => (a.rate ?? 0) - (b.rate ?? 0))
+  const mocks = data.mockExams.filter((m) => m.exam === examId)
+  const wrongIds = wrongQuestionIds(answers)
+  return {
+    total: qs.length,
+    answered: qs.filter((q) => answered.has(q.id)).length,
+    rate: answers.length ? correct / answers.length : null,
+    wrong: qs.filter((q) => wrongIds.has(q.id)).length,
+    weakest: stats[0] ? { category: stats[0].category, rate: stats[0].rate ?? 0 } : undefined,
+    lastMock: mocks[mocks.length - 1],
+  }
 }
