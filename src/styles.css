@@ -521,8 +521,13 @@ textarea.memo {
 .mode-btn:disabled {
   opacity: 0.45;
 }
+.mode-btn:disabled .mode-icon {
+  filter: grayscale(1);
+}
 .mode-icon {
-  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 2px;
 }
 
 .cat-list {
@@ -936,7 +941,9 @@ textarea.memo {
   min-height: 56px;
 }
 .reco-icon {
-  font-size: 1.4rem;
+  flex: none;
+  width: 36px;
+  height: 36px;
 }
 .reco-text {
   flex: 1;

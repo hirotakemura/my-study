@@ -6,6 +6,7 @@ import { buildQuiz, getPreferredExam, setPreferredExam, takePendingStart, type S
 import { useQuizTimer } from '../lib/quizTimer'
 import { categoryStats, shuffle, wrongQuestionIds } from '../lib/stats'
 import { getData, updateData, useData } from '../lib/store'
+import { ModeIcon } from '../icons'
 import type { AnswerRecord, ExamQuestionSet, Question, QuestionIndex, QuizMode } from '../types'
 
 export default function Quiz() {
@@ -228,7 +229,7 @@ function Setup({
 
       <div className="mode-grid">
         <button className="mode-btn" onClick={() => onStart('random')}>
-          <span className="mode-icon">🎲</span>
+          <ModeIcon className="mode-icon" name="random" />
           <b>ランダム10問</b>
           <span className="small muted">全分野から</span>
         </button>
@@ -236,7 +237,7 @@ function Setup({
           className="mode-btn"
           onClick={() => onStart('mock')}
         >
-          <span className="mode-icon">⏱️</span>
+          <ModeIcon className="mode-icon" name="mock" />
           <b>本番模試</b>
           <span className="small muted">
             {exam.mock.count}問・{exam.mock.minutes}分・合格{Math.round(exam.passRate * 100)}%
@@ -247,7 +248,7 @@ function Setup({
           disabled={!wrongQs.length}
           onClick={() => onStart('wrong')}
         >
-          <span className="mode-icon">🔁</span>
+          <ModeIcon className="mode-icon" name="wrong" />
           <b>間違えた問題</b>
           <span className="small muted">{wrongQs.length}問</span>
         </button>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Async } from '../components/Async'
+import { ModeIcon, type ModeIconName } from '../icons'
 import { loadAllQuestions, loadOsSchedule, useLoad } from '../lib/content'
 import { diffDays, formatJa, formatMinutes, isSunday, todayKey } from '../lib/date'
 import { requestQuizStart, type StartKind } from '../lib/quizNav'
@@ -164,21 +165,21 @@ function ReadinessView({ r, passRate }: { r: Readiness; passRate: number }) {
 
 /** 状況に応じて、次にやるとよい演習をワンタップで始められるようにする */
 function Recommendations({ examId, r, daysLeft }: { examId: string; r: Readiness; daysLeft: number }) {
-  const items: { kind: StartKind; icon: string; title: string; sub: string; category?: string }[] = []
+  const items: { kind: StartKind; icon: ModeIconName; title: string; sub: string; category?: string }[] = []
   if (r.weakest)
     items.push({
       kind: 'weak',
-      icon: '⚠️',
+      icon: 'weak',
       title: `苦手分野：${r.weakest.category}`,
       sub: `正答率 ${Math.round(r.weakest.rate * 100)}% → 10問`,
       category: r.weakest.category,
     })
   if (r.answered < r.total)
-    items.push({ kind: 'unanswered', icon: '🆕', title: '未着手から10問', sub: `あと${r.total - r.answered}問` })
-  if (r.wrong > 0) items.push({ kind: 'wrong', icon: '🔁', title: '間違えた問題の復習', sub: `${r.wrong}問` })
+    items.push({ kind: 'unanswered', icon: 'unanswered', title: '未着手から10問', sub: `あと${r.total - r.answered}問` })
+  if (r.wrong > 0) items.push({ kind: 'wrong', icon: 'wrong', title: '間違えた問題の復習', sub: `${r.wrong}問` })
   if (daysLeft <= 7 || r.answered >= r.total * 0.5)
-    items.push({ kind: 'mock', icon: '⏱️', title: '本番模試', sub: '30問・90分' })
-  if (!items.length) items.push({ kind: 'random', icon: '🎲', title: 'ランダム10問', sub: '全分野から' })
+    items.push({ kind: 'mock', icon: 'mock', title: '本番模試', sub: '30問・90分' })
+  if (!items.length) items.push({ kind: 'random', icon: 'random', title: 'ランダム10問', sub: '全分野から' })
 
   return (
     <section className="card">
@@ -190,9 +191,7 @@ function Recommendations({ examId, r, daysLeft }: { examId: string; r: Readiness
             className="reco"
             onClick={() => requestQuizStart({ exam: examId, kind: it.kind, category: it.category })}
           >
-            <span className="reco-icon" aria-hidden>
-              {it.icon}
-            </span>
+            <ModeIcon className="reco-icon" name={it.icon} />
             <span className="reco-text">
               <b>{it.title}</b>
               <span className="small muted">{it.sub}</span>

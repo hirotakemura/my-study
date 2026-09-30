@@ -27,3 +27,20 @@ export function Icon({ name }: { name: IconName }) {
     </svg>
   )
 }
+
+/** 出題モードの画像アイコン（public/icons/ui/*.png） */
+export type ModeIconName = 'random' | 'mock' | 'wrong' | 'weak' | 'unanswered'
+
+export function ModeIcon({ name, className }: { name: ModeIconName; className: string }) {
+  return (
+    <img
+      className={className}
+      src={`${import.meta.env.BASE_URL}icons/ui/${name}.png`}
+      alt=""
+      aria-hidden
+      width={40}
+      height={40}
+      decoding="async"
+    />
+  )
+}
