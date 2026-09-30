@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Async } from '../components/Async'
 import { loadAllQuestions, useLoad } from '../lib/content'
 import { formatMinutes } from '../lib/date'
-import { buildQuiz, getPreferredExam, takePendingStart, type StartKind } from '../lib/quizNav'
+import { buildQuiz, getPreferredExam, setPreferredExam, takePendingStart, type StartKind } from '../lib/quizNav'
 import { useQuizTimer } from '../lib/quizTimer'
 import { categoryStats, shuffle, wrongQuestionIds } from '../lib/stats'
 import { getData, updateData, useData } from '../lib/store'
@@ -67,6 +67,8 @@ function QuizRoot({ index, questions }: { index: QuestionIndex; questions: Quest
   const exam = index.exams.find((e) => e.id === examId)
   if (!exam) return <p>問題データがありません。</p>
   const examQs = questions.filter((q) => q.exam === exam.id)
+  const counts: Record<string, number> = {}
+  for (const q of questions) counts[q.exam] = (counts[q.exam] ?? 0) + 1
 
   if (session) return <SessionView session={session} setSession={setSession} />
   return (
@@ -74,7 +76,11 @@ function QuizRoot({ index, questions }: { index: QuestionIndex; questions: Quest
       index={index}
       exam={exam}
       questions={examQs}
-      onExamChange={setExamId}
+      counts={counts}
+      onExamChange={(id) => {
+        setPreferredExam(id)
+        setExamId(id)
+      }}
       onStart={(kind, category) => {
         const s = start(kind, exam, examQs, category)
         if (s) setSession(s)
@@ -83,16 +89,123 @@ function QuizRoot({ index, questions }: { index: QuestionIndex; questions: Quest
   )
 }
 
+/** 資格名から括弧書き（対象バージョンなど）を除いた短い名前 */
+function shortName(name: string) {
+  return name.replace(/（.*?）/g, '')
+}
+
+function ExamPicker({
+  index,
+  exam,
+  counts,
+  onChange,
+}: {
+  index: QuestionIndex
+  exam: ExamQuestionSet
+  counts: Record<string, number>
+  onChange: (id: string) => void
+}) {
+  const data = useData()
+  const [open, setOpen] = useState(false)
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setOpen(false)
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open])
+
+  const summary = (id: string) => {
+    const answers = data.answers.filter((a) => a.exam === id)
+    const done = new Set(answers.map((a) => a.questionId)).size
+    const correct = answers.filter((a) => a.correct).length
+    return { done, rate: answers.length ? Math.round((correct / answers.length) * 100) : null }
+  }
+  const multiple = index.exams.length > 1
+
+  return (
+    <>
+      <button
+        className="exam-switch"
+        onClick={() => multiple && setOpen(true)}
+        disabled={!multiple}
+        aria-haspopup="dialog"
+      >
+        <span className="exam-switch-text">
+          <span className="label">資格</span>
+          <b>{shortName(exam.name)}</b>
+          <span className="small muted">
+            {exam.name.match(/（(.*?)）/)?.[1] ?? ''}
+            {exam.name.includes('（') ? '・' : ''}全{counts[exam.id] ?? 0}問
+          </span>
+        </span>
+        {multiple && <span className="exam-switch-go">切り替え ›</span>}
+      </button>
+
+      {open && (
+        <div className="sheet-backdrop" onClick={() => setOpen(false)}>
+          <aside
+            className="sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-label="資格を選択"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="sheet-head">
+              <h2>資格を選択</h2>
+              <button className="icon-btn" aria-label="閉じる" onClick={() => setOpen(false)}>
+                ✕
+              </button>
+            </div>
+            <ul className="exam-list">
+              {index.exams.map((e) => {
+                const count = counts[e.id] ?? 0
+                const s = summary(e.id)
+                const on = e.id === exam.id
+                return (
+                  <li key={e.id}>
+                    <button
+                      className={on ? 'on' : ''}
+                      aria-current={on ? 'true' : undefined}
+                      onClick={() => {
+                        onChange(e.id)
+                        setOpen(false)
+                      }}
+                    >
+                      <span className="exam-list-text">
+                        <b>{shortName(e.name)}</b>
+                        <span className="small muted">{e.name.match(/（(.*?)）/)?.[1] ?? ''}</span>
+                        <span className="small">
+                          着手 {s.done}
+                          {count ? `/${count}` : ''}問・正答率 {s.rate === null ? '—' : `${s.rate}%`}
+                        </span>
+                      </span>
+                      <span className="exam-list-check" aria-hidden>
+                        {on ? '✓' : ''}
+                      </span>
+                    </button>
+                  </li>
+                )
+              })}
+            </ul>
+          </aside>
+        </div>
+      )}
+    </>
+  )
+}
+
 function Setup({
   index,
   exam,
   questions,
+  counts,
   onExamChange,
   onStart,
 }: {
   index: QuestionIndex
   exam: ExamQuestionSet
   questions: Question[]
+  counts: Record<string, number>
   onExamChange: (id: string) => void
   onStart: (kind: StartKind, category?: string) => void
 }) {
@@ -111,18 +224,7 @@ function Setup({
 
   return (
     <div className="stack">
-      {index.exams.length > 1 && (
-        <select className="select" value={exam.id} onChange={(e) => onExamChange(e.target.value)}>
-          {index.exams.map((e) => (
-            <option key={e.id} value={e.id}>
-              {e.name}
-            </option>
-          ))}
-        </select>
-      )}
-      <p className="muted small">
-        {exam.name}：全{questions.length}問
-      </p>
+      <ExamPicker index={index} exam={exam} counts={counts} onChange={onExamChange} />
 
       <div className="mode-grid">
         <button className="mode-btn" onClick={() => onStart('random')}>

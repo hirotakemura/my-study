@@ -12,7 +12,24 @@ export interface StartRequest {
 }
 
 let pending: StartRequest | null = null
-let preferredExam: string | null = null
+const EXAM_KEY = 'my-study:quiz-exam'
+let preferredExam: string | null = (() => {
+  try {
+    return localStorage.getItem(EXAM_KEY)
+  } catch {
+    return null
+  }
+})()
+
+/** 演習で選んだ資格を覚えておく（次回起動時もその資格を表示） */
+export function setPreferredExam(exam: string) {
+  preferredExam = exam
+  try {
+    localStorage.setItem(EXAM_KEY, exam)
+  } catch {
+    // 保存できなくても動作に支障はない
+  }
+}
 
 export function requestQuizStart(req: StartRequest) {
   pending = req
