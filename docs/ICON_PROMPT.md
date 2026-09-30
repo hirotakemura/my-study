@@ -35,12 +35,8 @@ No text, no letters, no numbers, no logos of real companies, no gradients or onl
 
 ## 生成後の差し替え手順
 
-1. 生成した画像を 1024×1024 の PNG で保存する。
-2. 次のサイズに書き出して `public/icons/` に上書きする。
-   - `icon-512.png`（512×512）
-   - `icon-192.png`（192×192）
-   - `apple-touch-icon.png`（180×180）
-3. `public/icons/icon.svg`（ブラウザのタブ用）は、PNG を使う場合は `index.html` の `<link rel="icon">` を `./icons/icon-192.png`（`type="image/png"`）に変える。
-4. コミットして `main` に push すると GitHub Pages に反映される。インストール済みのPWAはアイコンの更新に時間がかかることがある（再インストールで確実に反映）。
+1. 生成した正方形の画像を `docs/icon-source.png` に上書きする。
+2. `node scripts/gen-icons.mjs` を実行し、`public/icons/` の各PNG（512・192・180・64・マスカブル512）を生成する。モチーフの位置が変わった場合はスクリプト内の `CROP` を調整する。
+3. コミットして `main` に push すると GitHub Pages に反映される。インストール済みのPWAはアイコンの更新に時間がかかることがある（再インストールで確実に反映）。
 
 画像をこのリポジトリに追加してもらえれば、各サイズへの書き出しと差し替えはこちらで行えます。

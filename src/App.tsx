@@ -49,9 +49,7 @@ export default function App() {
     <div className="app">
       <header className="topbar">
         <div className="brand">
-          <span className="brand-mark">
-            <Icon name="logo" />
-          </span>
+          <img className="brand-mark" src={`${import.meta.env.BASE_URL}icons/favicon-64.png`} alt="" />
           <div className="brand-text">
             <small>OUTSYSTEMS STUDY</small>
             <h1>{TITLES[route]}</h1>

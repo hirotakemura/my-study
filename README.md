@@ -157,7 +157,7 @@ Vercel はルートパスで配信されるため `BASE_PATH` の指定は不要
 
 ## アイコンの再生成
 
-`public/icons/icon.svg` を変更した場合は、PNGアイコンを再生成します（Playwright が必要）。
+アイコンの元画像は `docs/icon-source.png` です。差し替えた場合は、各サイズのPNGを再生成します（Playwright が必要）。
 
 ```bash
 node scripts/gen-icons.mjs

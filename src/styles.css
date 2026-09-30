@@ -167,14 +167,6 @@ p {
   width: 30px;
   height: 30px;
   border-radius: 8px;
-  display: grid;
-  place-items: center;
-  background: var(--accent);
-  color: #fff;
-}
-.brand-mark svg {
-  width: 18px;
-  height: 18px;
 }
 .brand-text {
   display: flex;

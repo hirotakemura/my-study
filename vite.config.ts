@@ -11,7 +11,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['icons/icon.svg', 'icons/apple-touch-icon.png'],
+      includeAssets: ['icons/favicon-64.png', 'icons/apple-touch-icon.png'],
       manifest: {
         name: 'OutSystems 学習管理',
         short_name: 'OS学習',
@@ -26,12 +26,14 @@ export default defineConfig({
         icons: [
           { src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png' },
-          { src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+          { src: 'icons/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
       workbox: {
         // 問題・計画データ(JSON)もプリキャッシュしてオフラインで動作させる
         globPatterns: ['**/*.{js,css,html,svg,png,json}'],
+        // 大きいアイコンはインストール時に端末が取得するため、プリキャッシュしない
+        globIgnores: ['**/icons/icon-512.png', '**/icons/icon-maskable-512.png'],
         navigateFallback: 'index.html',
       },
     }),
