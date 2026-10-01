@@ -1208,5 +1208,11 @@ input[type='time'] {
 .exam-edit {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
+  min-height: 36px;
+}
+.link-icon {
+  flex: none;
+  width: 24px;
+  height: 24px;
 }

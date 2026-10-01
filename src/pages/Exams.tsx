@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Async } from '../components/Async'
 import { Modal } from '../components/Modal'
+import { ModeIcon } from '../icons'
 import { loadOsSchedule, loadQuestionIndex, useLoad } from '../lib/content'
 import { diffDays, formatJa, todayKey } from '../lib/date'
 import { openQuizFor } from '../lib/quizNav'
@@ -118,7 +119,8 @@ function ExamsBody({ schedule, examsWithQuestions }: { schedule: OsExamSchedule;
                   </div>
                 )}
                 <button className="link exam-edit" onClick={() => setEditing(e)}>
-                  ✏️ {e.confirmed ? '日時を編集' : '確定した日時を入力'}
+                  <ModeIcon className="link-icon" name="edit-date" />
+                  {e.confirmed ? '日時を編集' : '確定した日時を入力'}
                 </button>
               </div>
               <span className={`pill status ${e.status}`}>{STATUS_LABEL[e.status]}</span>
@@ -166,8 +168,9 @@ function ExamsBody({ schedule, examsWithQuestions }: { schedule: OsExamSchedule;
               </p>
             )}
             {examsWithQuestions.has(e.id) && e.status !== 'passed' && (
-              <button className="link" onClick={() => openQuizFor(e.id)}>
-                📝 問題演習へ
+              <button className="link exam-edit" onClick={() => openQuizFor(e.id)}>
+                <ModeIcon className="link-icon" name="practice" />
+                問題演習へ
               </button>
             )}
           </section>

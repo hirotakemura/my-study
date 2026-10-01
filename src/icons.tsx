@@ -29,7 +29,7 @@ export function Icon({ name }: { name: IconName }) {
 }
 
 /** 出題モードの画像アイコン（public/icons/ui/*.png） */
-export type ModeIconName = 'random' | 'mock' | 'wrong' | 'weak' | 'unanswered'
+export type ModeIconName = 'random' | 'mock' | 'wrong' | 'weak' | 'unanswered' | 'practice' | 'edit-date'
 
 export function ModeIcon({ name, className }: { name: ModeIconName; className: string }) {
   return (
