@@ -1,5 +1,5 @@
 import type { AnswerRecord, AppData, OsExamSchedule, Question, QuestionIndex } from '../types'
-import { addDays, toKey, weekStart } from './date'
+import { addDays, formatJa, toKey, weekStart } from './date'
 
 // ===== 学習時間 =====
 // 学習時間 = 問題演習で自動計測した時間 + 手動で記録した時間（OutSystemsのみ。旧TOEICの記録は含めない）
@@ -64,23 +64,41 @@ export function weekRange(today: string): { from: string; to: string } {
 export interface ScheduledExam {
   id: string
   name: string
-  /** 再受験日が決まっていればそちら */
+  /** 実際の受験日：予約が確定していればその日、なければ予定日 */
   date: string
+  /** 予定日（再受験日が決まっていればそちら） */
+  plannedDate: string
   originalDate: string
+  /** 予約が確定しているか */
+  confirmed: boolean
+  time?: string
+  place?: string
+  isRetake: boolean
   status: 'untaken' | 'passed' | 'failed'
 }
 
 export function scheduledExams(schedule: OsExamSchedule, data: AppData): ScheduledExam[] {
   return schedule.exams.map((e) => {
     const r = data.examResults[e.id]
+    const plannedDate = r?.retakeDate ?? e.date
     return {
       id: e.id,
       name: e.name,
       originalDate: e.date,
-      date: r?.retakeDate ?? e.date,
+      plannedDate,
+      date: r?.booking?.date ?? plannedDate,
+      confirmed: !!r?.booking,
+      time: r?.booking?.time,
+      place: r?.booking?.place,
+      isRetake: !!r?.retakeDate,
       status: r?.status ?? 'untaken',
     }
   })
+}
+
+/** 受験日時の表示（例：10/3（土）10:00） */
+export function formatExamWhen(e: ScheduledExam, withYear = false): string {
+  return formatJa(e.date, withYear) + (e.time ? ` ${e.time}` : '')
 }
 
 export function nextOsExam(schedule: OsExamSchedule, data: AppData, today: string): ScheduledExam | undefined {

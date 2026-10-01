@@ -6,6 +6,7 @@ import { diffDays, formatJa, formatMinutes, isSunday, todayKey } from '../lib/da
 import { requestQuizStart, type StartKind } from '../lib/quizNav'
 import { navigate } from '../lib/router'
 import {
+  formatExamWhen,
   manualMinutesOn,
   minutesBetween,
   minutesOn,
@@ -65,10 +66,16 @@ function HomeBody({
           <div className="hero-row">
             <div>
               <div className="exam-name">{next.name}</div>
-              <div className="small muted">
-                {formatJa(next.date, true)}
-                {next.status === 'failed' || next.date !== next.originalDate ? '（再受験）' : ''}
+              <div className="exam-when small muted">
+                <span className={`pill ${next.confirmed ? 'confirmed' : 'planned'}`}>
+                  {next.confirmed ? '予約確定' : '予定'}
+                </span>
+                <span>
+                  {formatExamWhen(next, true)}
+                  {next.isRetake ? '（再受験）' : ''}
+                </span>
               </div>
+              {next.place && <div className="small muted">📍 {next.place}</div>}
             </div>
             <div className="hero-count">{countdownLabel(diffDays(today, next.date))}</div>
           </div>
@@ -115,7 +122,8 @@ function HomeBody({
               <li key={e.id}>
                 <span>{e.name}</span>
                 <span className="small muted">
-                  {formatJa(e.date)}・あと{diffDays(today, e.date)}日
+                  {formatExamWhen(e)}
+                  {e.confirmed ? '' : '（予定）'}・あと{diffDays(today, e.date)}日
                 </span>
               </li>
             ))}

@@ -72,9 +72,19 @@ export type QuizMode = 'category' | 'random' | 'mock' | 'wrong' | 'unanswered' |
 
 export type ExamStatus = 'untaken' | 'passed' | 'failed'
 
+/** 予約が確定した受験日時（予定日より優先される） */
+export interface ExamBooking {
+  date: string
+  /** 開始時刻 HH:mm */
+  time?: string
+  /** 会場・受験方法など */
+  place?: string
+}
+
 export interface ExamResult {
   status: ExamStatus
   retakeDate?: string
+  booking?: ExamBooking
   history: { date: string; status: ExamStatus }[]
 }
 

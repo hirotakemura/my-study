@@ -6,6 +6,7 @@ import {
   answerDate,
   categoryStats,
   daysBetween,
+  formatExamWhen,
   manualMinutesOn,
   minutesBetween,
   quizMinutesOn,
@@ -172,7 +173,7 @@ function ReviewBody({ schedule, index }: { schedule: OsExamSchedule; index: Ques
         <ul className="plain">
           {nextExams.map((e) => (
             <li key={e.id}>
-              🎓 {formatJa(e.date)} {e.name} 受験
+              🎓 {formatExamWhen(e)} {e.name} 受験{e.confirmed ? '' : '（予定）'}
             </li>
           ))}
           {!nextExams.length && <li className="muted">来週の受験予定はありません</li>}

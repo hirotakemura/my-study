@@ -1092,3 +1092,91 @@ textarea.memo {
     animation: none;
   }
 }
+
+/* ===== ポップアップ ===== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgb(0 0 0 / 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fade-in 0.15s ease-out;
+}
+.modal {
+  width: min(420px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow-y: auto;
+  background: var(--surface);
+  border-radius: 16px;
+  padding: 14px 16px 16px;
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.3);
+  animation: pop-in 0.18s ease-out;
+}
+@keyframes pop-in {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .modal,
+  .modal-backdrop {
+    animation: none;
+  }
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.field > span {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-2);
+}
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+input[type='time'] {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 8px 10px;
+  min-height: 38px;
+  width: 100%;
+}
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 4px;
+}
+.modal-actions .spacer {
+  flex: 1;
+}
+.exam-when {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+}
+.pill.confirmed {
+  background: var(--ok-soft);
+  color: var(--ok);
+}
+.pill.planned {
+  background: var(--surface-2);
+  color: var(--muted);
+}
+.exam-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
