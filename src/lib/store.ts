@@ -78,7 +78,7 @@ export function importJson(text: string): void {
   const parsed = JSON.parse(text)
   const data = parsed && typeof parsed === 'object' && 'data' in parsed ? parsed.data : parsed
   if (!data || typeof data !== 'object' || !Array.isArray(data.studyLogs)) {
-    throw new Error('このファイルは学習管理アプリのバックアップではありません')
+    throw new Error('このファイルは Presta for OutSystems のバックアップではありません')
   }
   updateData(() => normalize(data))
 }

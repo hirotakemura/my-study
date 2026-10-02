@@ -13,8 +13,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['icons/favicon-64.png', 'icons/apple-touch-icon.png'],
       manifest: {
-        name: 'OutSystems 学習管理',
-        short_name: 'OS学習',
+        name: 'Presta for OutSystems',
+        short_name: 'Presta',
         description: 'OutSystems資格の問題演習と受験スケジュールを管理するアプリ',
         lang: 'ja',
         display: 'standalone',

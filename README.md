@@ -1,4 +1,4 @@
-# OutSystems 学習管理PWA
+# Presta for OutSystems
 
 OutSystems Specialist資格（最終目標：Expert Developer）の問題演習と受験スケジュールを管理する、スマホ向けのPWAアプリです。
 ホーム画面に追加でき、オフラインでも動作します。データは端末のブラウザ（localStorage）に保存されます。

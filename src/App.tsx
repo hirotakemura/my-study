@@ -53,7 +53,7 @@ export default function App() {
             <Icon name="logo" />
           </span>
           <div className="brand-text">
-            <small>OUTSYSTEMS STUDY</small>
+            <small>PRESTA FOR OUTSYSTEMS</small>
             <h1>{TITLES[route]}</h1>
           </div>
         </div>

@@ -27,7 +27,7 @@ export default function Settings() {
     URL.revokeObjectURL(url)
   }
   const download = () => {
-    save(exportJson(), `outsystems-study-backup-${todayKey()}.json`)
+    save(exportJson(), `presta-backup-${todayKey()}.json`)
     setMsg('バックアップをダウンロードしました')
   }
 
