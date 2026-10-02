@@ -47,8 +47,7 @@ export interface OsExamSchedule {
 }
 
 // ===== ユーザーデータ（localStorage） =====
-/** english は旧TOEIC機能の記録（移行用に保持するだけで集計には使わない） */
-export type Subject = 'english' | 'outsystems'
+export type Subject = 'outsystems'
 
 /** 手動で記録した学習時間（問題演習以外の学習） */
 export interface StudyLog {
@@ -88,14 +87,6 @@ export interface ExamResult {
   history: { date: string; status: ExamStatus }[]
 }
 
-export interface MockScore {
-  id: string
-  date: string
-  listening: number
-  reading: number
-  note?: string
-}
-
 export interface MockExamRecord {
   exam: string
   at: string
@@ -117,8 +108,4 @@ export interface AppData {
   reviewMemos: Record<string, string>
   lastReviewShown?: string
   settings: { theme: ThemeSetting }
-  // ---- 旧TOEIC機能のデータ（別アプリへの移行用に残す） ----
-  minimumDone?: Record<string, boolean>
-  toeicChecks?: Record<string, boolean>
-  toeicScores?: MockScore[]
 }

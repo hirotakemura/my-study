@@ -2,7 +2,7 @@ import type { AnswerRecord, AppData, OsExamSchedule, Question, QuestionIndex } f
 import { addDays, formatJa, toKey, weekStart } from './date'
 
 // ===== 学習時間 =====
-// 学習時間 = 問題演習で自動計測した時間 + 手動で記録した時間（OutSystemsのみ。旧TOEICの記録は含めない）
+// 学習時間 = 問題演習で自動計測した時間 + 手動で記録した時間
 
 export function quizMinutesOn(data: AppData, date: string): number {
   return Math.round((data.quizSeconds[date] ?? 0) / 60)

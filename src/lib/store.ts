@@ -83,48 +83,6 @@ export function importJson(text: string): void {
   updateData(() => normalize(data))
 }
 
-// ===== 旧TOEIC機能のデータ（別アプリへの移行用） =====
-
-export function hasToeicData(d: AppData): boolean {
-  return (
-    d.studyLogs.some((l) => l.subject === 'english') ||
-    Object.keys(d.minimumDone ?? {}).length > 0 ||
-    Object.keys(d.toeicChecks ?? {}).length > 0 ||
-    (d.toeicScores ?? []).length > 0
-  )
-}
-
-/** TOEICアプリ（docs/TOEIC_APP_PROMPT.md）が読み込む形式で書き出す */
-export function exportToeicJson(): string {
-  const d = state
-  return JSON.stringify(
-    {
-      app: 'my-study-toeic-export',
-      version: 1,
-      exportedAt: new Date().toISOString(),
-      studyLogs: d.studyLogs
-        .filter((l) => l.subject === 'english')
-        .map(({ id, date, minutes, createdAt }) => ({ id, date, minutes, createdAt })),
-      minimumDone: d.minimumDone ?? {},
-      toeicChecks: d.toeicChecks ?? {},
-      toeicScores: d.toeicScores ?? [],
-      reviewMemos: d.reviewMemos,
-    },
-    null,
-    2,
-  )
-}
-
-export function deleteToeicData(): void {
-  updateData((d) => {
-    const next: AppData = { ...d, studyLogs: d.studyLogs.filter((l) => l.subject !== 'english') }
-    delete next.minimumDone
-    delete next.toeicChecks
-    delete next.toeicScores
-    return next
-  })
-}
-
 export function resetData(): void {
   updateData(() => emptyData())
 }

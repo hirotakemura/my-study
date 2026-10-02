@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { Async } from '../components/Async'
 import { loadAllQuestions, useLoad } from '../lib/content'
 import { todayKey } from '../lib/date'
-import { deleteToeicData, exportJson, exportToeicJson, hasToeicData, importJson, resetData, updateData, useData } from '../lib/store'
+import { exportJson, importJson, resetData, updateData, useData } from '../lib/store'
 import type { ThemeSetting } from '../types'
 
 const THEMES: { id: ThemeSetting; label: string }[] = [
@@ -84,35 +84,6 @@ export default function Settings() {
           <li>振り返りメモ：{Object.keys(data.reviewMemos).length}件</li>
         </ul>
       </section>
-
-      {hasToeicData(data) && (
-        <section className="card">
-          <h2>TOEICデータ（別アプリへの移行）</h2>
-          <p className="small muted">
-            TOEICの学習管理は別アプリに移しました。以前このアプリで記録したTOEICの学習時間・チェックリスト・スコアを書き出して、新しいTOEICアプリで読み込めます。
-          </p>
-          <div className="btn-row">
-            <button
-              className="btn primary"
-              onClick={() => {
-                save(exportToeicJson(), `toeic-data-${todayKey()}.json`)
-                setMsg('TOEICデータを書き出しました')
-              }}
-            >
-              TOEICデータを書き出す
-            </button>
-            <button
-              className="btn danger"
-              onClick={() =>
-                confirm('このアプリからTOEICデータを削除します。書き出し済みか確認してください。削除しますか？') &&
-                deleteToeicData()
-              }
-            >
-              このアプリから削除
-            </button>
-          </div>
-        </section>
-      )}
 
       <section className="card">
         <h2>問題データ</h2>
