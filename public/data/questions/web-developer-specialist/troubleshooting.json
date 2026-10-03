@@ -798,5 +798,305 @@
       "ログ出力はコードの変更と公開が必要で、ステップごとの確認には向かない。",
       "Breakpointsタブはブレークポイントの一覧で、変数の値は表示されない。"
     ]
+  },
+  {
+    "id": "trouble-041",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "基礎",
+    "question": "LifeTimeのコンソールでアプリの一覧を見ている。本番環境のログを確認したい。最も手早い方法はどれか。",
+    "options": [
+      "LifeTimeのApplicationsで、本番環境のView Logsリンクをクリックし、その環境のService CenterのMonitoringへ移動する",
+      "LifeTimeのUsersで、本番環境の管理者を確認する",
+      "Service Studioで本番環境に接続し、デバッガーを起動する",
+      "Integration Studioで本番環境のログを開く"
+    ],
+    "answer": 0,
+    "explanation": "環境のMonitoringには、LifeTimeのApplicationsで対象の環境のView Logsリンクをクリックする方法と、環境のService Centerに直接アクセスしてMonitoringを開く方法があります。View Logsからは、その環境のService CenterのMonitoringに移動します。",
+    "wrongReasons": [
+      "Usersは利用者や権限の管理で、ログは確認できない。",
+      "本番環境でのデバッグは通常行わず、ログの確認にも使わない。",
+      "Integration Studioは拡張機能を開発するツールで、環境のログは表示しない。"
+    ]
+  },
+  {
+    "id": "trouble-042",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "Mobileアプリの利用者の端末で発生したエラーを確認したい。ネイティブのアプリシェルのログが表示される場所と、その内容として最も適切なものはどれか。",
+    "options": [
+      "Service CenterのMobile Appsの画面に、端末のエラーが一覧表示される",
+      "端末で発生したエラーはサーバーに送られないため、確認できない",
+      "Service CenterのMonitoringのErrorsとGeneralの画面に表示され、Moduleの欄にログを出したネイティブプラグイン、Stackの欄にネイティブ部品のスタックトレースが入る",
+      "LifeTime Analyticsでだけ確認できる"
+    ],
+    "answer": 2,
+    "explanation": "ネイティブのアプリシェルのログは、Service CenterのMonitoringのErrors（ErrorやFatalの種類）とGeneral（Generalの種類）の画面に表示されます。各ログのModuleの欄にはログを出したOutSystemsのネイティブプラグインが、Stackの欄にはそこに至るまでのネイティブ部品のスタックトレースが入ります。",
+    "wrongReasons": [
+      "Mobile Appsの画面は、アプリのパッケージの生成要求と状態の一覧である。",
+      "アプリシェルのログにより、端末で起きたエラーも確認できる。",
+      "アプリシェルのログはService CenterのMonitoringで確認する。"
+    ]
+  },
+  {
+    "id": "trouble-043",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "Mobileアプリで「ときどき同期に失敗する」という報告があり、その時に端末がオフラインだったかを確かめたい。アプリシェルのログで確認する項目として最も適切なものはどれか。",
+    "options": [
+      "DeviceModel",
+      "NetworkStatus",
+      "Cordova",
+      "NativeShell"
+    ],
+    "answer": 1,
+    "explanation": "ネイティブのアプリシェルのログには端末の情報が含まれます。NetworkStatusはネットワーク接続の状態（OnlineまたはOffline）、NetworkTypeは接続の種類（3G、Wifiなど）を示します。",
+    "wrongReasons": [
+      "DeviceModelは端末の機種である。",
+      "Cordovaは、アプリのビルドに使われたCordovaのバージョンである。",
+      "NativeShellは、アプリの生成に使われたベースのバージョンである。"
+    ]
+  },
+  {
+    "id": "trouble-044",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "複数のフロントエンドサーバーがある環境で、OutSystemsのサービスの配置を確認している。環境ごとに、どれか1台のフロントエンドサーバーでちょうど1つだけ動いている必要があるサービスはどれか。",
+    "options": [
+      "Deployment Service",
+      "Scheduler Service",
+      "Server.API",
+      "Deployment Controller Service"
+    ],
+    "answer": 3,
+    "explanation": "Deployment Controller Serviceはモジュールのコンパイルとデプロイの調整を担い、環境ごとにいずれかのフロントエンドサーバーでちょうど1つのインスタンスが動いている必要があります。Deployment Serviceはすべてのフロントエンドサーバーで動かし、Scheduler ServiceはTimerを実行するアプリが公開されたフロントエンドサーバーの少なくとも1台で動かします。",
+    "wrongReasons": [
+      "Deployment Serviceは、すべてのフロントエンドサーバーで動いている必要がある。",
+      "Scheduler Serviceは、Timerを使うアプリがあるフロントエンドサーバーの少なくとも1台で動かすもので、1つに限られない。",
+      "Server.APIは、Service Centerが公開されたすべてのフロントエンドサーバーで動いている必要がある。"
+    ]
+  },
+  {
+    "id": "trouble-045",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "応用",
+    "question": "フロントエンドサーバーが2台ある環境で、モジュールを公開したのに、片方のサーバーにアクセスした利用者にだけ古い版が表示される。Environment Healthを確認するとき、まず疑うべきサービスとして最も適切なものはどれか。",
+    "options": [
+      "そのフロントエンドサーバーのDeployment Service",
+      "Scheduler Service",
+      "Server.Identity",
+      "Log Service"
+    ],
+    "answer": 0,
+    "explanation": "Deployment Serviceは、公開されたモジュールが環境のフロントエンドサーバーにデプロイされることを保証するサービスで、すべてのフロントエンドサーバーで動いている必要があります。あるサーバーでこのサービスが止まっていると、そのサーバーにはモジュールの公開や削除が反映されません。",
+    "wrongReasons": [
+      "Scheduler Serviceは、Timer、メール、プロセスなどの非同期処理を起動するサービスである。",
+      "Server.Identityは、Server.APIが公開するAPIの認証とアクセス制御を担う。",
+      "ログの記録が止まっても、モジュールの版の違いは生じない。"
+    ]
+  },
+  {
+    "id": "trouble-046",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "Environment HealthでServer.APIとServer.Identityの状態を確認している。これらのサービスについての説明として最も適切なものはどれか。",
+    "options": [
+      "どちらもWindowsサービスで、環境に1つだけ動いていればよい",
+      "Server.APIはプラットフォームの機能をREST APIとして公開し、Server.IdentityはそのAPIの認証とアクセス制御を担う。どちらもIISで管理され、独自のアプリケーションプールで動く",
+      "Server.APIはTimerを実行し、Server.Identityはメールを送信する",
+      "どちらも開発者のPCで動くサービスである"
+    ],
+    "answer": 1,
+    "explanation": "Server.APIはプラットフォームの一部の機能をREST APIで公開し、Service Centerが公開されたすべてのフロントエンドサーバーで動いている必要があります。Server.IdentityはServer.APIが公開するAPIの利用者の認証とアクセス制御を担い、Server.APIがあるすべてのフロントエンドサーバーで動いている必要があります。どちらもIISで管理され、独自のアプリケーションプールで動きます。",
+    "wrongReasons": [
+      "どちらもIISで管理され、必要なフロントエンドサーバーごとに動かす。",
+      "Timerやメールの起動は、Scheduler Serviceの役割である。",
+      "どちらもサーバー側のサービスである。"
+    ]
+  },
+  {
+    "id": "trouble-047",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "応用",
+    "question": "ログのデータベースのログの種類は、プラットフォームへの個々のアクセスに対応する「トップレベル」のログと、その中の処理を表す「ドリル」のログに分かれる。トップレベルのログとして最も適切なものはどれか。",
+    "options": [
+      "General",
+      "Extension",
+      "Cyclic Job（Timerの実行）",
+      "Integration（消費した連携）"
+    ],
+    "answer": 2,
+    "explanation": "トップレベルのログは、Screen、Integration（公開した連携）、Mobile Request、Cyclic Job（Timerの実行）です。ドリルのログは、Error、General、Integration（消費した連携）、Extensionで、request_keyでトップレベルのログと対応付けられます。",
+    "wrongReasons": [
+      "Generalは、リクエストの中の処理を表すドリルのログである。",
+      "Extensionは、リクエストの中で実行された拡張機能のアクションを表すドリルのログである。",
+      "消費した連携のIntegrationはドリルのログで、公開した連携のIntegrationがトップレベルである。"
+    ]
+  },
+  {
+    "id": "trouble-048",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "応用",
+    "question": "Reactive Webの画面から、同じ環境で公開しているREST APIを呼び、その先でエラーが発生した。request_keyを使って、画面のリクエストからエラーまでを一続きに追跡しようとしたが、途中で追えなくなった。この理由として最も適切なものはどれか。",
+    "options": [
+      "エラーのログにはrequest_keyが記録されないため",
+      "公開したREST APIの呼び出しは新しいトップレベルのログになるため、request_keyによる対応付けは連携の呼び出しのところで途切れる",
+      "REST APIのログは1日で削除されるため",
+      "request_keyは同じモジュール内でしか使えないため"
+    ],
+    "answer": 1,
+    "explanation": "複雑な構成では、利用者の1つの操作が複数のトップレベルのログになることがあります。例えば画面が同じプラットフォームのREST APIを呼ぶと、公開した連携の呼び出しが新しいトップレベルのログになるため、request_keyによる対応付けは連携の呼び出しのところで止まります。",
+    "wrongReasons": [
+      "エラーのようなドリルのログも、request_keyでトップレベルのログに対応付けられる。",
+      "REST APIのログも他のログと同じ保持期間で保存される。",
+      "モジュールの違いではなく、トップレベルのログが分かれることが原因である。"
+    ]
+  },
+  {
+    "id": "trouble-049",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "OutSystems Cloudで、ログの分離（Log separation）を有効にしている。ログの保持期間として最も適切なものはどれか。",
+    "options": [
+      "9週間",
+      "2週間",
+      "52週間",
+      "7週間"
+    ],
+    "answer": 3,
+    "explanation": "ログは毎週別のテーブルに保存され、毎週金曜日の23:45（データベースの時刻）にローテーションします。OutSystems Cloudの保持期間は9週間で変更できませんが、ログの分離を有効にした場合の保持期間は7週間です。Service Centerで参照できるのは直近2週間分です。",
+    "wrongReasons": [
+      "9週間は、ログの分離を有効にしていない場合のOutSystems Cloudの保持期間である。",
+      "2週間は、Service Centerの画面で参照できる期間である。",
+      "52週間の保持期間はない。"
+    ]
+  },
+  {
+    "id": "trouble-050",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "サポートの調査のためにService CenterからErrorsのログをエクスポートしようとしたが、量が多く、期間を短くしてもタイムアウトしてしまう。最も適切な対応はどれか。",
+    "options": [
+      "エクスポートをあきらめ、画面のスクリーンショットを送る",
+      "ログの保持期間を短くしてからエクスポートする",
+      "ログのデータベースのOSLOGのテーブル（ビュー）に直接クエリを実行してログを抽出する",
+      "モジュールを再公開してからエクスポートし直す"
+    ],
+    "answer": 2,
+    "explanation": "データ量が多く、期間を短くしてもService Centerのログのエクスポートがタイムアウトする場合は、ログのデータベースのOSLOG_xxxのテーブルに直接クエリを実行してログを抽出するのが最善の方法です。",
+    "wrongReasons": [
+      "スクリーンショットでは情報が不十分で、分析にも使いにくい。",
+      "保持期間を短くすると、必要なログまで削除されるおそれがある。",
+      "再公開してもログの量は変わらず、エクスポートの問題は解決しない。"
+    ]
+  },
+  {
+    "id": "trouble-051",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "自社運用のサーバーで、OutSystemsのサービスが起動しなかった原因と、IISのアプリケーションプールのリサイクルの発生を調べたい。WindowsのEvent Viewerで確認する場所の組み合わせとして最も適切なものはどれか。",
+    "options": [
+      "OutSystemsのサービスのメッセージはApplicationセクション（SourceがOutSystems）、アプリケーションプールのリサイクルはSystemセクション（SourceがWAS）",
+      "どちらもSecurityセクションに記録される",
+      "OutSystemsのサービスのメッセージはSystemセクション、アプリケーションプールのリサイクルはApplicationセクション",
+      "Event ViewerにはOutSystemsに関する情報は記録されない"
+    ],
+    "answer": 0,
+    "explanation": "Event ViewerのApplicationセクションには、OutSystemsのサービスの起動や停止の情報、起動や動作を妨げる重大なエラーが、SourceがOutSystemsとして記録されます。Systemセクションには、アプリケーションプールのリサイクルやプロセスのクラッシュなどIISのメッセージがあり、リサイクルはSourceがWASとして記録されます。",
+    "wrongReasons": [
+      "これらはSecurityセクションではなく、ApplicationとSystemのセクションに記録される。",
+      "セクションが逆である。",
+      "OutSystemsのサービスのメッセージはEvent Viewerに記録される。"
+    ]
+  },
+  {
+    "id": "trouble-052",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "基礎",
+    "question": "特定の利用者のブラウザで、ページの読み込みが遅かったり表示が崩れたりする。ブラウザとサイトのやり取りを記録して、サポートに提供したい。取得するものとして最も適切なものはどれか。",
+    "options": [
+      "IISのログ",
+      "Service Studioのレポート",
+      "データベースのAWRレポート",
+      "ブラウザのネットワークのHARファイル"
+    ],
+    "answer": 3,
+    "explanation": "HAR（HTTP Archive Format）ファイルは、ブラウザとサイトのやり取りをすべて記録したものです。ページの読み込みが遅い、タイムアウトするなどの性能の問題や、表示の崩れや情報の欠落などの描画の問題の調査に使われます。",
+    "wrongReasons": [
+      "IISのログはサーバー側の記録で、特定の利用者のブラウザでのやり取りはわからない。",
+      "Service Studioのレポートは開発ツールの操作の記録である。",
+      "AWRレポートはデータベースの性能のレポートである。"
+    ]
+  },
+  {
+    "id": "trouble-053",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "Service Studioが回復できない形で異常終了し、Submit Feedbackのポップアップも表示されなかった。サポートに原因を調べてもらうための情報を得る方法として最も適切なものはどれか。",
+    "options": [
+      "Service CenterのErrorsログを確認する",
+      "Service Studioの拡張ログ（enhanced logging）を有効にして事象を再現し、ログを取得する",
+      "LifeTimeのStagingレポートを取得する",
+      "Mobileアプリの生成ログを取得する"
+    ],
+    "answer": 1,
+    "explanation": "Service Studioのレポートには、セッション中の操作と処理されない例外が含まれます。しかし、回復できないクラッシュでSubmit Feedbackのポップアップが出ない場合など、診断レポートが取れない、または情報が足りない場合は、拡張ログ（enhanced logging）が必要になることがあります。",
+    "wrongReasons": [
+      "Service Centerのログはサーバーで動くアプリの記録で、開発ツールの異常終了の原因はわからない。",
+      "Stagingレポートは、LifeTimeでの配置に関するレポートである。",
+      "Mobileアプリの生成ログは、アプリのパッケージ生成の手順を記録するものである。"
+    ]
+  },
+  {
+    "id": "trouble-054",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "Mobileアプリのパッケージの生成が失敗した。どの手順で失敗したのかを詳しく知りたい。確認するものとして最も適切なものはどれか。",
+    "options": [
+      "Mobileアプリの生成ログ（生成の手順と、エラー時のスタックトレースを含む）",
+      "Service CenterのEmailsのログ",
+      "Service CenterのTimersのログ",
+      "WindowsのEvent Viewerのセキュリティのログ"
+    ],
+    "answer": 0,
+    "explanation": "OutSystemsはMobileアプリのパッケージの生成の手順を記録し、エラーの場合は詳細なスタックトレースも含めます。どの手順が実行され、どこで生成が失敗したかを把握するのに役立ちます。",
+    "wrongReasons": [
+      "Emailsのログは、メールの送信状況の記録である。",
+      "Timersのログは、Timerの実行の記録である。",
+      "Event Viewerのセキュリティのログは、パッケージ生成の手順を記録しない。"
+    ]
+  },
+  {
+    "id": "trouble-055",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "応用",
+    "question": "BPTのプロセスの不具合について、OutSystemsのサポートからプロセスに関するトラブルシューティングレポートの提出を求められた。レポートを取得する方法として最も適切なものはどれか。",
+    "options": [
+      "Service StudioのTrueChangeの警告を書き出す",
+      "LifeTimeのUser permissionsレポートを取得する",
+      "ForgeのBPT Utilsコンポーネントを環境にインストールし、そのトラブルシューティングレポートを取得する",
+      "Service CenterのMobile Appsの画面をエクスポートする"
+    ],
+    "answer": 2,
+    "explanation": "BPT Utilsは、BPTのプロセスの情報やトラブルシューティングレポートを提供するForgeのコンポーネントです。環境のバージョンに合ったものをForgeからダウンロードし、Service CenterのFactoryのApplicationsからアプリとして公開して使います。",
+    "wrongReasons": [
+      "TrueChangeの警告は開発時の検証結果で、実行中のプロセスの情報は含まない。",
+      "User permissionsレポートは利用者の権限に関するレポートである。",
+      "Mobile Appsの画面は、モバイルアプリのパッケージに関する一覧である。"
+    ]
   }
 ]
