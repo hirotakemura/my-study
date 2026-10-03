@@ -318,5 +318,205 @@
       "一度編集可能にすると、Integration Builderでの再公開はできなくなる。",
       "編集可能にしても、外部システムへの接続はできる。"
     ]
+  },
+  {
+    "id": "rest-017",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "基礎",
+    "question": "公開（Expose）したREST APIのMethodにリクエストが届いたとき、OutSystemsが処理する順番として最も適切なものはどれか。",
+    "options": [
+      "OnAuthentication → OnRequest → セキュリティの検証 → Methodの実行 → OnResponse",
+      "パラメータのデシリアライズと検証 → OnAuthentication → OnRequest → Methodの実行 → OnResponse",
+      "セキュリティの検証 → OnRequest → OnAuthentication → パラメータのデシリアライズと検証 → Methodの実行 → 出力のシリアライズ → OnResponse",
+      "OnRequest → Methodの実行 → OnAuthentication → OnResponse"
+    ],
+    "answer": 2,
+    "explanation": "公開したREST APIのMethodへのリクエストは、HTTP SecurityとInternal Access Onlyの設定によるセキュリティの検証、OnRequest、OnAuthentication、入力パラメータのデシリアライズと検証（データ型や必須項目など）、Methodのアクションの実行、出力パラメータのシリアライズ、OnResponseの順に処理されます。",
+    "wrongReasons": [
+      "セキュリティの検証が最初で、OnRequestはOnAuthenticationより先に実行される。",
+      "パラメータのデシリアライズと検証は、OnRequestとOnAuthenticationの後に行われる。",
+      "OnAuthenticationはMethodの実行より前に行われる。"
+    ]
+  },
+  {
+    "id": "rest-018",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "標準",
+    "question": "公開したREST APIで、必須パラメータの不足などのエラー時に返される既定のJSONを、社内の標準形式（HTTPコード、開発者向けメッセージ、利用者向けメッセージなど）に変えたい。最も適切な実装はどれか。",
+    "options": [
+      "REST APIのOn ResponseプロパティでOnResponseを作成し、エラー時のレスポンスを組み立て直す。OnResponseはエラーの場合も含めて常に実行される",
+      "各Methodのアクションの最初で、入力パラメータをすべて手動で検証する",
+      "OnAuthenticationでレスポンスの形式を設定する",
+      "エラーの形式は変更できないため、利用者側で変換してもらう"
+    ],
+    "answer": 0,
+    "explanation": "OnResponseは、レスポンスを送る前にロジックを実行できるコールバックで、エラーの場合も含めて常に実行されます。例外が発生したときの既定のレスポンスを、より詳しい独自の形式に置き換える用途に使えます。",
+    "wrongReasons": [
+      "パラメータの検証エラーはMethodの実行前に起こるため、Methodの中では対応できない。",
+      "OnAuthenticationは認証のためのコールバックで、レスポンスの形式を決めるものではない。",
+      "OnResponseでエラー時のレスポンスを変更できる。"
+    ]
+  },
+  {
+    "id": "rest-019",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "応用",
+    "question": "公開したREST APIのOnAuthenticationで、APIキーが無効な場合にUser Exceptionを発生させている。クライアントには401ではなく403を返したい。最も適切な実装はどれか。",
+    "options": [
+      "例外を発生させた後に、HTTPRequestHandlerのSetStatusCodeで403を設定する",
+      "OnAuthenticationでは例外を発生させず、Methodの中で403を返す",
+      "例外のメッセージに「403」と書く",
+      "例外を発生させる前に、HTTPRequestHandlerのSetStatusCodeで403を設定する"
+    ],
+    "answer": 3,
+    "explanation": "OnAuthenticationで例外を発生させると、クライアントに送るレスポンスにはHTTP 401が設定されます。独自のステータスコードにしたい場合は、例外を発生させる前にHTTPRequestHandlerのSetStatusCodeを呼びます。",
+    "wrongReasons": [
+      "例外を発生させるとフローはそこで終わるため、その後のSetStatusCodeは実行されない。",
+      "認証をMethodの中で行うと、すべてのMethodに同じ処理が必要になり、認証前にMethodが実行されてしまう。",
+      "メッセージの文字列は、HTTPのステータスコードを変えない。"
+    ]
+  },
+  {
+    "id": "rest-020",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "標準",
+    "question": "公開したREST APIのすべてのMethodで、古いクライアントが送ってくる旧形式のJSONを、処理の前に新しい形式に変換したい。最も適切な実装はどれか。",
+    "options": [
+      "OnResponseで、受け取ったリクエストの内容を変換する",
+      "REST APIのOn RequestプロパティでOnRequestを作成し、入力パラメータRequestのRequestTextを変換して、出力のCustomizedRequestに設定する",
+      "各Methodのアクションの中で、入力パラメータを手動で変換する",
+      "OnAuthenticationで、リクエストの本文を書き換える"
+    ],
+    "answer": 1,
+    "explanation": "OnRequestは、公開したREST APIの各リクエストの実行前にロジックを動かせるコールバックで、REST APIのすべてのMethodで実行されます。リクエストの本文はRequestのRequestText（またはバイナリのRequestBinary）で取得でき、前処理の結果は出力のCustomizedRequestに設定します。",
+    "wrongReasons": [
+      "OnResponseはレスポンスを送る前に実行されるもので、リクエストの前処理には使えない。",
+      "Methodの中では、旧形式のためにパラメータのデシリアライズや検証で先に失敗するおそれがあり、全Methodに同じ処理も必要になる。",
+      "OnAuthenticationは認証のためのコールバックで、リクエストを変換する出力はない。"
+    ]
+  },
+  {
+    "id": "rest-021",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "応用",
+    "question": "公開したREST APIのOnResponseで、レスポンスを加工している。CustomizedResponseのResponseTextとResponseBinaryの両方に値を設定した。この動作と、入力のResponseについての説明として最も適切なものはどれか。",
+    "options": [
+      "ResponseBinaryの値が優先して送られる。ResponseTextにはヘッダーも含まれる",
+      "両方の値が連結されて送られる。ResponseにはHTTPヘッダーも含まれる",
+      "ResponseTextに値があれば、ResponseBinaryを設定していてもResponseTextが送られる。入力のResponseのResponseTextとResponseBinaryには本文だけが入り、ヘッダーは含まれない",
+      "両方に値を設定するとエラーになる"
+    ],
+    "answer": 2,
+    "explanation": "出力のCustomizedResponseのResponseTextに値を設定すると、ResponseBinaryを設定していても、ResponseTextの内容がクライアントに送られます。入力のResponseのResponseTextとResponseBinaryには、それぞれシリアライズされたJSONの本文とバイナリの本文だけが入り、レスポンスのヘッダーは含まれません。",
+    "wrongReasons": [
+      "ResponseTextが優先され、Responseにヘッダーは含まれない。",
+      "連結はされず、Responseにヘッダーは含まれない。",
+      "両方に設定してもエラーにはならず、ResponseTextが使われる。"
+    ]
+  },
+  {
+    "id": "rest-022",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "標準",
+    "question": "公開したREST APIのOnAuthenticationで、リクエストの本文に含まれる署名の値を取り出して検証したい。使うアクションとして最も適切なものはどれか。",
+    "options": [
+      "HTTPRequestHandlerのGetRequestContent",
+      "HTTPRequestHandlerのGetRequestHeader",
+      "HTTPRequestHandlerのSetStatusCode",
+      "HTTPRequestHandlerのGetFormValue"
+    ],
+    "answer": 0,
+    "explanation": "OnAuthenticationでHTTPリクエストのURL、ヘッダー、本文のデータにアクセスするには、HTTPRequestHandlerのGetFormValue、GetRequestHeader、GetRequestContentをそれぞれ使います。本文の内容はGetRequestContentで取得します。",
+    "wrongReasons": [
+      "GetRequestHeaderはHTTPヘッダーの値を取得するアクションである。",
+      "SetStatusCodeはレスポンスのステータスコードを設定するアクションである。",
+      "GetFormValueはURL（クエリ文字列など）の値を取得するために使う。"
+    ]
+  },
+  {
+    "id": "rest-023",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "基礎",
+    "question": "公開したREST APIを、社内ネットワークからの呼び出しだけに制限したい。設定と、そのチェックが行われるタイミングの組み合わせとして最も適切なものはどれか。",
+    "options": [
+      "OnAuthenticationで呼び出し元のIPアドレスを確認する。チェックはMethodの実行後に行われる",
+      "OnResponseで呼び出し元を確認する。チェックはレスポンスの送信前に行われる",
+      "Methodの入力パラメータで呼び出し元を受け取る。チェックはデシリアライズの後に行われる",
+      "REST APIのInternal Access OnlyをYesにする。この設定によるセキュリティの検証は、OnRequestなどのコールバックより先に行われる"
+    ],
+    "answer": 3,
+    "explanation": "公開したREST APIへのリクエストを受け取ると、OutSystemsはまずHTTP SecurityとInternal Access Onlyの設定に従ってセキュリティの検証を行います。社内ネットワークからの呼び出しに限定するには、Internal Access OnlyをYesにします。",
+    "wrongReasons": [
+      "OnAuthenticationはMethodの実行前に行われ、ネットワークの制限には専用の設定を使う。",
+      "レスポンスの送信前では、Methodがすでに実行されている。",
+      "呼び出し元を入力パラメータで受け取っても、偽装でき制限にならない。"
+    ]
+  },
+  {
+    "id": "rest-024",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "標準",
+    "question": "1つの公開REST API「Orders」に、外部パートナー向けのMethodと、監視ツール向けのヘルスチェック用のMethodがある。OnAuthenticationを設定したところ、ヘルスチェックにも認証が必要になってしまった。最も適切な対応はどれか。",
+    "options": [
+      "OnAuthenticationの中で、ヘルスチェックのときだけ例外を握りつぶす",
+      "OnAuthenticationなどのコールバックはREST APIのすべてのMethodで実行されるため、認証の要件が違うMethodは別のREST APIに分ける",
+      "ヘルスチェックのMethodのPublicをNoにする",
+      "OnResponseで認証エラーを成功に書き換える"
+    ],
+    "answer": 1,
+    "explanation": "OnAuthentication、OnRequest、OnResponseなどのコールバックは、REST API単位で設定され、そのREST APIで公開しているすべてのMethodで実行されます。認証の要件が異なるMethodは、別のREST APIに分けて公開します。",
+    "wrongReasons": [
+      "例外の握りつぶしは認証の仕組みを分かりにくくし、誤りの原因になる。",
+      "公開したREST APIのMethodの公開範囲を、Publicで切り替えるものではない。",
+      "認証エラーを書き換えると、認証が実質的に無効になり危険である。"
+    ]
+  },
+  {
+    "id": "rest-025",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "応用",
+    "question": "公開したREST APIで、OnAuthenticationによる独自認証を設定している。認証ヘッダーがなく、さらに必須のパラメータも欠けているリクエストが届いた。クライアントが受け取る結果として最も適切なものはどれか。",
+    "options": [
+      "OnAuthenticationがパラメータのデシリアライズと検証より先に実行されるため、認証のエラーが返される",
+      "パラメータの検証が先に行われるため、パラメータ不足のエラーが返される",
+      "両方のエラーが1つのレスポンスにまとめて返される",
+      "Methodのアクションが実行され、その中でエラーになる"
+    ],
+    "answer": 0,
+    "explanation": "公開したREST APIの処理は、セキュリティの検証、OnRequest、OnAuthentication、パラメータのデシリアライズと検証、Methodの実行の順に進みます。認証に失敗するとOnAuthenticationで処理が止まるため、パラメータの検証より先に認証のエラーが返されます。",
+    "wrongReasons": [
+      "パラメータの検証はOnAuthenticationの後に行われる。",
+      "認証で処理が止まるため、パラメータの検証までは進まない。",
+      "Methodはパラメータの検証の後に実行されるため、ここまで進まない。"
+    ]
+  },
+  {
+    "id": "rest-026",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "標準",
+    "question": "公開したREST APIの各Methodの最初に、同じAPIキーの検証ロジックをコピーして入れている。保守性と安全性を高める改善として最も適切なものはどれか。",
+    "options": [
+      "検証ロジックをServer Actionにまとめ、各Methodの最初で呼び出すだけにする",
+      "検証ロジックをOnResponseに移す",
+      "REST APIのAuthenticationをCustomにし、OnAuthenticationで検証する。このコールバックはすべてのリクエストでMethodのフローより前に実行される",
+      "APIキーの検証をやめ、HTTPSだけで保護する"
+    ],
+    "answer": 2,
+    "explanation": "REST APIのAuthenticationをCustomにすると、OnAuthenticationのコールバックが作られ、そのREST APIへのすべてのリクエストで、呼ばれたMethodのアクションのフローより前に実行されます。認証の処理を1か所にまとめられ、Methodを追加したときの検証漏れも防げます。",
+    "wrongReasons": [
+      "まとめても各Methodで呼ぶ必要があり、新しいMethodでの呼び忘れを防げない。",
+      "OnResponseはMethodの実行後のため、認証前にMethodが実行されてしまう。",
+      "HTTPSは通信の暗号化で、呼び出し元の認証にはならない。"
+    ]
   }
 ]
