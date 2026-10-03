@@ -158,5 +158,185 @@
       "互換性のない変更のため、参照の更新が必要である。",
       "Blockにも入力パラメータは追加できる。"
     ]
+  },
+  {
+    "id": "team-009",
+    "exam": "web-developer-specialist",
+    "category": "チーム開発",
+    "difficulty": "基礎",
+    "question": "同じモジュールで、Aさんは画面Xを、Bさんは画面Yを編集していた。Aさんが先に公開し、Bさんが後から公開しようとして、サーバー上の変更を取り込むことになった。2人の変更に競合はない。このときの動作として最も適切なものはどれか。",
+    "options": [
+      "Service Studioが違いを自動で統合し、手動で解決が必要な競合はない",
+      "競合がなくても、すべての要素を1つずつ手動で統合する必要がある",
+      "Bさんの変更はすべて破棄され、Aさんの版で上書きされる",
+      "同じモジュールを2人で編集した場合は、必ず公開がエラーになる"
+    ],
+    "answer": 0,
+    "explanation": "複数の開発者が同じモジュールで作業しているとき、競合がなければService Studioは違いを自動で統合します。競合を検出した場合は、手動で解決するよう求められます。公開するには、ローカルのモジュールを更新し、すべての競合を解決してから公開します。",
+    "wrongReasons": [
+      "競合のない変更は自動で統合され、手動での作業は不要である。",
+      "マージでは両方の変更が取り込まれ、一方的に破棄されることはない。",
+      "同じモジュールの共同編集はマージ機能で扱え、必ずエラーになるわけではない。"
+    ]
+  },
+  {
+    "id": "team-010",
+    "exam": "web-developer-specialist",
+    "category": "チーム開発",
+    "difficulty": "標準",
+    "question": "Compare and Merge画面で、テキストとして編集しながらマージできる要素の例として最も適切なものはどれか。",
+    "options": [
+      "モジュールの依存関係の一覧",
+      "SQL要素のSQL文や、Assignで代入する値の式",
+      "エンティティのデータベース上のレコード",
+      "Service CenterのSite Propertyの実効値"
+    ],
+    "answer": 1,
+    "explanation": "マージ中にテキストとして編集できる要素は、CSS、JavaScript、要素の中のプロパティの値です。例として、Assignの変数の値、SQLの式、説明（Description）、ウィジェット内のテキストなどがあります。",
+    "wrongReasons": [
+      "依存関係の一覧は、テキストとして編集するマージの対象ではない。",
+      "エンティティのデータはモジュールのバージョンに含まれず、マージの対象ではない。",
+      "Service Centerの実効値は環境の設定で、モジュールのマージの対象ではない。"
+    ]
+  },
+  {
+    "id": "team-011",
+    "exam": "web-developer-specialist",
+    "category": "チーム開発",
+    "difficulty": "標準",
+    "question": "Compare and Merge画面で、CSSの競合を解決している。Merged versionタブで、競合している行についてサーバー側（The other version）の変更を採用したい。操作として最も適切なものはどれか。",
+    "options": [
+      "Merged versionペインのチェックボックスを選択する",
+      "The other versionペインのテキストを直接書き換える",
+      "The other versionペインの矢印をクリックする",
+      "Your versionタブで行を削除する"
+    ],
+    "answer": 2,
+    "explanation": "Merged versionタブでは、The other versionペインの矢印をクリックするとサーバー版の変更を、Merged versionペインのチェックボックスを選択するとローカル版の変更を採用できます。Merged versionペインのテキストを直接編集して結果を変えることもできます。",
+    "wrongReasons": [
+      "Merged versionペインのチェックボックスは、ローカル版の変更を採用する操作である。",
+      "The other versionペイン（サーバー版）は編集できない。",
+      "Your versionタブはローカル版との比較で、行を削除してもサーバー版の変更は採用されない。"
+    ]
+  },
+  {
+    "id": "team-012",
+    "exam": "web-developer-specialist",
+    "category": "チーム開発",
+    "difficulty": "基礎",
+    "question": "Compare and Merge画面のテキストの比較で、ある行が赤色で強調されている。この色が示す意味として最も適切なものはどれか。",
+    "options": [
+      "削除された行",
+      "追加された行",
+      "競合のない変更がある行",
+      "両方の版で変更され、競合している行"
+    ],
+    "answer": 3,
+    "explanation": "比較の色は、灰色が削除された行、緑が追加された行、水色や濃い青が競合のない変更、赤が両方の版で変更され競合している行を表します。強調部分にマウスを重ねると説明が表示されます。",
+    "wrongReasons": [
+      "削除された行は灰色で示される。",
+      "追加された行は緑色で示される。",
+      "競合のない変更は青系の色で示される。"
+    ]
+  },
+  {
+    "id": "team-013",
+    "exam": "web-developer-specialist",
+    "category": "チーム開発",
+    "difficulty": "標準",
+    "question": "Compare and Merge画面でJavaScriptの競合を解決しているが、競合している行しか強調されず、競合のない変更も含めて全体の違いを確認したい。最も適切な操作はどれか。",
+    "options": [
+      "Highlight all differencesのチェックボックスを選択する",
+      "マージをキャンセルして、最初からやり直す",
+      "Override with this versionで公開してから確認する",
+      "Your versionタブのテキストをすべて削除する"
+    ],
+    "answer": 0,
+    "explanation": "変更を編集するペインでは、既定では競合のある行だけが強調されます。すべての変更を強調するには、Highlight all differencesのチェックボックスを選択します。",
+    "wrongReasons": [
+      "やり直しても、既定では競合の行しか強調されない。",
+      "上書きで公開すると、サーバー側の変更が失われる。",
+      "テキストを削除すると、ローカルの変更が失われる。"
+    ]
+  },
+  {
+    "id": "team-014",
+    "exam": "web-developer-specialist",
+    "category": "チーム開発",
+    "difficulty": "標準",
+    "question": "Compare and Merge画面ですべての競合を解決した。サーバーの変更を取り込んだうえで、まだ作業を続けてから後で公開したい。最も適切な操作はどれか。",
+    "options": [
+      "Merge and publishを選ぶ",
+      "Mergeを選び、作業を続けてから1-Click Publishで公開する",
+      "Cancelを選び、後で同じ作業をやり直す",
+      "Override with this versionを選ぶ"
+    ],
+    "answer": 1,
+    "explanation": "Mergeは、ローカルのモジュールを更新して作業を続けられるようにし、後から1-Click Publishで公開します。Merge and publishは、ローカルのモジュールを更新してそのまま公開します。",
+    "wrongReasons": [
+      "Merge and publishはその場で公開してしまう。",
+      "Cancelではマージが終了し、取り込みが完了しない。",
+      "Override with this versionはサーバーの変更をすべて破棄する。"
+    ]
+  },
+  {
+    "id": "team-015",
+    "exam": "web-developer-specialist",
+    "category": "チーム開発",
+    "difficulty": "応用",
+    "question": "競合の解決中にService Studioが予期せず終了してしまった。再びService Studioを開き、同じモジュールでマージを始めた。このときの動作として最も適切なものはどれか。",
+    "options": [
+      "マージの選択や変更は保存されないため、最初からやり直す必要がある",
+      "前回のマージの内容が自動でサーバーに公開されている",
+      "Recover Previous Mergeのダイアログが表示され、Yesを選ぶと前回の選択や変更から再開できる",
+      "前回のマージの途中の内容でモジュールが壊れ、開けなくなる"
+    ],
+    "answer": 2,
+    "explanation": "Service Studioはマージの選択や変更を自動で保存します。Cancel mergeでマージを取りやめた場合や、マージ中にService Studioが予期せず終了した場合は、次に同じモジュールでマージを始めたときにRecover Previous Mergeのダイアログが表示されます。Yesで前回の続きから、Noで保存された内容を破棄して最初から始められます。",
+    "wrongReasons": [
+      "マージの選択や変更は自動で保存される。",
+      "途中のマージの内容が自動で公開されることはない。",
+      "途中の内容は別に保存されており、モジュールが壊れることはない。"
+    ]
+  },
+  {
+    "id": "team-016",
+    "exam": "web-developer-specialist",
+    "category": "チーム開発",
+    "difficulty": "標準",
+    "question": "公開時にマージを試みたところ、Compare and Merge画面に「ClientList画面のStyle Sheet（merged with conflicts）」「ButtonOnClickアクション（merged with conflicts）」と、同僚が追加した「Report画面」が表示された。公開できる状態にするための進め方として最も適切なものはどれか。",
+    "options": [
+      "Report画面の追加も競合なので、Report画面を削除してから公開する",
+      "競合のある要素をダブルクリックして詳細を開き、競合を0件にする。競合（赤い表示）がなくなったらMerge and publishまたはMergeを選ぶ",
+      "競合のある要素は無視して、そのままMerge and publishを選ぶ",
+      "Override with this versionで公開し、同僚に作業をやり直してもらう"
+    ],
+    "answer": 1,
+    "explanation": "競合のある要素（merged with conflicts）は、ダブルクリックして詳細画面を開き、どちらの変更を採用するかを選んで競合を0件にします。同僚が追加した画面のように競合のない変更は、そのまま取り込まれます。赤く表示される要素がなくなったら、Merge and publishかMergeで完了します。",
+    "wrongReasons": [
+      "競合のない追加はそのまま取り込まれ、削除する必要はない。",
+      "競合を解決しないままでは、マージを完了して公開できない。",
+      "上書きすると同僚の変更がすべて失われる。"
+    ]
+  },
+  {
+    "id": "team-017",
+    "exam": "web-developer-specialist",
+    "category": "チーム開発",
+    "difficulty": "応用",
+    "question": "テキスト要素のCompare and Merge画面には、Merged versionタブとYour versionタブがある。各ペインの説明として最も適切なものはどれか。",
+    "options": [
+      "すべてのペインで、テキストを自由に編集できる",
+      "The other versionペイン（サーバー版）だけが編集できる",
+      "Merged versionペインとYour versionペインは編集できるが、The other versionペイン（サーバー版）は編集できない",
+      "Merged versionペインは表示専用で、Your versionペインだけが編集できる"
+    ],
+    "answer": 2,
+    "explanation": "Merged versionタブのMerged versionペインには、自動でマージされたテキストと解決が必要な競合が含まれ、ここで編集した内容がローカルに保存されます。Your versionタブのYour versionペインはローカル版で、これも編集できます。どちらのタブでも、The other versionペインはサーバー版で、編集できません。",
+    "wrongReasons": [
+      "サーバー版のペインは編集できない。",
+      "サーバー版は編集できず、ローカル側のペインが編集できる。",
+      "Merged versionペインは、マージの結果を編集するためのペインである。"
+    ]
   }
 ]

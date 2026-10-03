@@ -558,5 +558,245 @@
       "データ量は性能に大きく影響するため、設計時に見積もる必要がある。",
       "日常業務で使うデータまでアーカイブ側に置くと、通常の操作が遅くなる。"
     ]
+  },
+  {
+    "id": "trouble-029",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "基礎",
+    "question": "デバッガーでServer Actionのフローを止めている。次の要素は、同じモジュールで自分が作ったServer Actionの呼び出しである。そのアクションの中の最初の要素に進みたい。使う操作として最も適切なものはどれか。",
+    "options": [
+      "Step Over（F10）",
+      "Continue（F9）",
+      "Step Out（Shift+F11）",
+      "Step Into（F11）"
+    ],
+    "answer": 3,
+    "explanation": "Step Intoは、同じモジュールのユーザー定義のアクションを実行する要素、プロセスの実行、同じモジュールのユーザー関数、Assignの代入などの「中」の最初の要素に進みます。それ以外の要素でStep Intoを使うと、Step Overと同じ動作になります。",
+    "wrongReasons": [
+      "Step Overは、同じフローの次の要素に進み、呼び出し先の中には入らない。",
+      "Continueは、次のブレークポイントまで実行を再開する。",
+      "Step Outは、現在のフローから抜けて外側の次の要素に進む。"
+    ]
+  },
+  {
+    "id": "trouble-030",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "デバッガーでStep Intoにより呼び出し先のServer Actionの中を調べていたが、確認が終わったので、残りの処理を実行して呼び出し元のフローに戻りたい。最も適切な操作はどれか。",
+    "options": [
+      "Step Out（Shift+F11）",
+      "Step Over（F10）を繰り返す",
+      "Stop Debugging",
+      "Abort Running Server Threads"
+    ],
+    "answer": 0,
+    "explanation": "Step Outは、現在のフローの残りを実行し、外側のレベル（呼び出し元）の次の要素で止まります。呼び出し先の確認が終わったときに使います。",
+    "wrongReasons": [
+      "Step Overを繰り返しても戻れるが、要素ごとに止まるため手間がかかる。",
+      "Stop Debuggingはデバッグ自体を終了してしまう。",
+      "Abortは実行中のスレッドを中断し、処理が最後まで行われない。"
+    ]
+  },
+  {
+    "id": "trouble-031",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "Server ActionのException Handlerで捕捉している例外が、どこで発生しているかをデバッガーで調べたい。ブレークポイントの位置はわからない。最も適切な方法はどれか。",
+    "options": [
+      "Break On All Exceptionsは捕捉されない例外でしか止まらないため、Exception Handlerを一時的に外す",
+      "Break On All Exceptionsを有効にする。捕捉される例外でも捕捉されない例外でも、発生時にスレッドの実行が止まる",
+      "すべての要素にブレークポイントを置く",
+      "Errorsログを確認するしかない"
+    ],
+    "answer": 1,
+    "explanation": "Break On All Exceptionsを有効にすると、処理される（捕捉される）例外でも処理されない例外でも、発生した時点でデバッガーがスレッドの実行を止めます。このボタンは、デバッグセッション中でなくても操作できる唯一のツールバーのボタンです。",
+    "wrongReasons": [
+      "Break On All Exceptionsは、捕捉される例外でも止まる。",
+      "すべての要素にブレークポイントを置くのは非効率で、見落としも起きやすい。",
+      "デバッガーで発生箇所を特定できる。"
+    ]
+  },
+  {
+    "id": "trouble-032",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "応用",
+    "question": "デバッグ中に、公開していない変更があるアクションをThreadsタブで見ると、変更された要素（Modified element）として表示されていた。このときデバッグされる内容として最も適切なものはどれか。",
+    "options": [
+      "ローカルで変更した内容がデバッグされる",
+      "公開済みの要素ではなく、変更した要素が自動で公開されてからデバッグされる",
+      "変更された要素はデバッグできず、スキップされる",
+      "公開済みの版の要素がデバッグされ、変更した内容はデバッグされない"
+    ],
+    "answer": 3,
+    "explanation": "デバッグ中のモジュールに公開していない変更がある場合、変更された要素はThreadsタブに目印付きで表示されます。デバッグされるのは公開済みの要素で、変更した要素ではありません。モジュールから削除した要素（Missing element）も、公開版に残っていればデバッグされますが、キャンバスには表示されません。",
+    "wrongReasons": [
+      "デバッグされるのは、サーバーで実行されている公開済みの版である。",
+      "デバッグを始めても、変更が自動で公開されることはない。",
+      "変更された要素も、公開済みの版としてデバッグされる。"
+    ]
+  },
+  {
+    "id": "trouble-033",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "デバッグ中、Threadsタブに複数のスレッドが一時停止しており、青い矢印と灰色の矢印が表示されている。別のスレッドのデバッグに切り替えたい。最も適切な説明と操作はどれか。",
+    "options": [
+      "灰色の矢印がデバッグ中のスレッドで、切り替えはできない",
+      "青い矢印のスレッドを右クリックして削除する",
+      "青い矢印がデバッグ中（アクティブ）のスレッドを示す。切り替えたいスレッドをThreadsタブでダブルクリックする",
+      "デバッグをいったん止めて、もう一度開始する"
+    ],
+    "answer": 2,
+    "explanation": "デバッグ中のアクティブなスレッドは、Threadsタブとキャンバスで青い矢印で示されます。一時停止しているがデバッグしていない他のスレッドは灰色の矢印です。別のスレッドに切り替えるには、Threadsタブでそのスレッドをダブルクリックします。",
+    "wrongReasons": [
+      "アクティブなスレッドは青い矢印で、他のスレッドに切り替えられる。",
+      "スレッドを削除してもデバッグ対象は切り替わらない。",
+      "デバッグを止める必要はなく、ダブルクリックで切り替えられる。"
+    ]
+  },
+  {
+    "id": "trouble-034",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "共有の開発環境で、同じモジュールのサーバーのスレッドを他の開発者もデバッグしているかを知りたい。確認する場所として最も適切なものはどれか。",
+    "options": [
+      "Debugger TabのBreakpointsタブ",
+      "Debugger TabのUsersタブ",
+      "Service CenterのErrorsログ",
+      "Debugger TabのWatchesタブ"
+    ],
+    "answer": 1,
+    "explanation": "Usersタブには、自分のモジュールのサーバーのスレッドをデバッグしている他のユーザーが一覧表示されます。各ユーザーを展開すると、そのユーザーがデバッグしているスレッドの一覧を確認できます。",
+    "wrongReasons": [
+      "Breakpointsタブは、モジュールに設定されたブレークポイントの一覧である。",
+      "Errorsログはエラーの記録で、デバッグ中のユーザーはわからない。",
+      "Watchesタブは、ウォッチに指定した変数の一覧である。"
+    ]
+  },
+  {
+    "id": "trouble-035",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "デバッガーでステップ実行しながら、スコープのタブで変数の値を確認している。値が赤く表示されているものがある。この意味として最も適切なものはどれか。",
+    "options": [
+      "前回のデバッグのステップから値が変わった",
+      "値がエラーになっている",
+      "値がNullである",
+      "値が画面に表示されていない"
+    ],
+    "answer": 0,
+    "explanation": "スコープのタブで赤く表示される値は、前回のデバッグのステップから変わった値です。値が長すぎて表示しきれない場合やList型の場合は、要素をダブルクリックすると値を表示するウィンドウが開きます。",
+    "wrongReasons": [
+      "赤い表示はエラーではなく、値の変化を示す。",
+      "Nullであることを示す色ではない。",
+      "画面への表示の有無を示すものではない。"
+    ]
+  },
+  {
+    "id": "trouble-036",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "基礎",
+    "question": "Reactive Webアプリをデバッグ中に、モジュールのClient Variableの現在の値を確認したい。Debugger Tabで確認するタブとして最も適切なものはどれか。",
+    "options": [
+      "Sessionタブ",
+      "Siteタブ",
+      "Clientタブ",
+      "Widgetsタブ"
+    ],
+    "answer": 2,
+    "explanation": "Clientタブは、MobileアプリとReactive Webアプリでだけ使え、モジュールのClient Variableを一覧表示します。SessionタブはTraditional Webアプリ専用でSession Variableを、SiteタブはSite Propertyを表示します。",
+    "wrongReasons": [
+      "SessionタブはTraditional Webアプリでだけ使え、Session Variableを表示する。",
+      "SiteタブはSite Propertyを表示する。",
+      "Widgetsタブは、デバッグ中の要素のスコープにあるウィジェットを表示する。"
+    ]
+  },
+  {
+    "id": "trouble-037",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "画面を持たないCoreモジュール（プロデューサー）のServer Actionをデバッグしたい。利用者の操作は、そのアクションを使うEnd-userモジュールの画面から始まる。デバッグの準備として最も適切なものはどれか。",
+    "options": [
+      "Coreモジュールに、デバッグ用の画面を必ず追加する",
+      "Debug SetupタブのEntry Moduleで、操作が始まるEnd-userモジュールを選び、Coreモジュールにブレークポイントを置いてデバッグを開始する",
+      "End-userモジュールにCoreのアクションをコピーしてデバッグする",
+      "Service CenterでCoreモジュールのデバッグモードを有効にする"
+    ],
+    "answer": 1,
+    "explanation": "Debug SetupタブのEntry Moduleで、利用者の操作が始まるエントリーポイントのモジュールを選択できます。プロデューサーのモジュールをデバッグするときに役立ちます。",
+    "wrongReasons": [
+      "Entry Moduleを指定すれば、デバッグ用の画面を追加する必要はない。",
+      "コピーしたアクションは本来のアクションと別物になり、正しいデバッグにならない。",
+      "モジュールのデバッグはService Studioで開始するもので、Service Centerの設定ではない。"
+    ]
+  },
+  {
+    "id": "trouble-038",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "応用",
+    "question": "デバッグ中、Threadsタブのコールスタックに「GetCustomer [CustomerCore]」のように、名前の後に角括弧でモジュール名が付いた要素がある。ダブルクリックしてもキャンバスに表示されない。この理由として最も適切なものはどれか。",
+    "options": [
+      "その要素は削除されているため",
+      "その要素はまだ公開されていないため",
+      "その要素でエラーが発生しているため",
+      "その要素は自分のモジュールではなく、参照している別のモジュールの要素であるため"
+    ],
+    "answer": 3,
+    "explanation": "Debugging Contextの各タブで要素をダブルクリックするとキャンバスに表示できますが、デバッグ中の要素が自分のモジュールのものでない場合（参照先のモジュールのアクションなど）はキャンバスに表示できず、Threadsタブに名前とモジュール名（角括弧内）で表示されるだけです。",
+    "wrongReasons": [
+      "削除された要素は、Missing elementとして別の目印で示される。",
+      "公開していない変更は、Modified elementとして別の目印で示される。",
+      "エラーの有無は、モジュール名の表示とは関係ない。"
+    ]
+  },
+  {
+    "id": "trouble-039",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "標準",
+    "question": "デバッグを終えたい。ブレークポイントで一時停止しているスレッドは、中断せずに最後まで実行させたい。最も適切な操作はどれか。",
+    "options": [
+      "Abort Running Server Threads",
+      "Suspend Running Server Threads",
+      "Stop Debugging",
+      "Service Studioを強制終了する"
+    ],
+    "answer": 2,
+    "explanation": "Stop Debuggingはデバッガーを停止し、一時停止しているすべてのスレッドの実行を再開します。Suspend Running Server ThreadsはPlatform Serverで実行中のサーバースレッドをすべて一時停止し、Abort Running Server Threadsは実行中のサーバースレッドを中断します。",
+    "wrongReasons": [
+      "Abortはスレッドの実行を中断するため、処理が最後まで行われない。",
+      "Suspendは実行中のスレッドを一時停止する操作である。",
+      "強制終了は適切な終了方法ではなく、スレッドの扱いも保証されない。"
+    ]
+  },
+  {
+    "id": "trouble-040",
+    "exam": "web-developer-specialist",
+    "category": "トラブルシューティング",
+    "difficulty": "基礎",
+    "question": "デバッグ中、ステップごとに特定の数個の変数の値だけを、他のスコープの要素とは分けて追いかけたい。最も適切な方法はどれか。",
+    "options": [
+      "その変数をウォッチに指定し、Watchesタブで確認する",
+      "Localsタブで毎回すべての変数を探す",
+      "LogMessageで変数の値をログに出力し、Service Centerで確認する",
+      "Breakpointsタブで変数の値を確認する"
+    ],
+    "answer": 0,
+    "explanation": "Watchesタブには、明示的にウォッチに指定した変数が一覧表示されます。特定の変数の値をステップごとに追いかけるのに便利です。In Useタブには現在の要素に関係する要素が、Localsタブにはローカルスコープの要素が表示されます。",
+    "wrongReasons": [
+      "Localsタブでも確認できるが、要素が多いと毎回探す手間がかかる。",
+      "ログ出力はコードの変更と公開が必要で、ステップごとの確認には向かない。",
+      "Breakpointsタブはブレークポイントの一覧で、変数の値は表示されない。"
+    ]
   }
 ]
