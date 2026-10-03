@@ -238,5 +238,85 @@
       "Basic認証はユーザー名とパスワードの方式で、クライアント証明書は扱えない。",
       "Logging Levelはログの記録内容の設定で、認証方式とは関係ない。"
     ]
+  },
+  {
+    "id": "rest-013",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "基礎",
+    "question": "Integration Builderで外部のSaaS（例：SAPのODataサービス）との連携を生成した。生成されたアプリには、末尾が「_DRV」のライブラリモジュールと「_IS」のサービスモジュールがある。アプリから外部システムを操作するときに使うものとして最も適切なものはどれか。",
+    "options": [
+      "_DRVのモジュールのServer Actionを直接使い、呼び出しのたびに認証情報を渡す",
+      "_ISのサービスモジュールが公開する要素を使う。接続に保存された認証情報が使われるため、呼び出しごとに認証データを渡す必要がない",
+      "どちらのモジュールも使わず、Consume REST APIで同じAPIを取り込み直す",
+      "_DRVと_ISの両方のServer Actionを毎回順番に呼ぶ"
+    ],
+    "answer": 1,
+    "explanation": "生成される連携は、外部のオブジェクトを操作するServer Actionを公開するライブラリモジュール（_DRV＝Driver）と、その上に抽象化の層を加えるサービスモジュール（_IS＝Integration Service）で構成されます。サービスモジュールのServer Actionは接続に保存された認証情報を使うため、呼び出しごとに認証データを渡す必要がありません。外部システムの操作には、サービスモジュールが公開する要素を使います。",
+    "wrongReasons": [
+      "_DRVを直接使うと、呼び出しごとに認証データを扱う必要があり、推奨される使い方ではない。",
+      "取り込み直すと、生成された連携の利点（認証やCRUDのアクション）が失われる。",
+      "サービスモジュールが_DRVの処理を包んでいるため、両方を呼ぶ必要はない。"
+    ]
+  },
+  {
+    "id": "rest-014",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "標準",
+    "question": "Integration Builderで生成した連携のSearch<Entity>s アクションで、顧客名が「john」で始まる顧客（大文字小文字を区別しない）を検索したい。BasicFiltersでの指定として最も適切なものはどれか。",
+    "options": [
+      "AdvancedFiltersに、SQLの WHERE CustomerName LIKE 'john%' を書く",
+      "BasicFiltersに、顧客名のテキストをそのままValueに入れ、他の項目は空にする",
+      "EntityAttributeに顧客名の属性、EntityAttributeTypeにText、FilterOperatorにStartsWith_CaseInsensitive、Valueに\"john\"を指定する",
+      "検索結果をすべて取得してから、ListFilterで絞り込む"
+    ],
+    "answer": 2,
+    "explanation": "BasicFiltersでは、「型Tのエンティティ属性Aを、演算子Oを使って値Vと比較する」形で条件を定義します。値以外の項目は静的エンティティで指定し、属性はライブラリモジュール（_DRV）の静的エンティティに、属性の型や演算子はIntegrationUtils_Libモジュールの静的エンティティにあります。",
+    "wrongReasons": [
+      "AdvancedFiltersはSQLではなく、ODataの書式（例：City eq 'Redmond'）で書く。",
+      "属性・型・演算子を指定しないと、条件が定義できない。",
+      "全件を取得してから絞り込むと、不要なデータを大量に取得してしまう。"
+    ]
+  },
+  {
+    "id": "rest-015",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "標準",
+    "question": "Integration Builderで生成した連携のSearch<Entity>s アクションで、1ページ20件の一覧を作る。3ページ目を表示するときのパラメータとして最も適切なものはどれか。",
+    "options": [
+      "Skip（Offset）=40、Top（MaxRecords）=20とし、並び順も指定する",
+      "Skip（Offset）=3、Top（MaxRecords）=20とする",
+      "Skip（Offset）=0、Top（MaxRecords）=60とし、画面で後ろの20件だけを表示する",
+      "Skip（Offset）=20、Top（MaxRecords）=40とする"
+    ],
+    "answer": 0,
+    "explanation": "Skip（Offset）は結果の先頭から飛ばす件数、Top（MaxRecords）は返す件数です。3ページ目は先頭40件を飛ばし、20件を取得します。ページングする場合は、結果の並び順を指定することが推奨されています。",
+    "wrongReasons": [
+      "Skipはページ番号ではなく、飛ばす件数を指定する。",
+      "必要以上のデータを取得するため、非効率である。",
+      "20件飛ばして40件取得すると、2ページ目と3ページ目のデータになる。"
+    ]
+  },
+  {
+    "id": "rest-016",
+    "exam": "web-developer-specialist",
+    "category": "統合：REST API",
+    "difficulty": "応用",
+    "question": "Integration Builderで生成した外部SaaSとの連携に、独自の認証方式を組み込みたい。そこで「Service Studioで編集できる」設定で連携を生成しようとしている。この選択の影響として最も適切なものはどれか。",
+    "options": [
+      "Service StudioとIntegration Builderの両方で、引き続き自由に変更できる",
+      "Service Studioで編集できるのは、Integration Builderで再公開するまでの間だけである",
+      "Service Studioで編集できる連携は、外部システムに接続できなくなる",
+      "Service Studioで編集できるようになる代わりに、Integration Builderでは設定の変更や再公開ができなくなり、以後の変更はService Studioだけで行う"
+    ],
+    "answer": 3,
+    "explanation": "既定では、生成された連携はService Studioで変更できず、Integration Builderで変更と再公開を続けられます。Service Studioで編集できる設定で生成すると、独自の認証方式の実装などができますが、Integration Builderで連携の設定を変更したり再公開したりできなくなり、以後の変更はService Studioだけで行います。",
+    "wrongReasons": [
+      "両方で変更を続けることはできない。",
+      "一度編集可能にすると、Integration Builderでの再公開はできなくなる。",
+      "編集可能にしても、外部システムへの接続はできる。"
+    ]
   }
 ]

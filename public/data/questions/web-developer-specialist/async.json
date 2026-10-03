@@ -558,5 +558,285 @@
       "業務時間中の大量削除は、利用中の処理に影響を与える。",
       "パージしないとメインカタログのデータ量が減らず、アーカイブの効果が得られない。"
     ]
+  },
+  {
+    "id": "async-029",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "基礎",
+    "question": "Timer「SendDigest」の実行中に、スケジュールの時刻が来て再び起動条件を満たした。また別のTimer「CleanUp」も同じ時刻に起動予定である。この時の動作として最も適切なものはどれか。",
+    "options": [
+      "SendDigestが2つ同時に実行され、CleanUpは待たされる",
+      "同じTimerが同時に複数実行されることはないが、異なるTimerは同時に実行できる",
+      "Timerは環境全体で常に1つずつしか実行されない",
+      "SendDigestの実行中の処理は中断され、新しく実行し直される"
+    ],
+    "answer": 1,
+    "explanation": "異なるTimerは同時に実行できますが、同じTimerが同時に2つ以上実行されることはありません。Scheduler Serviceはマルチスレッドのサービスで、複数のTimerを並行して実行できます。",
+    "wrongReasons": [
+      "同じTimerが同時に複数実行されることはない。",
+      "Scheduler Serviceはマルチスレッドで、異なるTimerは同時に実行できる。",
+      "実行中のTimerが中断されて最初からやり直されることはない。"
+    ]
+  },
+  {
+    "id": "async-030",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "フロントエンドサーバー1台あたりで同時に実行できるTimerの数を増やしたい。この設定を変更する場所として最も適切なものはどれか。",
+    "options": [
+      "Service StudioのTimerのPriorityプロパティ",
+      "Service CenterのTimerの詳細画面のTimeout",
+      "Configuration Tool",
+      "LifeTimeの環境設定"
+    ],
+    "answer": 2,
+    "explanation": "各フロントエンドサーバーで同時に実行できるTimerの最大数（Timer Processorのスレッド数）は、Configuration Toolで設定します。",
+    "wrongReasons": [
+      "Priorityは、同時実行数の上限を超えたときにどのTimerを先に実行するかの優先度である。",
+      "Timeoutは1回の実行の制限時間で、同時実行数とは関係ない。",
+      "同時実行数はLifeTimeではなく、Configuration Toolで設定する。"
+    ]
+  },
+  {
+    "id": "async-031",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "応用",
+    "question": "フロントエンドサーバーが3台あり、各サーバーのOSの時計が数分ずれている。Timerの実行時刻の判定について正しい説明として最も適切なものはどれか。",
+    "options": [
+      "Timerを実行するサーバーのOSの時計が基準になるため、サーバーごとに実行時刻がずれる",
+      "利用者のブラウザの時計が基準になる",
+      "最初に起動したフロントエンドサーバーの時計が基準になる",
+      "複数のフロントエンドサーバーがあるため、Timerの実行時刻の基準には常にデータベースの時計が使われる"
+    ],
+    "answer": 3,
+    "explanation": "複数のフロントエンドサーバーがそれぞれ独自の時計を持つ可能性があるため、Timerの実行の時刻の基準には常にデータベースの時計が使われます。Next_RunやIs_Running_Sinceなどもデータベースの時計で記録されます。",
+    "wrongReasons": [
+      "サーバーごとの時計のずれを避けるため、データベースの時計を基準にする。",
+      "Timerはサーバー側の仕組みで、利用者のブラウザとは関係ない。",
+      "特定のフロントエンドサーバーの時計を基準にすることはない。"
+    ]
+  },
+  {
+    "id": "async-032",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "本番環境で、あるTimerだけ処理量が多く、モジュールで定義したTimeout in Minutesでは足りなくなった。モジュールを再公開せずにタイムアウトを延ばす方法として最も適切なものはどれか。",
+    "options": [
+      "Service CenterのTimerの詳細画面でタイムアウトを設定する（モジュールの既定値より優先される）",
+      "Configuration Toolで、すべてのTimerの同時実行数を増やす",
+      "Timerのアクションの最初で、Site Propertyにタイムアウト値を書き込む",
+      "TimerのPriorityを最高にする"
+    ],
+    "answer": 0,
+    "explanation": "Service CenterのTimerの詳細画面でタイムアウトを設定すると、その値（Effective_Timeout）がモジュールで定義した既定のタイムアウトより優先されます。再公開せずに調整できます。",
+    "wrongReasons": [
+      "同時実行数を増やしても、1回の実行の制限時間は変わらない。",
+      "Site Propertyに値を書いても、Timerのタイムアウトの設定にはならない。",
+      "Priorityは実行の順番に関する設定で、制限時間は変わらない。"
+    ]
+  },
+  {
+    "id": "async-033",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "応用",
+    "question": "Timeout in Minutesが30分のTimerが、実行中にサーバーの障害で予期せず終了した。Scheduler ServiceがこのTimerを回復させ、データベースの情報を同期するのはいつか。最も適切なものはどれか。",
+    "options": [
+      "障害の直後にすぐ回復する",
+      "翌日の同じ時刻に回復する",
+      "タイムアウトの時間に20%を加えた時間（36分）が経過した後に回復する",
+      "管理者がService CenterでRun Nowを押すまで回復しない"
+    ],
+    "answer": 2,
+    "explanation": "Timerの実行が予期しないエラーで終了した場合、Scheduler Serviceはタイムアウトの時間に20%を加えた時間が経過した後に、Timerを回復させてデータベースを同期します。それまでは、データベース上のTimerの情報が不整合な状態になることがあります。そのため、途中で終了してもデータの整合性が保たれるようにTimerのロジックを作ることが重要です。",
+    "wrongReasons": [
+      "実行中かどうかの情報が残っているため、すぐには回復しない。",
+      "翌日まで待つことはなく、タイムアウトに20%を加えた時間が基準になる。",
+      "管理者の操作がなくても、一定時間の経過後に回復する。"
+    ]
+  },
+  {
+    "id": "async-034",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "Timerの実行でエラーが発生したとき、OutSystemsが自動で再実行する回数を変更したい。設定場所と既定値の組み合わせとして最も適切なものはどれか。",
+    "options": [
+      "Service StudioのTimerのプロパティ／既定は0回",
+      "Service CenterのAdministrationにあるEnvironment Configuration／既定は3回",
+      "Configuration Tool／既定は10回",
+      "LifeTimeのアプリの設定／既定は1回"
+    ],
+    "answer": 1,
+    "explanation": "Timerの実行でエラーが発生すると、OutSystemsは一定回数Timerを再実行することがあります。この回数はService CenterのAdministrationにあるEnvironment Configurationで設定でき、既定は3回です。",
+    "wrongReasons": [
+      "再実行の回数はTimerごとのプロパティではなく、環境の設定である。",
+      "Configuration Toolで設定するのは、同時に実行できるTimerの数などである。",
+      "再実行の回数はLifeTimeではなくService Centerで設定する。"
+    ]
+  },
+  {
+    "id": "async-035",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "応用",
+    "question": "Timer「CleanUp」を、スケジュールではなく「前回の実行終了から2時間後」に次の実行をさせたい。実装として最も適切なものはどれか。",
+    "options": [
+      "Timerのアクションの最後でWake<CleanUp>を呼ぶ",
+      "TimerのScheduleを「2時間ごと」に設定する",
+      "Timerのアクションの最後で2時間待機する処理を入れる",
+      "Meta_Cyclic_JobとCyclic_Job_Sharedのシステムエンティティを参照し、Timerのアクションの最後でそのTimerのNext_Runを現在から2時間後に更新してコミットする"
+    ],
+    "answer": 3,
+    "explanation": "Timerの実行を動的にスケジュールするには、Meta_Cyclic_JobとCyclic_Job_Sharedを参照に追加し、Timerのアクションの最後でそのTimerのレコードを取得して、Next_Runに次の実行日時（例：AddHours(CurrDateTime(), 2)）を設定して更新し、トランザクションをコミットしてロックを解放します。実行中にNext_Runが変更された場合、プラットフォームはNext_Runを上書きしません。",
+    "wrongReasons": [
+      "Wakeは現在の実行の終了後すぐに次の実行を始めるもので、2時間後にはならない。",
+      "Scheduleの間隔は時刻を基準にするもので、前回の終了から2時間後にはならない。",
+      "待機するとTimerの実行時間が延び、タイムアウトの原因になる。"
+    ]
+  },
+  {
+    "id": "async-036",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "基礎",
+    "question": "実行中のTimerがあり、その後の実行を止めたいので、Service CenterでTimerのDeactivateボタンを押した。このときの動作として最も適切なものはどれか。",
+    "options": [
+      "実行中の処理はすぐに中断され、ロールバックされる",
+      "実行中の処理は最後まで続き、それ以降はScheduler Serviceに取得されず実行されなくなる",
+      "Timerの定義がモジュールから削除される",
+      "次の1回だけ実行がスキップされ、その後は通常どおり実行される"
+    ],
+    "answer": 1,
+    "explanation": "Deactivateを押すと、そのTimerはScheduler Serviceに取得されなくなり、以後は実行されません。ただし、実行中のTimerを止めるものではなく、それ以降の実行を止めるだけです。再開するにはActivateを押します。",
+    "wrongReasons": [
+      "Deactivateは実行中のTimerを止めない。",
+      "モジュールの定義は変わらず、Activateで再開できる。",
+      "1回だけのスキップではなく、Activateするまで実行されない。"
+    ]
+  },
+  {
+    "id": "async-037",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "スケジュールが設定されたTimerを、メンテナンスのためにService CenterでDeactivateしていた。メンテナンス後、このTimerの詳細画面でRun Nowを押した。この結果として最も適切なものはどれか。",
+    "options": [
+      "Timerはできるだけ早く実行され、再びActivate（有効）な状態になる",
+      "Deactivateされているため、Run Nowは無視される",
+      "Timerは1回だけ実行され、その後もDeactivateのままになる",
+      "Timerのスケジュールが削除され、手動でしか実行されなくなる"
+    ],
+    "answer": 0,
+    "explanation": "スケジュールが設定された、Deactivateされた状態のTimerでRun Nowを押すと、Timerはできるだけ早く実行されるよう設定され、再びActivateされます。",
+    "wrongReasons": [
+      "Deactivateされていても、Run Nowで実行できる。",
+      "Run NowによってTimerは再びActivateされる。",
+      "スケジュールは削除されず、以後もスケジュールどおりに実行される。"
+    ]
+  },
+  {
+    "id": "async-038",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "Service CenterのEnvironment HealthのTimersの一覧で、スケジュールが14:15のTimerが14:14に実行されていた。このように予定より早く実行される理由として最も適切なものはどれか。",
+    "options": [
+      "データベースの時計が1分進んでいるため",
+      "Timerの優先度が高いと、予定より早く実行されるため",
+      "アプリからWakeで明示的に起動されたか、Service CenterでRun Nowによって強制的に実行されたため",
+      "前回の実行がタイムアウトしたため"
+    ],
+    "answer": 2,
+    "explanation": "予定より早くTimerが実行されるのは、アプリからWakeで明示的に起動された場合や、誰かがService CenterでRun Nowを押して強制的に実行した場合です。",
+    "wrongReasons": [
+      "Timerは常にデータベースの時計を基準にするため、時計のずれでは説明できない。",
+      "優先度は同時実行数の上限を超えたときの順番を決めるもので、予定より早く実行する仕組みではない。",
+      "タイムアウトはエラーとして扱われ、予定より早い実行の理由にはならない。"
+    ]
+  },
+  {
+    "id": "async-039",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "応用",
+    "question": "Service CenterのEnvironment HealthのTimersの一覧は、Timerが実行される順番を示している。この順番を決める基準として最も適切なものはどれか。",
+    "options": [
+      "Timerの名前のアルファベット順",
+      "Timerが作成された日時の古い順",
+      "モジュールが公開された順",
+      "Timerの優先度、前回の実行時間（短いものが先）、実行待ちの時間（長く待つほど上がる）"
+    ],
+    "answer": 3,
+    "explanation": "一覧の並び順は、Timerの優先度、前回の実行時間をもとにした実行にかかる時間（速いTimerが先）、実行を待っている時間（待ち時間が長くなるほど上がる）に基づいて決まります。",
+    "wrongReasons": [
+      "名前の順で実行順が決まることはない。",
+      "作成日時は実行順の基準ではない。",
+      "モジュールの公開順は実行順の基準ではない。"
+    ]
+  },
+  {
+    "id": "async-040",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "TimerのScheduleランタイムプロパティにロジックで値を設定し、「毎週月曜と金曜の22時」に実行させたい。設定する値と注意点の組み合わせとして最も適切なものはどれか。",
+    "options": [
+      "\"22:00 Mon Fri\"。書式は大文字小文字を区別し、開発時に検証されないため、誤った書式だとTimerが実行されないおそれがある",
+      "\"every Mon,Fri at 10pm\"。書式は自由で、自動的に解釈される",
+      "\"22:00 mon fri\"。大文字小文字は区別されない",
+      "\"0 22 * * 1,5\"。cronの書式で指定する"
+    ],
+    "answer": 0,
+    "explanation": "Scheduleランタイムプロパティには、\"22:00 Mon Fri\"（毎週月・金の22時）、\"15:30 16\"（毎月16日の15:30）、\"00:15 2nd Tue\"（毎月第2火曜の0:15）、\"When Published\"（公開のたび）などの決まった書式を使います。書式は大文字小文字を区別し、開発時に書式の検証は行われないため、誤った値を設定するとTimerが実行されないことがあります。",
+    "wrongReasons": [
+      "自由な文章の書式は解釈されない。",
+      "書式は大文字小文字を区別する。",
+      "OutSystemsのTimerのScheduleはcronの書式ではない。"
+    ]
+  },
+  {
+    "id": "async-041",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "標準",
+    "question": "マルチテナントのモジュールに、全テナント共通のデータを1回だけ集計するTimerを作りたい。Timerの設定として最も適切なものはどれか。",
+    "options": [
+      "Is Multi-tenantをYesにする",
+      "Is Multi-tenantをNoにする",
+      "Priorityを最高にする",
+      "Timeout in Minutesを0にする"
+    ],
+    "answer": 1,
+    "explanation": "TimerのIs Multi-tenantをYesにするとテナントごとに分かれて実行され、Noにするとテナント間で共有するデータに対して1回だけ実行されます。設定しない場合は、モジュールの設定を引き継ぎます。",
+    "wrongReasons": [
+      "Yesにするとテナントごとに実行され、共通データを何度も集計してしまう。",
+      "Priorityは実行の順番の設定で、テナントごとの実行には関係ない。",
+      "Timeoutを0にしても、テナントごとの実行の扱いは変わらない。"
+    ]
+  },
+  {
+    "id": "async-042",
+    "exam": "web-developer-specialist",
+    "category": "非同期処理",
+    "difficulty": "応用",
+    "question": "Service CenterのTimersのログで、あるTimerの実行開始時刻（Instant）が、本来実行されるべき時刻（Should_Have_Run_At）より大きく遅れていた。考えられる原因として最も適切なものはどれか。",
+    "options": [
+      "Timerのアクションの中でエラーが発生したため",
+      "Timerのタイムアウトが短すぎるため",
+      "システムの負荷が高く、他のTimerの実行に時間がかかっていたり、多くのテナントで同じスケジュールのTimerが集中していたりするため",
+      "TimerのIs Multi-tenantがNoであるため"
+    ],
+    "answer": 2,
+    "explanation": "システムの負荷が高いと、実行開始時刻が本来の時刻と大きく異なることがあります。同じモジュールに多数のテナントがあり同じスケジュールで動いている場合や、他のTimerの実行に時間がかかっている場合などが原因です。",
+    "wrongReasons": [
+      "アクション内のエラーは開始後に起こるもので、開始の遅れの原因ではない。",
+      "タイムアウトは実行時間の上限で、開始の遅れには関係ない。",
+      "Is Multi-tenantがNoなら1回だけ実行され、テナント数による集中はむしろ起きにくい。"
+    ]
   }
 ]

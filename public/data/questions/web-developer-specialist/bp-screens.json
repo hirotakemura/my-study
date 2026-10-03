@@ -520,66 +520,6 @@
     ]
   },
   {
-    "id": "screen-027",
-    "exam": "web-developer-specialist",
-    "category": "ベストプラクティス：画面",
-    "difficulty": "標準",
-    "question": "Traditional Webアプリの一覧画面で、行の「編集」ボタンのScreen Actionが、Preparationで取得したTable Recordsの現在行のレコード全体を使って処理している。ページのサイズが大きく、操作が遅い。最も適切な改善はどれか。",
-    "options": [
-      "Preparationでさらに多くの属性を取得しておく",
-      "Screen ActionをすべてJavaScriptに置き換える",
-      "Screen Actionでは行のIdだけを使い、必要なデータはデータベースから取得し直す",
-      "Preparationのデータを、Session Variableにコピーして使う"
-    ],
-    "answer": 2,
-    "explanation": "PreparationのデータをScreen Actionで使うと、そのデータがページのviewstateに保存されます。viewstateはページの一部としてクライアントに送られ、ポストやAJAXのリクエストのたびにサーバーへも送られるため、ページのサイズと読み込み時間が大きく増えます。行のIdだけを使い、必要なデータは再取得します。",
-    "wrongReasons": [
-      "取得する属性を増やすと、viewstateがさらに大きくなる。",
-      "データベースの更新などサーバー側の処理は、JavaScriptだけでは行えない。",
-      "Session Variableに大きなデータを持つと、リクエストごとの負荷が増える。"
-    ]
-  },
-  {
-    "id": "screen-028",
-    "exam": "web-developer-specialist",
-    "category": "ベストプラクティス：画面",
-    "difficulty": "標準",
-    "question": "Traditional Webアプリで新しい画面を設計している。操作性を高めるため、最初からほぼすべての操作をAJAXで部分更新にしようとしている。最も適切な進め方はどれか。",
-    "options": [
-      "まず画面の全体像と、どの操作性を改善すべきかを把握してから、必要な箇所に限ってAJAXを追加する",
-      "AJAXのリクエストは軽いので、できるだけ多く使う",
-      "すべての操作をAJAXにすれば、サーバーの処理時間も必ず短くなる",
-      "AJAXを使う画面では、viewstateは送信されない"
-    ],
-    "answer": 0,
-    "explanation": "AJAXは操作性を高める強力な手段ですが、使いすぎると性能も操作性も悪化します。AJAXのリクエストはページのviewstate全体をサーバーに送るため、全体像を把握してから必要な箇所に限って使います。他の最適化ができない場合に、処理時間を利用者に感じさせないために使うものです。",
-    "wrongReasons": [
-      "AJAXのリクエストはviewstate全体を送るため、軽いとは限らない。",
-      "AJAXは体感の性能を改善するもので、サーバー側の負荷はむしろ増えうる。",
-      "AJAXのリクエストでもviewstateは送信される。"
-    ]
-  },
-  {
-    "id": "screen-029",
-    "exam": "web-developer-specialist",
-    "category": "ベストプラクティス：画面",
-    "difficulty": "応用",
-    "question": "Traditional Webアプリの顧客詳細画面に、契約・請求・問い合わせ・履歴など多数のRecord Listがあり、画面の読み込みと送信が遅い。最も適切な改善はどれか。",
-    "options": [
-      "Record Listの取得件数を増やして、画面の切り替えを減らす",
-      "すべてのRecord Listを1つの大きなRecord Listにまとめる",
-      "画面はそのままにし、すべての操作をAJAXにする",
-      "サーバー側のタブなどで画面を分割する。業務の流れやロジックの再利用を考慮し、2つ以上や不均等に分けることも検討する"
-    ],
-    "answer": 3,
-    "explanation": "多くのRecordやRecord Listを使うと、viewstateが大きくなり、HTMLのページサイズ、通信時間、画面の処理時間が増えます。サーバー側のタブなどで大きな画面を分割すると、viewstateとページのサイズを減らせます。分割の際は利用者の要件とアプリ全体のロジックを考慮し、ロジックを再利用します。",
-    "wrongReasons": [
-      "取得件数を増やすと、viewstateとページがさらに大きくなる。",
-      "まとめてもデータ量は減らず、viewstateの大きさは変わらない。",
-      "AJAXのリクエストもviewstate全体を送るため、根本的な解決にならない。"
-    ]
-  },
-  {
     "id": "screen-030",
     "exam": "web-developer-specialist",
     "category": "ベストプラクティス：画面",
@@ -617,46 +557,6 @@
       "大量のデータを渡すと、ページのリクエストとサイズが増え、全体が遅くなる。",
       "追加の問い合わせにもコストがあり、比較して判断する必要がある。",
       "Idだけでは利用者が必要な情報を表示できない。"
-    ]
-  },
-  {
-    "id": "screen-032",
-    "exam": "web-developer-specialist",
-    "category": "ベストプラクティス：画面",
-    "difficulty": "標準",
-    "question": "Traditional Webアプリで、数百行のJavaScriptを画面のExpressionに直接書いてページに埋め込んでいる。ページの読み込みが遅い。最も適切な改善はどれか。",
-    "options": [
-      "JavaScriptをファイルにまとめ、モジュールのリソースなどとして取り込み、スクリプトへのリンクで読み込む",
-      "JavaScriptを複数のExpressionに分割して埋め込む",
-      "JavaScriptをSite Propertyに保存し、Expressionで出力する",
-      "JavaScriptを画面ごとにコピーして、各画面のExpressionに埋め込む"
-    ],
-    "answer": 0,
-    "explanation": "大きなJavaScriptを画面のExpressionで埋め込むと、画面のサイズが大きく増え、ページの読み込みが遅くなります。JavaScriptはファイルに置き、モジュールのリソースなどとして取り込んでスクリプトへのリンクで読み込みます。モジュール間で再利用でき、ロジックもまとまります。",
-    "wrongReasons": [
-      "分割しても、ページに埋め込まれるコードの量は変わらない。",
-      "Site Propertyに保存しても、ページに埋め込まれる点は変わらない。",
-      "画面ごとのコピーは、ページのサイズも保守の手間も増やす。"
-    ]
-  },
-  {
-    "id": "screen-033",
-    "exam": "web-developer-specialist",
-    "category": "ベストプラクティス：画面",
-    "difficulty": "標準",
-    "question": "アクセスの多いTraditional Webアプリのトップページで、表示直後には不要なJavaScriptが多く読み込まれ、最初の表示が遅い。最も適切な改善と注意点の組み合わせはどれか。",
-    "options": [
-      "JavaScriptをページの先頭に移す。注意点は特にない",
-      "JavaScriptをすべて削除する。機能が減っても表示速度を優先する",
-      "JavaScriptをExpressionに埋め込む。注意点は特にない",
-      "読み込み時に不要なJavaScriptをページの末尾に移す。ファイルの読み込み前に、それを必要とするJavaScriptが実行されないよう注意する"
-    ],
-    "answer": 3,
-    "explanation": "読み込み時に不要なJavaScriptをページの末尾に移すと、ブラウザは必要な内容を先に表示し、JavaScriptは後から読み込みます。特に読み込み時間を短くしたいトップページで重要です。ただし、ファイルが読み込まれる前にそれを必要とするJavaScriptを実行しないよう注意します。",
-    "wrongReasons": [
-      "先頭に置くと、JavaScriptの読み込みが終わるまで表示が遅れる。",
-      "必要な機能まで削除するのは、適切な改善ではない。",
-      "Expressionに埋め込むと、ページのサイズが増えてさらに遅くなる。"
     ]
   },
   {
@@ -700,23 +600,143 @@
     ]
   },
   {
-    "id": "screen-036",
+    "id": "screen-037",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "標準",
+    "question": "Reactive Webアプリで、Aggregateを2つ持つ画面を開いた。イベントの発生順として最も適切なものはどれか。",
+    "options": [
+      "On Ready → On Initialize → On After Fetch → On Render",
+      "On Initialize → On Ready → On Render → 各AggregateのOn After Fetch（それぞれの後にOn Render）",
+      "On Initialize → 各AggregateのOn After Fetch → On Ready → On Render（1回だけ）",
+      "On Render → On Initialize → On Ready → On After Fetch"
+    ],
+    "answer": 1,
+    "explanation": "ユーザーの権限確認の後にOn Initializeが実行されます。その終了後、AggregateやData Actionが並行してデータの取得を始め、DOMが読み込まれてOn ReadyとOn Renderが実行されます。各AggregateやData Actionの取得が終わるとそのOn After Fetchが実行され、画面のデータが変わるため、その後にOn Renderが実行されます。",
+    "wrongReasons": [
+      "On Initializeは画面のイベントの中で最初に実行される。",
+      "On ReadyとOn Renderはデータの取得完了を待たずに実行され、On After Fetchのたびに再びOn Renderが実行される。",
+      "On RenderはOn Readyの直後や、データが変わったときに実行される。"
+    ]
+  },
+  {
+    "id": "screen-038",
     "exam": "web-developer-specialist",
     "category": "ベストプラクティス：画面",
     "difficulty": "応用",
-    "question": "Traditional Webアプリで、多くの画面に表示する「都道府県の選択リスト」のWeb Blockをキャッシュして負荷を下げたい。このWeb Blockの中には、選択結果をAjax Submitで送るボタンがある。最も適切な対応はどれか。",
+    "question": "画面Aから画面Bへ移動するとき、画面BのOn Readyで、クラス名を指定してJavaScriptでDOM要素を探したところ、画面Aの要素まで見つかってしまった。原因と対策として最も適切なものはどれか。",
     "options": [
-      "SubmitやAjax Submitを含むWeb Blockはキャッシュできないため、送信のボタンをWeb Blockの外に出し、一覧の表示部分だけのWeb Blockをキャッシュする",
-      "そのままWeb BlockにCache in Minutesを設定すれば、送信も含めてキャッシュされる",
-      "Web Blockの代わりに画面全体をキャッシュする",
-      "キャッシュの代わりに、都道府県の一覧をSession Variableに保存する"
+      "移動中は画面Aと画面BのDOMが同時に存在するため、active-screenクラスを持つ要素の中だけを対象にする",
+      "画面Aの要素は移動前に必ず削除されているはずなので、キャッシュの不具合である",
+      "On ReadyではDOMが存在しないため、On Initializeで探す",
+      "画面Bのすべての要素に、画面名を含む独自のIdを付けるしかない"
     ],
     "answer": 0,
-    "explanation": "同じ結果が繰り返し得られるWeb Blockはキャッシュすると、処理の負荷を減らせます。ただし、SubmitやAjax Submitを含むWeb Blockはキャッシュに対応していません。また、キャッシュされた要素ではロジックが実行されない点にも注意し、表示だけの部分をキャッシュの対象にします。",
+    "explanation": "画面の移動では、遷移先の画面のDOMがすぐに読み込まれ始め、移動元の画面のDOMは遷移先のOn Renderの後、画面の切り替えが終わってから削除されます。そのため両方の画面のDOMが同時に存在する期間があります。現在の画面に対して処理するには、active-screenクラスを持つ要素の中だけを対象にします。",
     "wrongReasons": [
-      "SubmitやAjax Submitを含むWeb Blockはキャッシュできない。",
-      "画面（Screen）はキャッシュに対応していない。",
-      "Session Variableに一覧を持つと、セッションのデータが増えてリクエストごとの負荷が増える。"
+      "移動元の画面のDOMは、遷移先の描画が終わるまで残る仕様である。",
+      "On InitializeはDOMが完全に読み込まれる前に実行されるため、DOMの操作には使えない。",
+      "active-screenクラスを使えば、独自のIdを付けなくても現在の画面を区別できる。"
+    ]
+  },
+  {
+    "id": "screen-039",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "応用",
+    "question": "画面Sの中にBlock Xがあり、Block Xの中にBlock Yがある。画面Sから別の画面へ移動するとき、On Destroyの実行順として最も適切なものはどれか。",
+    "options": [
+      "Block Y → Block X → 画面S",
+      "Block X → Block Y → 画面S",
+      "画面S → Block X → Block Y",
+      "3つは同時に実行され、順序は決まっていない"
+    ],
+    "answer": 2,
+    "explanation": "On Destroyは上から下の順に発生します。入れ子のBlockを持つ画面では、まず画面で、次に外側のBlockで、その後に入れ子のBlockで発生します。なお、On ReadyやOn Renderは逆に、Blockのほうが親の画面やBlockより先に発生します。",
+    "wrongReasons": [
+      "内側からではなく、画面から順に発生する。",
+      "画面が最初で、その後に外側、内側のBlockの順になる。",
+      "On Destroyの順序は決まっている。"
+    ]
+  },
+  {
+    "id": "screen-040",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "標準",
+    "question": "親のBlock Pの入力パラメータが変わり、それに連動してP内の入れ子のBlock Cの入力パラメータも変わった。On Parameters Changedの実行について正しい説明として最も適切なものはどれか。",
+    "options": [
+      "Block CのOn Parameters Changedが先に実行され、その後Block Pで実行される",
+      "Block PのOn Parameters Changedだけが実行され、Block Cでは実行されない",
+      "どちらのBlockでも、On Parameters Changedの前にOn Renderが実行される",
+      "外側のBlock PのOn Parameters Changedが、入れ子のBlock Cの同じイベントより先に実行される"
+    ],
+    "answer": 3,
+    "explanation": "Blockの中にBlockがあり、外側のBlockの入力の変更が入れ子のBlockの入力に影響する場合、外側のBlockのOn Parameters Changedが入れ子のBlockの同じイベントより先に実行されます。入力パラメータはBlockのデータの一部なので、On Parameters Changedの後にOn Renderも実行されます。",
+    "wrongReasons": [
+      "外側のBlockが先で、入れ子のBlockが後である。",
+      "入れ子のBlockの入力も親から変更されているため、Block Cでも実行される。",
+      "On RenderはOn Parameters Changedの後に実行される。"
+    ]
+  },
+  {
+    "id": "screen-041",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "応用",
+    "question": "BlockのOn Initializeで、Server Actionを呼んで取得した値をBlockのLocal Variableに設定し、その変数で表示を切り替えている。ときどき初期表示が正しくない。原因として最も適切なものはどれか。",
+    "options": [
+      "BlockではOn Initializeが実行されないため",
+      "BlockのOn InitializeでServer Actionの呼び出しやローカルストレージの操作を行うと、その完了前にBlockの描画が始まることがあるため",
+      "Local VariableはOn Initializeで変更できないため",
+      "Server Actionは画面からしか呼べないため"
+    ],
+    "answer": 1,
+    "explanation": "BlockのOn Initializeに、Server Actionの呼び出しやローカルストレージの操作を含めると、その処理が終わる前にBlockの描画が始まることがあります。このフローで描画に影響する変数を設定すると、問題が起こります。On Initializeは単純に保ち、データの取得にはAggregateやData Actionを使います。",
+    "wrongReasons": [
+      "BlockでもOn Initializeは実行される（Blockでは画面への移動の後）。",
+      "On InitializeでLocal Variableを設定すること自体はできる。",
+      "Server ActionはBlockのロジックからも呼べる。"
+    ]
+  },
+  {
+    "id": "screen-042",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "基礎",
+    "question": "画面の変数CustomerIdを条件に使うAggregateがある。ボタン操作でCustomerIdに別の顧客のIdを代入したが、一覧の内容が変わらない。最も適切な対応はどれか。",
+    "options": [
+      "代入の後に、Refresh DataでそのAggregateを再実行する",
+      "画面を再読み込みするようブラウザに指示する",
+      "変数の代入をOn Renderで行う",
+      "AggregateのFetchをAt startからOnly on demandに変える"
+    ],
+    "answer": 0,
+    "explanation": "画面の変数を変えるとOn Renderが発生し、その変数に依存するUIは自動で更新されますが、AggregateやData Actionのクエリは自動では再実行されません。Refresh Dataのフロー要素で該当のAggregateを再実行すると、取得後に一覧が自動で更新されます。",
+    "wrongReasons": [
+      "ページ全体の再読み込みは不要で、遅く、他の状態も失われる。",
+      "On Renderでデータを変更すると、On Renderが繰り返し実行されるおそれがある。",
+      "Only on demandにしても、Refresh Dataを呼ばない限り再取得されない。"
+    ]
+  },
+  {
+    "id": "screen-043",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：画面",
+    "difficulty": "標準",
+    "question": "利用者の権限によっては、ある画面を表示させずに別の画面へ移動させたい（画面のRolesだけでは判定できない業務上の条件がある）。この判定と移動を実装するイベントとして最も適切なものはどれか。",
+    "options": [
+      "On Render",
+      "On Destroy",
+      "画面のOn Initialize",
+      "AggregateのOn After Fetch"
+    ],
+    "answer": 2,
+    "explanation": "画面のOn Initializeは、権限の確認の後、画面への移動とデータの取得の前に実行されるため、利用者が画面を見る権限がない場合に別の画面へ移動させる処理に使えます（画面のイベントの場合に限る）。",
+    "wrongReasons": [
+      "On Renderは描画のたびに実行され、画面が一度表示されてしまう。",
+      "On Destroyは画面を破棄するときのイベントで、表示前の判定には使えない。",
+      "On After Fetchはデータ取得後で、画面はすでに表示が始まっている。"
     ]
   }
 ]

@@ -440,26 +440,6 @@
     ]
   },
   {
-    "id": "query-023",
-    "exam": "web-developer-specialist",
-    "category": "ベストプラクティス：クエリ",
-    "difficulty": "応用",
-    "question": "Traditional Webアプリの画面で、Preparationの中でAggregateの結果をFor Eachで1回反復して合計を計算し、同じ結果をTable Recordsでも表示している。取得件数は多い。サーバーのメモリの観点での説明として最も適切なものはどれか。",
-    "options": [
-      "For Eachは1回だけなので、クエリの結果はメモリに読み込まれない",
-      "Table Recordsの表示でも結果を再び反復するため、クエリの結果がメモリにコピーされる",
-      "Table Recordsは、表示のたびにデータベースへ再度問い合わせるため、メモリは使わない",
-      "Aggregateの結果は常にディスクに書き出されるため、メモリの心配はない"
-    ],
-    "answer": 1,
-    "explanation": "同じクエリ結果を複数回反復すると、結果は自動的にメモリに読み込まれます。画面に表示する一覧も同様で、一度反復したクエリをTable Recordsで表示すると、表示の際に再び反復するためクエリがメモリにコピーされます。件数が多く頻繁に表示される画面では、メモリ消費が大きくなります。",
-    "wrongReasons": [
-      "Table Recordsの表示も反復にあたるため、合わせて2回の反復になる。",
-      "Table Recordsは取得済みのクエリ結果を表示するもので、表示のたびに再取得はしない。",
-      "クエリ結果はディスクではなくメモリに読み込まれる。"
-    ]
-  },
-  {
     "id": "query-024",
     "exam": "web-developer-specialist",
     "category": "ベストプラクティス：クエリ",

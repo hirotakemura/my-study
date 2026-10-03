@@ -278,5 +278,245 @@
       "Max. Recordsは結果の件数を絞るだけで、結合のために読み込まれるデータ量は減らない。",
       "エンティティにはキャッシュの設定はなく、キャッシュしても初回や再取得時の結合は発生する。"
     ]
+  },
+  {
+    "id": "extdb-015",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "基礎",
+    "question": "Integration Builderで外部の関係データベースとの連携を公開した。生成されるアプリの構成として最も適切なものはどれか。",
+    "options": [
+      "エンティティを公開する、名前の末尾が「_DRV」の拡張機能（Extension）と、Integration Managerへの登録に使う「_IS」の内部モジュール",
+      "Server Actionだけを持つ1つのモジュール",
+      "外部データベースのデータをコピーして持つ、OutSystemsのデータベースのエンティティ",
+      "Integration Studioで編集するための拡張機能のソースコード"
+    ],
+    "answer": 0,
+    "explanation": "外部データベースとの連携では、Integration Builderは2つのモジュールからなるアプリを生成します。外部データベースを操作するエンティティとEntity Actionを公開する拡張機能（既定で末尾が「_DRV」＝Driver）と、Integration Managerに連携を登録するための内部のサービスモジュール（既定で末尾が「_IS」＝Integration Service、変更できないよう保護されている）です。",
+    "wrongReasons": [
+      "外部データベースとの連携では、エンティティを公開する拡張機能が生成される。",
+      "データはコピーされず、外部データベースのデータを直接操作する。",
+      "Integration Builderで作った拡張機能はIntegration Studioで編集できない。"
+    ]
+  },
+  {
+    "id": "extdb-016",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "標準",
+    "question": "Integration Builderで作った外部データベース連携の、テーブルの「金額」列（Text型として取り込まれた）をDecimal型として扱いたい。また「備考」列のLengthやMandatoryも設定したい。可能な対応として最も適切なものはどれか。",
+    "options": [
+      "LengthやMandatoryも含めて、属性のすべての設定を変更できる",
+      "データ型の変更もLengthやMandatoryの設定もできない",
+      "Text型の属性はCurrency、Decimal、Email、PhoneNumberに変更できるが、属性のLength、Mandatory、AutoNumber、Delete Rule、Descriptionは設定できない",
+      "Text型はDate型にだけ変更できる"
+    ],
+    "answer": 2,
+    "explanation": "Integration Builderで変更できるデータ型はText型とDateTime型だけです。Text型はCurrency、Decimal、Email、PhoneNumberに、DateTime型はDate、Timeに変更できます。属性のLength、Mandatory、AutoNumber、Delete Rule、Descriptionは設定できません。",
+    "wrongReasons": [
+      "LengthやMandatoryなどは属性ごとに設定できない。",
+      "Text型とDateTime型のデータ型は変更できる。",
+      "Text型はDateではなく、Currency、Decimal、Email、PhoneNumberに変更できる。"
+    ]
+  },
+  {
+    "id": "extdb-017",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "応用",
+    "question": "Integration Builderで取り込んだ外部データベースのテーブルに主キーが定義されていない。エンティティのIdentifierを設定したい。正しい説明として最も適切なものはどれか。",
+    "options": [
+      "主キーの有無に関係なく、任意の型の属性をIdentifierにできる",
+      "外部システムで主キーが定義されていない場合に限り変更でき、選べるのはInteger、LongInteger、Text型の属性である",
+      "Identifierは常に自動採番の属性が追加される",
+      "主キーのないテーブルはIntegration Builderで取り込めない"
+    ],
+    "answer": 1,
+    "explanation": "エンティティのIdentifierは、外部システムで主キーが定義されていない場合に限り変更できます。Identifierとして選べるのは、Integer、LongInteger、Text型の属性です。",
+    "wrongReasons": [
+      "主キーが定義されている場合は変更できず、型にも制限がある。",
+      "自動採番の属性が追加されるわけではない。",
+      "主キーのないテーブルも取り込め、Identifierを選択できる。"
+    ]
+  },
+  {
+    "id": "extdb-018",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "標準",
+    "question": "外部の関係データベースにある約300テーブルを、Integration Builderの1つの連携で取り込もうとしている。最も適切な説明はどれか。",
+    "options": [
+      "1つの連携で扱えるテーブル数に上限はない",
+      "関係データベースの1つの連携で扱えるエンティティは最大200個のため、複数の連携に分けるか、Integration Studioを使う",
+      "100テーブルを超えると、自動的に別の連携に分割される",
+      "関係データベースは最大80テーブルまでしか取り込めない"
+    ],
+    "answer": 1,
+    "explanation": "生成処理の安定性のため、1つの連携で扱えるのは関係データベースで最大200エンティティ、非関係型（MongoDBなど）で最大80オブジェクトです。これを超える場合は、複数の連携に分けるか、Integration Studioを使います。",
+    "wrongReasons": [
+      "1つの連携で扱えるエンティティ数には上限がある。",
+      "自動で分割される仕組みはない。",
+      "80は非関係型のオブジェクト数の上限で、関係データベースは200である。"
+    ]
+  },
+  {
+    "id": "extdb-019",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "標準",
+    "question": "Integration Builderで外部データベース連携を作るため、既存のデータベース接続を選ぼうとしたが、一覧に目的の接続があるのに選択できない。また新しい接続を作る権限もない。最も適切な対応はどれか。",
+    "options": [
+      "Integration Studioで同じ接続を作り直す",
+      "アプリのコードに接続文字列を直接書く",
+      "外部データベースのテーブルをOutSystemsのエンティティにコピーする",
+      "接続の選択にはFull Controlの権限が必要なため権限を確認し、新しい接続が必要なら「Send request by email」でOutSystemsの管理者に作成を依頼する"
+    ],
+    "answer": 3,
+    "explanation": "接続の一覧には閲覧権限のある接続が表示されますが、選択するにはFull Controlの権限が必要です。関係データベースへの新しい接続が必要で作成の権限がない場合は、「Send request by email」で接続の詳細を伝え、OutSystemsの管理者に作成を依頼できます。",
+    "wrongReasons": [
+      "Integration Studioの拡張機能とIntegration Builderの連携は互いに編集できず、解決にならない。",
+      "接続情報をコードに書くのはセキュリティ上も管理上も不適切である。",
+      "データのコピーは連携ではなく、データの二重管理になる。"
+    ]
+  },
+  {
+    "id": "extdb-020",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "応用",
+    "question": "Integration Builderで外部のOracleデータベースへの接続を作る。データベースのNLS_LANGUAGEパラメータは「JAPANESE」である。接続の設定で注意すべきこととして最も適切なものはどれか。",
+    "options": [
+      "接続のNLS_LANGUAGEの項目を、データベースと同じ値に設定する。日付や数値の書式に関する実行時の問題を防ぐため",
+      "NLS_LANGUAGEは常にAMERICANのままにする",
+      "Oracleの場合、DBMSの選択欄はSQL Serverのままでよい",
+      "NLS_LANGUAGEは実行時に自動で検出されるため、設定は不要である"
+    ],
+    "answer": 0,
+    "explanation": "NLS_LANGUAGEがAMERICAN以外の外部Oracleデータベースに接続する場合は、接続のNLS_LANGUAGEの項目をデータベースと同じ値に設定します。日付や数値の書式に関する実行時の問題を防げます。データベースの値は、nls_database_parametersを参照するSQLで確認できます。",
+    "wrongReasons": [
+      "データベースの値と異なると、日付や数値の書式で問題が起こるおそれがある。",
+      "DBMSの選択欄は既定でSQL Server/Azure SQLのため、正しいデータベースを選ぶ必要がある。",
+      "自動では検出されないため、データベースと同じ値を設定する。"
+    ]
+  },
+  {
+    "id": "extdb-021",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "標準",
+    "question": "Integration BuilderでMongoDBのコレクションを取り込む。あるフィールドが、ドキュメントによって文字列だったり数値だったりする。このフィールドを連携で使うための対応として最も適切なものはどれか。",
+    "options": [
+      "そのコレクションの形式（Format）をStructureにし、フィールドを選択する",
+      "そのコレクションの形式をJSONにし、必要なStructureを自分で作ってシリアライズ・デシリアライズする",
+      "そのフィールドの型をTextに変更してから取り込む",
+      "MongoDBのコレクションは取り込めないため、REST APIを使う"
+    ],
+    "answer": 1,
+    "explanation": "ドキュメントによってフィールドのデータ型が異なると、Integration Builderは最終的なデータ型を決められず、そのフィールドはStructure形式では選択できません。そのフィールドが必要な場合は、コレクションの形式をJSONにします。JSON形式では、Server Actionの入出力がテキストのJSONになり、Structureは自分で作成して変換します。",
+    "wrongReasons": [
+      "型が混在するフィールドは、Structure形式では選択できない。",
+      "Integration Builderの画面でフィールドの型を変更して取り込むことはできない。",
+      "MongoDBのコレクションはIntegration Builderで取り込める。"
+    ]
+  },
+  {
+    "id": "extdb-022",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "応用",
+    "question": "Integration BuilderでMongoDBのコレクションをStructure形式で取り込んだところ、最近追加されたドキュメントにしかないフィールドが現れず、逆に古いフィールドが足りないこともある。Structureの生成についての説明と対応として最も適切なものはどれか。",
+    "options": [
+      "Structureはコレクションのすべてのドキュメントから生成されるため、不具合である",
+      "Structureは最初のドキュメント1件だけから生成されるため、変更できない",
+      "既定では最新の5件のドキュメントからStructureが生成されるため、サンプルの選び方（Most recent／Evenly spread）や件数を変えてUpdate structureする",
+      "Structureは手動で作る必要があり、Integration Builderは生成しない"
+    ],
+    "answer": 2,
+    "explanation": "Integration Builderは、既定ではコレクションの最新の5件のドキュメントを調べてStructureを生成します。サンプルをMost recentまたはEvenly spreadに変えたり、調べるドキュメントの件数を変えたりしてから、Update structureで作り直せます。なお、空のコレクションではStructure形式は使えません。",
+    "wrongReasons": [
+      "すべてのドキュメントではなく、サンプルのドキュメントから生成される。",
+      "既定は最新の5件で、サンプルの方法や件数は変更できる。",
+      "Structure形式では、Integration BuilderがStructureを生成する。"
+    ]
+  },
+  {
+    "id": "extdb-023",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "標準",
+    "question": "MongoDBの「監査ログ」コレクションを連携で使うが、アプリからは参照だけにして、書き込みは確実に防ぎたい。Integration Builderでの設定として最も適切なものはどれか。",
+    "options": [
+      "そのコレクションのAccess TypeでRead-onlyを選択する",
+      "コレクションの形式をJSONにする",
+      "生成されたServer Actionを、利用側のモジュールで呼ばないように注意する",
+      "MongoDBのコレクションは常に読み取り専用である"
+    ],
+    "answer": 0,
+    "explanation": "コレクションを選択するとAccess Typeの項目が表示され、Read-onlyのチェックを付けると、そのコレクションはデータの読み取りだけが許可され、書き込みが防止されます。",
+    "wrongReasons": [
+      "形式（StructureかJSONか）は、データの表現方法の設定で、書き込みの可否とは関係ない。",
+      "運用上の注意だけでは書き込みを確実には防げない。",
+      "MongoDBのコレクションは、Read-onlyにしなければ書き込みもできる。"
+    ]
+  },
+  {
+    "id": "extdb-024",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "応用",
+    "question": "外部の関係データベースのテーブルに、NULLを許可する列が多数ある。アプリから値を書き込まなかった列は、データベース上でNULLのままにしておきたい。Integration Builderで公開する前に確認すべき設定として最も適切なものはどれか。",
+    "options": [
+      "Default value behaviorを既定のOverwrite database NULLsのままにする",
+      "各属性のMandatoryをNoにする",
+      "すべての列の型をTextに変更する",
+      "Default value behaviorをPreserve database NULLsにする"
+    ],
+    "answer": 3,
+    "explanation": "Default value behaviorには2つの選択肢があります。既定のOverwrite database NULLsは、常にプラットフォームの既定値をデータベースに書き込み、NULLはプラットフォームの既定値として読み込みます。Preserve database NULLsは、Integration Builderの既定値をデータベースのNULLとして書き込み、NULLはIntegration Builderの既定値として読み込みます。NULLを残したい場合はPreserve database NULLsを選びます。",
+    "wrongReasons": [
+      "Overwrite database NULLsでは、値を設定しない列にもプラットフォームの既定値（空文字や0など）が書き込まれる。",
+      "Integration Builderでは属性のMandatoryを設定できない。",
+      "型を変えても、NULLの扱いの設定は変わらない。"
+    ]
+  },
+  {
+    "id": "extdb-025",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "基礎",
+    "question": "Integration Builderで公開した外部の関係データベースとの連携を、アプリで使いたい。手順として最も適切なものはどれか。",
+    "options": [
+      "Integration Studioで連携を開き、拡張機能として公開し直す",
+      "Service Studioのモジュールの依存関係の管理（Manage Dependencies）で連携を追加し、使うエンティティを選択してApplyする",
+      "Service Centerでアプリに連携を割り当てる",
+      "連携のSQLを、アプリのSQL要素にコピーする"
+    ],
+    "answer": 1,
+    "explanation": "アプリのモジュールで依存関係の管理（Manage Dependencies）を開き、連携を追加して使うエンティティを選択し、Applyします。その後は、通常のOutSystemsのエンティティと同じように外部データベースのデータを操作できます。MongoDBの連携では、エンティティではなくServer Actionを選択します。",
+    "wrongReasons": [
+      "Integration Builderで作った連携はIntegration Studioで編集できない。",
+      "連携の利用は、Service Centerではなくモジュールの依存関係で設定する。",
+      "SQLをコピーするのではなく、公開されたエンティティを参照して使う。"
+    ]
+  },
+  {
+    "id": "extdb-026",
+    "exam": "web-developer-specialist",
+    "category": "統合：外部データベース",
+    "difficulty": "標準",
+    "question": "Integration Builderで外部データベース連携を作ったが、アプリの実行時に外部データベースへ接続できないことがある。環境はInternal Networkの設定で通信先を制限している。確認すべき前提条件として最も適切なものはどれか。",
+    "options": [
+      "開発者のPCから外部データベースへ接続できること",
+      "LifeTimeのサーバーだけが外部データベースへ接続できること",
+      "すべてのインフラのサーバーが外部データベースへ接続でき、Internal Networkの設定にIntegration BuilderのIPアドレスが追加されていること",
+      "利用者のブラウザから外部データベースへ接続できること"
+    ],
+    "answer": 2,
+    "explanation": "前提条件として、すべてのインフラのサーバーが外部データベースへ接続できる必要があります。また、Internal Networkの設定を使っている場合は、Integration BuilderのIPアドレスを追加する必要があります。",
+    "wrongReasons": [
+      "アプリはサーバーで実行されるため、開発者のPCからの接続だけでは足りない。",
+      "LifeTimeのサーバーだけでなく、すべてのインフラのサーバーが接続できる必要がある。",
+      "データベースへはサーバーから接続し、利用者のブラウザから直接接続することはない。"
+    ]
   }
 ]
