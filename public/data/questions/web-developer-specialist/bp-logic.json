@@ -558,5 +558,245 @@
       "Aggregateの最適化が失われ、保守性も下がるため、原因がわからないまま書き換えるべきではない。",
       "インデックスの追加しすぎは登録・更新を遅くし、原因の特定にもならない。"
     ]
+  },
+  {
+    "id": "logic-029",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "基礎",
+    "question": "OutSystemsのキャッシュの仕組みについての説明として最も適切なものはどれか。",
+    "options": [
+      "キャッシュはデータベースに保存され、すべてのフロントエンドサーバーで共有される",
+      "キャッシュはメモリ（RAM）上に各フロントエンドサーバーごとに持ち、領域が足りなくなると最も長く使われていないものから削除される",
+      "キャッシュは利用者のブラウザに保存され、サーバーの負荷は変わらない",
+      "キャッシュは一度保存されると、明示的に削除しない限り消えない"
+    ],
+    "answer": 1,
+    "explanation": "OutSystemsのキャッシュはRAMを使い、各フロントエンドサーバーに存在します。メモリが必要になると、LRU（Least Recently Used、最も長く使われていないもの）のアルゴリズムで要素が削除されます。",
+    "wrongReasons": [
+      "キャッシュはデータベースではなく、各フロントエンドサーバーのメモリに保持される。",
+      "ここでいうキャッシュはサーバー側の仕組みで、ブラウザに保存されるものではない。",
+      "Cache in Minutesの経過やメモリ不足、無効化などでキャッシュは更新・削除される。"
+    ]
+  },
+  {
+    "id": "logic-030",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "標準",
+    "question": "マルチテナントのアプリで、あるテナントのマスタデータを更新したので、そのテナントのキャッシュだけを無効化したい。最も適切な方法はどれか。",
+    "options": [
+      "モジュールを再公開する",
+      "フロントエンドサーバーを再起動する",
+      "Cache in Minutesを0に変更して公開する",
+      "System ActionのTenantInvalidateCacheを使う"
+    ],
+    "answer": 3,
+    "explanation": "マルチテナントのアプリでは、テナントごとに専用のキャッシュがあり、そのテナントのデータだけが保存されます。特定のテナントのキャッシュを無効化するにはTenantInvalidateCacheを、モジュール全体ではEspaceInvalidateCacheを使います。",
+    "wrongReasons": [
+      "再公開はすべてのテナントのキャッシュを無効化し、作業としても過剰である。",
+      "再起動は影響が大きく、特定のテナントだけを対象にできない。",
+      "キャッシュを止めると性能が落ち、特定のテナントの無効化という目的にも合わない。"
+    ]
+  },
+  {
+    "id": "logic-031",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "標準",
+    "question": "データを更新するたびに、念のためEspaceInvalidateCacheを呼んでキャッシュを無効化する実装が多くの箇所に入っている。この実装に対する指摘として最も適切なものはどれか。",
+    "options": [
+      "キャッシュの無効化は、無効化後の最初のアクセスの性能を下げ、アプリのコンパイルでサーバーの負荷も増やすため、必要な場面に限って使う",
+      "キャッシュの無効化は負荷がないので、できるだけ頻繁に呼ぶべきである",
+      "EspaceInvalidateCacheは、データベースのデータも元に戻してしまう",
+      "EspaceInvalidateCacheは、Client Variableも削除してしまう"
+    ],
+    "answer": 0,
+    "explanation": "キャッシュ無効化のSystem Actionは、アプリの最初のアクセス時の性能を下げ、IISでのアプリのコンパイルによってサーバーの負荷も増やします。そのため、使用は最小限にとどめます。",
+    "wrongReasons": [
+      "無効化には性能への悪影響があり、頻繁に呼ぶべきではない。",
+      "キャッシュの無効化は、データベースのデータには影響しない。",
+      "サーバー側のキャッシュの無効化で、ブラウザ側のClient Variableは削除されない。"
+    ]
+  },
+  {
+    "id": "logic-032",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "基礎",
+    "question": "次のうち、Cache in Minutesプロパティでキャッシュを設定できる要素として最も適切なものはどれか。",
+    "options": [
+      "公開（Expose）したREST API",
+      "Submitを含むTraditional WebのWeb Block",
+      "AggregateやSQL要素が返すリスト",
+      "画面（Screen）"
+    ],
+    "answer": 2,
+    "explanation": "キャッシュに対応しているのは、AggregateやSQL要素が返すリスト、独自に作ったServer Actionの出力パラメータ、Traditional WebアプリのWeb Blockとその中の要素です。画面、公開したREST、SubmitやAjax Submitを含むWeb Blockは対応していません。",
+    "wrongReasons": [
+      "公開したRESTはキャッシュに対応していない。",
+      "SubmitやAjax Submitを含むWeb Blockはキャッシュできない。",
+      "画面はキャッシュに対応していない。"
+    ]
+  },
+  {
+    "id": "logic-033",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "標準",
+    "question": "社員一覧を返す外部のSOAP Web Serviceを、新しいSOAPの実装で利用している。結果はほとんど変わらないため、キャッシュして呼び出し回数を減らしたい。最も適切な方法はどれか。",
+    "options": [
+      "SOAPのメソッドにCache in Minutesを設定する",
+      "SOAPの呼び出しをServer Actionで包み、そのServer ActionにCache in Minutesを設定する",
+      "SOAPの結果をSite Propertyに保存する",
+      "SOAPの結果を画面のLocal Variableに保持する"
+    ],
+    "answer": 1,
+    "explanation": "SOAP Web ServiceはServer Actionで包み、そのServer Actionのキャッシュを有効にすることが推奨されています。新しいSOAPの実装はキャッシュに対応していないため、この方法が必要です。従来（Deprecated）の実装はキャッシュに対応していますが、その場合もServer Actionで包むことが推奨されています。",
+    "wrongReasons": [
+      "新しいSOAPの実装はキャッシュに対応していない。",
+      "Site Propertyは設定値のための仕組みで、一覧データの保存には向かず、更新はキャッシュの無効化も招く。",
+      "画面の変数では画面を開くたびに呼び出すことになり、利用者間でも共有されない。"
+    ]
+  },
+  {
+    "id": "logic-034",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "基礎",
+    "question": "Server Actionの結果をキャッシュするように設定したい。キャッシュを有効にする方法として最も適切なものはどれか。",
+    "options": [
+      "Server ActionのPublicプロパティをYesにする",
+      "Server ActionのFunctionプロパティをYesにする",
+      "Service Centerでモジュールのキャッシュを有効にする",
+      "Server ActionのCache in Minutesプロパティに0より大きい値を設定する"
+    ],
+    "answer": 3,
+    "explanation": "要素の内容をキャッシュするには、Cache in Minutesプロパティに0より大きい値を設定します。値はキャッシュを保持する時間（分）です。",
+    "wrongReasons": [
+      "Publicは、他のモジュールからアクションを使えるようにする設定である。",
+      "Functionは、アクションを式の中で使えるようにする設定である。",
+      "キャッシュは要素ごとにCache in Minutesで設定するもので、Service Centerで有効にするものではない。"
+    ]
+  },
+  {
+    "id": "logic-035",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "応用",
+    "question": "入力パラメータCountryIdを持つServer Actionに、Cache in Minutes=60を設定した。10時にCountryId=1で呼ばれて結果がキャッシュされた。次のうち、10時から60分以内でもServer Actionの処理が再び実行されるものとして最も適切なものはどれか。",
+    "options": [
+      "10時30分に、まだキャッシュがないCountryId=2で呼ばれた",
+      "10時30分に、別の利用者がCountryId=1で呼んだ",
+      "10時30分に、同じ利用者がもう一度CountryId=1で呼んだ",
+      "10時30分に、呼び出し元の画面のデザインを変更せずに再表示した"
+    ],
+    "answer": 0,
+    "explanation": "キャッシュされた要素は、前回のキャッシュからCache in Minutesの時間が過ぎたとき、入力パラメータの新しい値に対するキャッシュがないとき、キャッシュが無効化されたとき（再公開、デプロイ、サーバーの再起動、明示的な無効化など）に再評価されます。",
+    "wrongReasons": [
+      "キャッシュは入力パラメータの値ごとに保持され、利用者が違っても同じ値ならキャッシュが返される。",
+      "同じ入力値で60分以内なら、キャッシュされた結果が返される。",
+      "画面を再表示しても、同じ入力値で有効期間内ならキャッシュが使われる。"
+    ]
+  },
+  {
+    "id": "logic-036",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "応用",
+    "question": "Traditional Webアプリで、カテゴリ一覧を表示するWeb BlockにCache in Minutesを設定した。中のAggregateの取得結果が変わっても、表示がすぐに更新されない。この動作の説明として最も適切なものはどれか。",
+    "options": [
+      "Web Blockの中のAggregateは、キャッシュの対象外であるため",
+      "Web Blockのキャッシュは、中に含まれる要素の内容が変わっても自動では更新されず、Web Block全体が再評価されたときに更新されるため",
+      "Web Blockのキャッシュは、利用者がブラウザを閉じるまで保持されるため",
+      "Web Blockのキャッシュは、データベースの変更を検知して自動で更新されるはずなので、不具合である"
+    ],
+    "answer": 1,
+    "explanation": "Traditional WebアプリのWeb Blockは、中に含まれるすべての要素の内容をキャッシュします。しかし中の要素の内容が変わってもキャッシュは自動では更新されず、Web Block全体が再評価されたときに更新されます。",
+    "wrongReasons": [
+      "Web Blockは中の要素も含めてキャッシュする。",
+      "キャッシュはサーバー側のもので、ブラウザを閉じることとは関係ない。",
+      "キャッシュはデータベースの変更を検知しないため、仕様どおりの動作である。"
+    ]
+  },
+  {
+    "id": "logic-037",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "標準",
+    "question": "Traditional Webアプリで、ログイン時に利用者の権限一覧や設定をまとめた大きなデータをSession Variableに保存している。AJAXを多用する画面の応答が遅い。最も適切な改善はどれか。",
+    "options": [
+      "Session Variableのデータをさらに増やして、データベースへの問い合わせを減らす",
+      "利用者ごとの情報はデータベースに保存し、Session Variableには必要最小限の値だけを持たせる",
+      "Session Variableの代わりにSite Propertyに保存する",
+      "AJAXの呼び出しのたびに、Session Variableを初期化し直す"
+    ],
+    "answer": 1,
+    "explanation": "大きなSession Variableはリクエストのたびに読み込まれるため、特にAJAXのリクエストで応答時間が長くなります。利用者ごとの情報はデータベースに保存し、セッションのデータを減らします。",
+    "wrongReasons": [
+      "セッションのデータを増やすと、リクエストごとの負荷がさらに増える。",
+      "Site Propertyは環境全体の設定値で、利用者ごとの情報には使えない。",
+      "初期化し直すと、毎回データを作り直す負荷が増える。"
+    ]
+  },
+  {
+    "id": "logic-038",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "標準",
+    "question": "Traditional Webアプリの画面のPreparationで、Ifの片方の分岐の中でだけAggregateを実行し、その結果を分岐の外の画面のウィジェットでも使っている。この実装に対する改善として最も適切なものはどれか。",
+    "options": [
+      "両方の分岐で同じAggregateを実行する",
+      "AggregateをIfの前に移し、条件に関係なく必ず実行する",
+      "Aggregateの結果をSession Variableに保存する",
+      "画面のLocal Variableを用意して必要な値を代入し、ウィジェットではその変数を使う"
+    ],
+    "answer": 3,
+    "explanation": "PreparationのIfの分岐の中にある条件付きのクエリを、分岐の外でも使うと、クエリのデータがページのviewstateに含まれ、ページのサイズが増えて表示が遅くなります。画面のLocal Variableを使って必要な値だけを持たせます。",
+    "wrongReasons": [
+      "両方で実行すると、クエリの回数が増えるうえ、viewstateの問題も解決しない。",
+      "常に実行すると、不要な場合にもクエリが走る。",
+      "Session Variableに保存すると、セッションのデータが増えて性能が悪化する。"
+    ]
+  },
+  {
+    "id": "logic-039",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "標準",
+    "question": "Traditional Webアプリの一覧画面で、Preparationの中で注文ごとの合計金額を毎回計算し、さらに閲覧履歴をデータベースに書き込んでいる。画面の表示が遅い。最も適切な改善はどれか。",
+    "options": [
+      "合計金額は注文の登録・更新時に計算して保存しておき、Preparationでの書き込み処理は必要な場合を除いて避ける",
+      "Preparationの処理を、すべてJavaScriptに移す",
+      "Preparationの中で、同じ権限チェックを何度も行う",
+      "一覧の表示件数を増やして、画面の切り替え回数を減らす"
+    ],
+    "answer": 0,
+    "explanation": "Preparationで重い処理を行うと、ページの表示が遅くなります。複雑な計算は書き込み時に前もって行い、Preparationでのクエリの数を減らし、必要な場合を除いて書き込み処理を避けます。重複した権限チェックも減らします。",
+    "wrongReasons": [
+      "データベースに依存する処理はクライアントだけでは行えず、計算の負荷も解消しない。",
+      "重複した権限チェックは、Preparationを遅くする原因になる。",
+      "表示件数を増やすと、1回の処理がさらに重くなる。"
+    ]
+  },
+  {
+    "id": "logic-040",
+    "exam": "web-developer-specialist",
+    "category": "ベストプラクティス：ロジック",
+    "difficulty": "基礎",
+    "question": "次のうち、キャッシュを設定する対象として最も適切なものはどれか。",
+    "options": [
+      "利用者の口座の最新残高を返すServer Action",
+      "毎回異なる受付番号を採番するServer Action",
+      "データベースに保存された商品カテゴリの一覧を返すAggregate（カテゴリはまれにしか変わらない）",
+      "ログイン中の利用者の未読メッセージ数を返すServer Action"
+    ],
+    "answer": 2,
+    "explanation": "キャッシュに向いているのは、データベースや外部システムからデータを取得するなど実行に時間や資源がかかり、同じ入力に対して結果がまれにしか変わらない（または管理された形で変わる）要素です。データベースに保存されたカテゴリ一覧はその典型例です。",
+    "wrongReasons": [
+      "最新の値が必要なデータをキャッシュすると、古い値が表示されてしまう。",
+      "毎回異なる値を返す処理をキャッシュすると、同じ番号が返されてしまう。",
+      "頻繁に変わる利用者ごとのデータは、キャッシュすると古い値や他人の値を返すおそれがある。"
+    ]
   }
 ]

@@ -10,7 +10,7 @@ OutSystems Specialist資格（最終目標：Expert Developer）の問題演習�
 | 画面 | 内容 |
 |---|---|
 | ホーム | 次の試験までのカウントダウンと準備状況（着手数・正答率・直近の模試）、状況に応じた「今日のおすすめ」（苦手分野／未着手／間違えた問題／本番模試をワンタップで開始）、今日の学習時間・連続学習日数・今週の合計、この後の受験予定 |
-| 演習 | Web Developer Specialist（200問）と Front-end Developer Specialist（100問）、Mobile Developer Specialist（100問）のオリジナル4択問題。資格は画面上部の「資格」ボタンから一覧で切り替え（選んだ資格は次回も表示）。未着手の問題数（全体・分野別）、分野別の正答率（70%未満を強調）、ランダム10問／本番模試（30問・90分・合格70%）／間違えた問題／未着手の問題／分野別の出題。選択肢は毎回シャッフル、回答後すぐに正誤と解説を表示 |
+| 演習 | Web Developer Specialist（250問）と Front-end Developer Specialist（100問）、Mobile Developer Specialist（100問）のオリジナル4択問題。資格は画面上部の「資格」ボタンから一覧で切り替え（選んだ資格は次回も表示）。未着手の問題数（全体・分野別）、分野別の正答率（70%未満を強調）、ランダム10問／本番模試（30問・90分・合格70%）／間違えた問題／未着手の問題／分野別の出題。選択肢は毎回シャッフル、回答後すぐに正誤と解説を表示 |
 | 受験 | 5つのSpecialist試験の日程と結果（未受験／合格／不合格）。予約が取れたら「✏️ 確定した日時を入力」から受験日・開始時刻・会場をポップアップで登録（ホームのカウントダウンにも反映、「予定日に戻す」で取り消し）。不合格時は1週間後の予備枠を再受験日として提案。Expert Developerまでの進捗 |
 | 振り返り | 週ごとの学習時間（問題演習／その他）、回答数・正答率・模試、分野別正答率の変化、来週の受験予定、振り返りメモ。日曜日は起動時に自動で表示 |
 | 設定（⚙️） | ダークモード、JSONでのエクスポート／インポート、データ初期化 |
@@ -49,15 +49,15 @@ public/data/
 └── questions/
     ├── index.json              # 試験と分野の一覧（出題比率・ファイルパス）
     └── web-developer-specialist/
-        ├── async.json          # 非同期処理（26問）
-        ├── bp-data.json        # ベストプラクティス：データ（26問）
-        ├── bp-screens.json     # ベストプラクティス：画面（26問）
-        ├── bp-queries.json     # ベストプラクティス：クエリ（20問）
-        ├── bp-logic.json       # ベストプラクティス：ロジック（28問）
+        ├── async.json          # 非同期処理（28問）
+        ├── bp-data.json        # ベストプラクティス：データ（41問）
+        ├── bp-screens.json     # ベストプラクティス：画面（36問）
+        ├── bp-queries.json     # ベストプラクティス：クエリ（29問）
+        ├── bp-logic.json       # ベストプラクティス：ロジック（40問）
         ├── exceptions.json     # 例外・トランザクション処理（14問）
         ├── integration-db.json # 統合：外部データベース（14問）
         ├── integration-rest.json # 統合：REST API（12問）
-        ├── troubleshooting.json  # トラブルシューティング（26問）
+        ├── troubleshooting.json  # トラブルシューティング（28問）
         └── team.json           # チーム開発（8問）
     └── front-end-developer-specialist/   # Front-end Developer Specialist（計100問）
         ├── fe-fundamentals.json      # フロントエンド基礎（10問）
@@ -109,7 +109,7 @@ public/data/
 ### 別の試験の問題を追加する（例：Front-end Developer Specialist）
 
 1. `public/data/questions/front-end-developer-specialist/` に分野ごとのJSONを作成（`exam` は `front-end-developer-specialist`）
-2. `public/data/questions/index.json` の `exams` に試験を追加し、`categories` に分野名・出題比率（`weight`）・ファイルパスを記載（各分野の問題数は `weight` の整数倍にそろえる）
+2. `public/data/questions/index.json` の `exams` に試験を追加し、`categories` に分野名・出題比率（`weight`）・ファイルパスを記載（各分野の問題数は `weight` と比例していなくてよい。本番模試は `weight` の比率で出題するので、各分野に `weight` 以上の問題を用意する）
 3. `npm run validate:data` でチェック
 
 試験が2つ以上になると、演習画面に試験の切り替えが表示されます。`exam` の値は `plan/outsystems-exams.json` の `id` と揃えておくと管理しやすくなります。
