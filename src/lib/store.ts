@@ -16,16 +16,23 @@ export function emptyData(): AppData {
   }
 }
 
+/** 以前このアプリにあったTOEIC機能のデータ項目（別アプリに移したため読み込み時に削除する） */
+const LEGACY_TOEIC_KEYS = ['minimumDone', 'toeicChecks', 'toeicScores'] as const
+
 /** 古い/一部欠けたデータでも読めるよう、既定値とマージする */
 function normalize(raw: unknown): AppData {
   const base = emptyData()
   if (!raw || typeof raw !== 'object') return base
-  const r = raw as Partial<AppData>
+  const r = { ...(raw as Record<string, unknown>) }
+  for (const k of LEGACY_TOEIC_KEYS) delete r[k]
+  const d = r as Partial<AppData>
   return {
     ...base,
-    ...r,
+    ...d,
+    // 旧TOEICの学習時間（subject: 'english'）も削除する
+    studyLogs: (d.studyLogs ?? []).filter((l) => l.subject === 'outsystems'),
     version: 1,
-    settings: { ...base.settings, ...(r.settings ?? {}) },
+    settings: { ...base.settings, ...(d.settings ?? {}) },
   }
 }
 
@@ -47,6 +54,14 @@ function persist() {
   } catch (e) {
     console.error('保存に失敗しました', e)
   }
+}
+
+// 旧TOEICデータなどを取り除いた内容を、起動時に端末へ書き戻す
+try {
+  const stored = localStorage.getItem(STORAGE_KEY)
+  if (stored && stored !== JSON.stringify(state)) persist()
+} catch {
+  // 読み書きできない環境では何もしない
 }
 
 export function getData(): AppData {
